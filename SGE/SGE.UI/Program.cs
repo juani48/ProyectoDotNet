@@ -1,12 +1,14 @@
-using SGE.UI.Components;
 using SGE.Aplicacion;
 using SGE.Repositorio;
+using SGE.UI.Component;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+
 
 //casos de usos de expeidentes
 builder.Services.AddTransient<CasoDeUsoExpedienteAlta>();
