@@ -7,8 +7,8 @@ public interface IExpedienteRepositorio
     bool eliminarExpediente(int id); //se deben eliminar también todos los trámites asociados a dicho expediente
     List<Expediente> obtenerListaExpediente();
 
-    void modificarExpediente(string st, int idExpediente, int idUsuario);
-    void ActualizarEstadoExpediente(Expediente expediente);
+    bool modificarExpediente(string st, int idExpediente, int idUsuario);
+    bool ActualizarEstadoExpediente(Expediente expediente);
     /*
     "Además, se debe implementar un caso de uso que permita la consulta de un expediente junto con todos
     sus trámites, utilizando el Id del expediente como referencia."

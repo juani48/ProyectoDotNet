@@ -1,13 +1,36 @@
 ﻿namespace SGE.Aplicacion;
 
-public class CasoDeUsoTramiteModificacion(ITramiteRepositorio repo,ServicioActualizacionEstado servicio)
+public class CasoDeUsoTramiteModificacion(ITramiteRepositorio repo,IExpedienteRepositorio repoExpediente,IServicioActualizacionEstado servicio,IServicioAutorizacion autorizacion)
 {
-    public void Ejecutar(Tramite tramite) { 
-        //consultar por id=1
-        //validacion de tramite
-            repo.modificarTramite(tramite);
-            servicio.ActualizarEstadoExpediente(tramite.ExpedienteId);
+    public void Ejecutar(Tramite tramite)
+    { 
+        if(autorizacion.PoseeElPermiso(tramite.IdUsuario,Permiso.tramiteModificacion))
+        {
+            TramiteValidador.ValidarTramite(tramite);
+            tramite.ExpedienteId = repo.ObtenerIdExpediente(tramite.Id); //busco su expedienteID
+            if(tramite.ExpedienteId != -1)
+            {
+                repo.modificarTramite(tramite);
+                Expediente? expediente = repoExpediente.obtenerExpediente(tramite.ExpedienteId);
+                if(expediente != null)
+                {
+                    expediente.IdUsuario=tramite.IdUsuario;
+                    servicio.ActualizarEstadoExpediente(expediente);
+                }
+                else
+                {
+                    throw new RepositorioException("No existe un expediente asociado.");
+                }
+            }
+            else
+            {
+                throw new RepositorioException("No existe el tramite a modificar.");
+            }
+        }
+        else
+        {
+            throw new AutorizacionException("No posee permiso.");
+        }
 
-        //trow no tiene autorizacion
     }
 }

@@ -2,29 +2,34 @@
 
 public class CasoDeUsoTramiteBaja(ITramiteRepositorio repotramite,IExpedienteRepositorio repoExpediente,IServicioActualizacionEstado servicio,IServicioAutorizacion autorizacion)
 {
-    public void Ejecutar(Tramite tramite)
+    public void Ejecutar(Tramite tramite) //recibo tramite con su id y idusuario
     {
-        if (autorizacion.PoseeElPermiso(tramite.IdUsuario,Permiso.TramiteBaja)){
-
-                int? num = repotramite.obtenerTramite(tramite.Id).ExpedienteId;
-                if(num != null){
-                    tramite.ExpedienteId = num;
-                    repotramite.eliminarTramite(tramite.Id);
-                    Expediente? expediente= repoExpediente.obtenerExpediente(tramite.ExpedienteId);
-                    if(expediente != null){
-                        expediente.IdUsuario=tramite.IdUsuario;
-                        servicio.ActualizarEstadoExpediente(expediente);
+        if (autorizacion.PoseeElPermiso(tramite.IdUsuario,Permiso.TramiteBaja))
+        {
+                tramite.ExpedienteId = repotramite.ObtenerIdExpediente(tramite.Id); //busco su expedienteID
+                if(tramite.ExpedienteId != -1 )
+                {
+                        repotramite.eliminarTramite(tramite.Id);
+                        Expediente? expediente= repoExpediente.obtenerExpediente(tramite.ExpedienteId); //le paso iExpediente
+                        if(expediente != null)
+                        {
+                            expediente.IdUsuario=tramite.IdUsuario;
+                            servicio.ActualizarEstadoExpediente(expediente);
+                        }
+                        else
+                        {
+                            throw new RepositorioException("no existe un expediente asociado.");
+                        }
                     }
-                    else{
-                        throw new RepositorioException("no existe un expediente aso");
+                    else
+                    {
+                        throw new RepositorioException("no existe el tramite a eliminar.");
+                    
                     }
-                }
-                      
-            }else{
-                throw new RepositorioException("no existe el tramite a eliminar");
-            }
-        }else{
-            throw new AutorizacionException("No posee los permisos");
+        }
+        else
+        {
+            throw new AutorizacionException("No posee los permisos.");
         }
     }
 
