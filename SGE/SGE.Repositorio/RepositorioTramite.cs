@@ -10,12 +10,13 @@ public class RepositorioTramite : ITramiteRepositorio
             db.SetJournalModeToDelete();
         } 
     }
+
     public void agregarTramite(Tramite tramite)
     {
         throw new NotImplementedException();
     }
 
-    public void eliminarTramite(int id)
+    public bool eliminarTramite(int id)
     {
         throw new NotImplementedException();
     }
@@ -40,7 +41,7 @@ public class RepositorioTramite : ITramiteRepositorio
         throw new NotImplementedException();
     }
 
-    public EtiquetaTramite obtenerEtiqueta(int id)
+    public EtiquetaTramite? obtenerEtiqueta(int id)
     {
         throw new NotImplementedException();
     }

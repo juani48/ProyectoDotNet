@@ -1,4 +1,5 @@
-﻿using SGE.Aplicacion;
+﻿using System.Data;
+using SGE.Aplicacion;
 
 namespace SGE.Repositorio;
 
@@ -11,7 +12,7 @@ public class RepositorioExpediente : IExpedienteRepositorio
         } 
     }
 
-    public void ActualizarEstadoExpediente(Expediente expediente)
+    public bool ActualizarEstadoExpediente(Expediente expediente)
     {
         throw new NotImplementedException();
     }
@@ -36,10 +37,19 @@ public class RepositorioExpediente : IExpedienteRepositorio
             return false;
         }
     }
-
-    public void modificarExpediente(string st, int idExpediente, int idUsuario)
+    public bool modificarExpediente(string st, int idExpediente, int idUsuario)
     {
-        throw new NotImplementedException();
+        using var db = new Context();
+        var query = db.Expedientes.Where(e => e.Id == idExpediente).SingleOrDefault();
+        if(query != null){
+            query.EstadoExpediente = EstadoExpediente.Parse<EstadoExpediente>(st);
+            query.IdUsuario = idUsuario;
+            query.FechaModiificacion = DateTime.Now;
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public Expediente? obtenerExpediente(int id)
@@ -50,6 +60,7 @@ public class RepositorioExpediente : IExpedienteRepositorio
 
     public List<Expediente> obtenerListaExpediente()
     {
-        throw new NotImplementedException();
+        using var db = new Context();
+        return db.Expedientes.ToList();
     }
 }
