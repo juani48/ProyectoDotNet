@@ -1,6 +1,6 @@
 using SGE.Aplicacion;
 using SGE.Repositorio;
-using SGE.UI.Component;
+using SGE.UI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-
+//servicion
+builder.Services.AddSingleton<IServicioActualizacionEstado, ServicioActualizacionEstado>();
+builder.Services.AddSingleton<IServicioAutorizacion, ServicioAutorizacionProvisorio>();
 
 //casos de usos de expeidentes
 builder.Services.AddTransient<CasoDeUsoExpedienteAlta>();
