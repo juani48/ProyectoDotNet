@@ -1,0 +1,223 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.UI\\SGE.UI.csproj": {}
+  },
+  "projects": {
+    "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj",
+        "projectName": "SGE.Aplicacion",
+        "projectPath": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj",
+        "packagesPath": "C:\\Users\\JUANI\\.nuget\\packages\\",
+        "outputPath": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Aplicacion\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\JUANI\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Repositorio\\SGE.Repositorio.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Repositorio\\SGE.Repositorio.csproj",
+        "projectName": "SGE.Repositorio",
+        "projectPath": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Repositorio\\SGE.Repositorio.csproj",
+        "packagesPath": "C:\\Users\\JUANI\\.nuget\\packages\\",
+        "outputPath": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Repositorio\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\JUANI\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj": {
+                "projectPath": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.UI\\SGE.UI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.UI\\SGE.UI.csproj",
+        "projectName": "SGE.UI",
+        "projectPath": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.UI\\SGE.UI.csproj",
+        "packagesPath": "C:\\Users\\JUANI\\.nuget\\packages\\",
+        "outputPath": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.UI\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\JUANI\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj": {
+                "projectPath": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj"
+              },
+              "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Repositorio\\SGE.Repositorio.csproj": {
+                "projectPath": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.Repositorio\\SGE.Repositorio.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

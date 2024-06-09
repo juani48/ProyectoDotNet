@@ -1,0 +1,22 @@
+﻿@page "/expediente/{Id:int?}"
+@inject CasoDeUsoExpedienteConsultaPorId consulta
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+
+<h3>MostrarExpediente</h3>
+@expediente.Caratula
+<button @onclick="_Back" >Volver</button>
+@code {
+    [Parameter] public int? Id {get; set;}
+    Expediente expediente = new Expediente();
+    protected override void OnParametersSet(){
+        if(Id != null){
+            expediente = consulta.Ejecutar(this.Id.Value);
+        }
+    }   
+
+    private void _Back(){
+        navigationManager.NavigateTo("listarexpedientes");
+    }
+}

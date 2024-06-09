@@ -1,6 +1,7 @@
 ﻿@page "/listarexpedientes"
 @inject CasoDeUsoExpedienteConsultaTodos listarExpeidentes
 @inject NavigationManager navigationManager
+@rendermode InteractiveServer
 
 <h3>Listar Expedientes</h3>
 <table class="table">
@@ -14,16 +15,16 @@
         <th>Accion</th>
     </thead>
     <tbody>
-        @foreach(var e in _lista){
+        @foreach(var expediente in _lista){
             <tr>
-                <td>@e.Id</td>
-                <td>@e.Caratula</td>
-                <td>@e.FechaCreacion</td>
-                <td>@e.FechaModiificacion</td>
-                <td>@e.EstadoExpediente</td>
-                <td>@e.IdUsuario</td>
+                <td>@expediente.Id</td>
+                <td>@expediente.Caratula</td>
+                <td>@expediente.FechaCreacion</td>
+                <td>@expediente.FechaModiificacion</td>
+                <td>@expediente.EstadoExpediente</td>
+                <td>@expediente.IdUsuario</td>
                 <td>
-                    <button @onclick="()=>_VerExpediente(e.Id)" class="btn btn-primary" >Examinar</button>
+                    <button @onclick="()=>_VerExpediente(expediente.Id)" class="btn btn-primary" >Examinar</button>
                 </td>
             </tr>
         }
@@ -37,6 +38,6 @@
         _lista = listarExpeidentes.Ejecutar();
     }
     private void _VerExpediente(int id){
-        navigationManager.NavigateTo($"/mostrarexpediente/{id}");
+        navigationManager.NavigateTo($"expediente/{id}");
     }
 }

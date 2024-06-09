@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.UI\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SGE.UI.bundle.scp.css",
+      "PackagePath": "staticwebassets\\SGE.UI.bundle.scp.css"
+    },
+    {
+      "Id": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.UI\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.UI\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.UI\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "D:\\1Teoria y Trabajos de la facultad\\2doAño\\1er Cuatrimestre\\Seminario .NET\\Proyecto2\\ProyectoDotNet\\SGE\\SGE.UI\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.SGE.UI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.SGE.UI.props",
+      "PackagePath": "build\\SGE.UI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.SGE.UI.props",
+      "PackagePath": "buildMultiTargeting\\SGE.UI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.SGE.UI.props",
+      "PackagePath": "buildTransitive\\SGE.UI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
