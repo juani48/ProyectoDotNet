@@ -1,0 +1,42 @@
+﻿@page "/listarexpedientes"
+@inject CasoDeUsoExpedienteConsultaTodos listarExpeidentes
+@inject NavigationManager navigationManager
+
+<h3>Listar Expedientes</h3>
+<table class="table">
+    <thead>
+        <th>Id</th>
+        <th>Caratula</th>
+        <th>Fecha creacion</th>
+        <th>Fecha modificacion</th>
+        <th>Estado</th>
+        <th>Id de suario</th>
+        <th>Accion</th>
+    </thead>
+    <tbody>
+        @foreach(var e in _lista){
+            <tr>
+                <td>@e.Id</td>
+                <td>@e.Caratula</td>
+                <td>@e.FechaCreacion</td>
+                <td>@e.FechaModiificacion</td>
+                <td>@e.EstadoExpediente</td>
+                <td>@e.IdUsuario</td>
+                <td>
+                    <button @onclick="()=>_VerExpediente(e.Id)" class="btn btn-primary" >Examinar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+    private List<Expediente> _lista = new List<Expediente>();
+    protected override void OnInitialized(){
+        _lista = listarExpeidentes.Ejecutar();
+    }
+    private void _VerExpediente(int id){
+        navigationManager.NavigateTo($"/mostrarexpediente/{id}");
+    }
+}

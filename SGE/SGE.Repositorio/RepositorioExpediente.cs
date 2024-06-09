@@ -9,7 +9,11 @@ public class RepositorioExpediente : IExpedienteRepositorio
         using var db = new Context();
         if(db.Database.EnsureCreated()){
             db.SetJournalModeToDelete();
-        } 
+            db.Expedientes.Add(new Expediente(){Caratula = "Caratual1", IdUsuario = 1});
+            db.Expedientes.Add(new Expediente(){Caratula = "Caratual2", IdUsuario = 1});
+            db.Expedientes.Add(new Expediente(){Caratula = "Caratual2", IdUsuario = 1});
+            db.SaveChanges();
+        }
     }
 
     public bool ActualizarEstadoExpediente(Expediente expediente)

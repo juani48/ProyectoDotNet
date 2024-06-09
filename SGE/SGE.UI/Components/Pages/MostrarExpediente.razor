@@ -1,0 +1,20 @@
+﻿@page "/mostrarexpediente/{Id:int?}"
+@inject CasoDeUsoExpedienteConsultaPorId consultarExpeidente
+
+<h3>Mostrar Expediente</h3>
+<p>@_expediente.Caratula , @_expediente.Estado</p>
+@code {
+    private Expediente _expediente = new Expediente();
+    [Parameter] public int? Id {get; set;}
+
+    protected override void OnParametersSet(){
+        try{
+            if(Id != null){
+                _expediente = consultarExpeidente.Ejecutar(Id.Value);
+            }
+            catch{
+                Console.WriteLine("Error");
+            }
+        }
+    }
+}
