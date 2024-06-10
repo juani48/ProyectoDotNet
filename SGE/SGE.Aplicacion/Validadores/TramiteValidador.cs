@@ -5,7 +5,7 @@ public class TramiteValidador
     
     public static bool ValidarTramite(Tramite tramite)
     {
-        if(string.IsNullOrWhiteSpace(tramite.contenido))
+        if(string.IsNullOrWhiteSpace(tramite.Contenido))
         {
             throw new ValidacionException("El contenido del trámite no puede estar vacio");
         }

@@ -3,25 +3,27 @@
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
-<h3>Listar Expedientes</h3>
+<h3>Lista de Expedientes</h3>
 <table class="table">
     <thead>
-        <th>Id</th>
-        <th>Caratula</th>
-        <th>Fecha creacion</th>
-        <th>Fecha modificacion</th>
-        <th>Estado</th>
-        <th>Id de suario</th>
-        <th>Accion</th>
+        <tr>
+            <th>Id</th>
+            <th>Caratula</th>
+            <th>Estado</th>
+            <th>Fecha creacion</th>
+            <th>Fecha modificacion</th>
+            <th>Id de usuario</th>
+            <th>Accion</th>
+        </tr>
     </thead>
     <tbody>
         @foreach(var expediente in _lista){
             <tr>
                 <td>@expediente.Id</td>
                 <td>@expediente.Caratula</td>
+                <td>@expediente.EstadoExpediente</td>
                 <td>@expediente.FechaCreacion</td>
                 <td>@expediente.FechaModiificacion</td>
-                <td>@expediente.EstadoExpediente</td>
                 <td>@expediente.IdUsuario</td>
                 <td>
                     <button @onclick="()=>_VerExpediente(expediente.Id)" class="btn btn-primary" >Examinar</button>

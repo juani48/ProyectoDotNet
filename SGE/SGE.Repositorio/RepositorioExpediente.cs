@@ -12,6 +12,10 @@ public class RepositorioExpediente : IExpedienteRepositorio
             db.Expedientes.Add(new Expediente(){Caratula = "Caratual1", IdUsuario = 1});
             db.Expedientes.Add(new Expediente(){Caratula = "Caratual2", IdUsuario = 1});
             db.Expedientes.Add(new Expediente(){Caratula = "Caratual2", IdUsuario = 1});
+
+            db.Tramites.Add(new Tramite(){ExpedienteId = 1, Contenido = "Contenido1", IdUsuario = 1});
+            db.Tramites.Add(new Tramite(){ExpedienteId = 2, Contenido = "Contenido1", IdUsuario = 1});
+            db.Tramites.Add(new Tramite(){ExpedienteId = 1, Contenido = "Contenido2", IdUsuario = 1});
             db.SaveChanges();
         }
     }

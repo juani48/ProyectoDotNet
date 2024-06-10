@@ -10,16 +10,4 @@ public class Expediente
     public DateTime FechaModiificacion { get; set; }= DateTime.Now; //fecha de la ultima modificiacion
     public int IdUsuario { get; set; } //identificador del ultimo usuario que modifico el expediente
     public EstadoExpediente EstadoExpediente { get; set; }=EstadoExpediente.RecienIniciado;
-
-    public override string ToString()
-        {
-            return $"----INFORMACION DEL EXPEDIENTE----"+
-            $"\n-ID del expediente: {this.Id}"+
-            $"\n-Caratula: {this.Caratula}"+
-            $"\n-Fecha de creacion: {this.FechaCreacion}"+
-            $"\n-Fecha de modificacion: {this.FechaModiificacion}"+
-            $"\n-ID del ultimo usuario en modificar: {this.IdUsuario}"+
-            $"\n-Estado del expediente: {this.EstadoExpediente}"+
-            "\n-------------------------------------------------"; 
-        }
 }

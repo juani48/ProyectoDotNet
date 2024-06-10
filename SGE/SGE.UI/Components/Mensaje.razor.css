@@ -1,4 +1,4 @@
-#dialogo-contenedor {
+.contenedor{
     position: fixed;
     top:0;
     left: 0;
@@ -10,7 +10,8 @@
     align-items: center; 
     justify-content: center;
 }
-#dialogo-contenido{
+
+.contenido{
     padding: 20px;
     background-color: white;
 }

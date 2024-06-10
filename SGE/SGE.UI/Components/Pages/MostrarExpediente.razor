@@ -1,70 +1,125 @@
 ﻿@page "/expediente/{Id:int?}"
 @using SGE.UI.Components
 
+<!--Caso de uso para expedientes-->
 @inject CasoDeUsoExpedienteConsultaPorId consulta
 @inject CasoDeUsoExpedienteAlta agregar
 
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
-@if(!_nuevoExpediente){
-    <h3>@_expediente.Caratula</h3>
-    <div>
-        <ul>
-            <li>El expediente se encuentra @_expediente.EstadoExpediente</li>
-            <li>La fecha de inicio del expediente fue: @_expediente.FechaCreacion</li>
-            <li>Su última modificación se realizó @_expediente.FechaModiificacion por el usuario con ID @_expediente.IdUsuario </li>
-        </ul>
-    </div>
-    
-    <button @onclick="_Volver" class="btn btn-primary" >Volver</button>
+@if(!_error){
+    @if(!_nuevoExpediente){
+        <h3>@_expediente.Caratula</h3>
+        <div>
+            <ul>
+                <li>El expediente se encuentra @_expediente.EstadoExpediente</li>
+                <li>La fecha de inicio del expediente fue: @_expediente.FechaCreacion</li>
+                <li>Su última modificación se realizó @_expediente.FechaModiificacion por el usuario con ID @_expediente.IdUsuario </li>
+            </ul>
+        </div>
+        <h4>Tramites asociados</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Etiqueta del tramite</th>
+                    <th>Contenido</th>
+                    <th>Fecha creacion</th>
+                    <th>Fecha modificacion</th>
+                    <th>ID de usuario</th>
+                </tr> 
+            </thead>
+            <tbody>
+                @foreach(var t in _lista){
+                    <tr>
+                        <td>@t.Id</td>
+                        <td>@t.EtiquetaTramite</td>
+                        <td>@t.Contenido</td>
+                        <td>@t.FechaCreacion</td>
+                        <td>@t.FechaModificacion</td>
+                        <td>@t.IdUsuario</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button @onclick="_Volver" class="btn btn-primary" >Volver</button>
+    }
+    else{
+        <h3>Ingrese los datos para el nuevo expediente</h3>
+        <input placeholder="Carátula del expediente:" @bind="_expediente.Caratula" style="margin-bottom: 10px;">
+        <div style="margin-bottom: 10px;">
+            <select @bind="_expediente.EstadoExpediente">
+                <option value="RecienIniciado">RecienIniciado</option>
+                <option value="ParaResolver">ParaResolver</option>
+                <option value="ConResolucion">ConResolucion</option>
+                <option value="EnNotificacion">EnNotificacion</option>
+                <option value="Finalizado">Finalizado</option>
+            </select>
+        </div>
+        <div>
+            <button @onclick="_Alta" class="btn btn-primary" >Aceptar</button>
+            <button @onclick="_Mensaje" class="btn btn-secondary" >Volver</button>
+        </div>   
+    }
 }
 else{
-    <input placeholder="Carátula del expediente:" @bind="_expediente.Caratula" style="margin-bottom: 10px;">
-    <div>
-        <select @bind="_expediente.EstadoExpediente">
-            <option value="RecienIniciado">RecienIniciado</option>
-            <option value="ParaResolver">ParaResolver</option>
-            <option value="ConResolucion">ConResolucion</option>
-            <option value="EnNotificacion">EnNotificacion</option>
-            <option value="Finalizado">Finalizado</option>
-        </select>
-    </div>
-    <button @onclick="_Alta" class="btn btn-primary" >Aceptar</button>
-    <button @onclick="_Mensaje" class="btn btn-secondary" >Volver</button>
+    <ComponentError Text="@_stMensaje" />
 }
 
-<Mensaje @ref="_mensaje" Text="¿Está seguro que desea salir? Los datos que haya ingresado se perderán." eventCallback="_Volver" />
+<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Volver" />
 
 @code {
+#region Expediente
     [Parameter] public int? Id {get; set;}
     private Expediente _expediente = new Expediente();
 
+    //lista de tramites asociados
+    private List<Tramite> _lista = new List<Tramite>();
     private bool _nuevoExpediente;
+    private bool _error = false;
     protected override void OnParametersSet(){
-        if(Id != null){
-            _nuevoExpediente = false;
-            _expediente = consulta.Ejecutar(this.Id.Value);
+        try{
+            if(Id != null){
+                _nuevoExpediente = false;
+                _expediente = consulta.Ejecutar(this.Id.Value, out _lista);
+            }
+            else{
+                _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
+                _nuevoExpediente = true;
+            }
         }
-        else{
-            _nuevoExpediente = true;
+        catch (Exception e){
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true;
         }
-    }   
+    }
+    private void _Alta(){
+        try{
+            //provisio
+            _expediente.IdUsuario = 1;
+            //
+            agregar.Ejecutar(_expediente);
+            Id = _expediente.Id;
+            _expediente = new Expediente();
+            navigationManager.NavigateTo($"/expediente/{Id}");
+        }
+        catch(Exception e){
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true;
+        }
+    }
+#endregion Expediente
     private void _Volver(){
-        navigationManager.NavigateTo("listarexpedientes");
+        navigationManager.NavigateTo("/listarexpedientes");
     }
 
-    private void _Alta(){
-        //provisio
-        _expediente.IdUsuario = 1;
-        //
-        agregar.Ejecutar(_expediente);
-        Id = _expediente.Id;
-        _expediente = new Expediente();
-        navigationManager.NavigateTo($"/expediente/{Id}");
-    }
+#region Mensajes
     private Mensaje _mensaje = null!;
+    private string _stMensaje = "";
     private void _Mensaje(){
         _mensaje.MostrarMensaje();
     }
+#endregion Mensajes
+
 }
