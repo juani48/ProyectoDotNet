@@ -9,8 +9,8 @@ public class CasoDeUsoTramiteBaja(ITramiteRepositorio repotramite,IExpedienteRep
                 tramite.ExpedienteId = repotramite.ObtenerIdExpediente(tramite.Id); //busco su expedienteID
                 if(tramite.ExpedienteId != -1 )
                 {
-                        repotramite.eliminarTramite(tramite.Id);
-                        Expediente? expediente= repoExpediente.obtenerExpediente(tramite.ExpedienteId); //le paso iExpediente
+                        repotramite.EliminarTramite(tramite.Id);
+                        Expediente? expediente= repoExpediente.ObtenerExpediente(tramite.ExpedienteId); //le paso iExpediente
                         if(expediente != null)
                         {
                             expediente.IdUsuario=tramite.IdUsuario;

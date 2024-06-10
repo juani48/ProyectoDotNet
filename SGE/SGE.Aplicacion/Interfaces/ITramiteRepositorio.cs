@@ -3,16 +3,16 @@
 public interface ITramiteRepositorio
 {
     
-    void agregarTramite(Tramite tramite);
-    bool eliminarTramite(int id);
-    Tramite? obtenerTramite(int id);
-    void modificarTramite(Tramite tramite);
+    void AgregarTramite(Tramite tramite);
+    bool EliminarTramite(int id);
+    Tramite? ObtenerTramite(int id);
+    void ModificarTramite(Tramite tramite);
     List<Tramite> ListarTramitesPorEtiqueta(string etiqueta);
-    EtiquetaTramite? obtenerEtiqueta(int id);
+
+    //interaccion con expedientes
+    EtiquetaTramite? ObtenerEtiqueta(int id);
     List<Tramite> ListarTramitesPorExpedienteID(int idExpediente);
     void EliminarTramitesPorIdExpediente(int idExpediente);
-
+    int ObtenerIdExpediente (int idTramite);
     EtiquetaTramite ObtenerEtiquetaUltimoTramite(int idExpediente);
-    int ObtenerIdExpediente(int id);
-
 }

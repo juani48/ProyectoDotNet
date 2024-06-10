@@ -9,9 +9,9 @@ public class CasoDeUsoTramiteAlta(ITramiteRepositorio repoTramite,IExpedienteRep
           if(autorizacion.PoseeElPermiso(tramite.IdUsuario,Permiso.TramiteAlta))
           {
                 TramiteValidador.ValidarTramite(tramite);
-                Expediente? expediente= repoExpediente.obtenerExpediente(tramite.ExpedienteId);
+                Expediente? expediente= repoExpediente.ObtenerExpediente(tramite.ExpedienteId);
                 if( expediente !=null ){
-                    repoTramite.agregarTramite(tramite);
+                    repoTramite.AgregarTramite(tramite);
                     expediente.IdUsuario= tramite.IdUsuario;
                     servicio.ActualizarEstadoExpediente(expediente);
                 }

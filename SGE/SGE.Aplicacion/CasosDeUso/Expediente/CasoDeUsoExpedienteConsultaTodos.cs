@@ -3,7 +3,7 @@
 public class CasoDeUsoExpedienteConsultaTodos (IExpedienteRepositorio expedienteRepositorio)
 {
     public List<Expediente> Ejecutar(){
-        return  expedienteRepositorio.obtenerListaExpediente();
+        return  expedienteRepositorio.ObtenerListaExpediente();
     }
 
 }

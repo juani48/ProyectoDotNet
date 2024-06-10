@@ -4,7 +4,7 @@ public class CasoDeUsoTramiteConsultaPorEtiqueta(ITramiteRepositorio repo)
 {
     public EtiquetaTramite? Ejecutar(int id) 
     {
-            EtiquetaTramite? e= repo.obtenerEtiqueta(id);
+            EtiquetaTramite? e= repo.ObtenerEtiqueta(id);
             if(e !=null ){
                 return e;
             }

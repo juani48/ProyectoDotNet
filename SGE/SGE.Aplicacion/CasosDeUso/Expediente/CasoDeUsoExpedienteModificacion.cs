@@ -8,7 +8,7 @@ public class CasoDeUsoExpedienteModificacion (IExpedienteRepositorio expedienteR
         if(servicioAutorizacion.PoseeElPermiso(expediente.IdUsuario, Permiso.ExpedienteModificacion))
         {
             ExpedienteValidador.ValidarExpediente(expediente);
-            if(!expedienteRepositorio.modificarExpediente(expediente.Caratula,expediente.Id,expediente.IdUsuario)){
+            if(!expedienteRepositorio.ModificarExpediente(expediente)){
                 throw new RepositorioException("No existe el expediente a modificar.");
             }
         }

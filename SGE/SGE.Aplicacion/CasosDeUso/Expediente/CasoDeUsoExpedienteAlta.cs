@@ -5,7 +5,7 @@ public class CasoDeUsoExpedienteAlta (IExpedienteRepositorio expedienteRepositor
     public void Ejecutar(Expediente expediente){
         if(servicioAutorizacion.PoseeElPermiso(expediente.IdUsuario, Permiso.ExpedienteAlta)){
             ExpedienteValidador.ValidarExpediente(expediente);
-            expedienteRepositorio.agregarExpediente(expediente);
+            expedienteRepositorio.AgregarExpediente(expediente);
         }
         else{
             throw new AutorizacionException("El usuario no posee permisos");

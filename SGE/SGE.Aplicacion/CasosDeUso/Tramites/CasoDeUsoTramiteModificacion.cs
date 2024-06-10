@@ -10,8 +10,8 @@ public class CasoDeUsoTramiteModificacion(ITramiteRepositorio repo,IExpedienteRe
             tramite.ExpedienteId = repo.ObtenerIdExpediente(tramite.Id); //busco su expedienteID
             if(tramite.ExpedienteId != -1)
             {
-                repo.modificarTramite(tramite);
-                Expediente? expediente = repoExpediente.obtenerExpediente(tramite.ExpedienteId);
+                repo.ModificarTramite(tramite);
+                Expediente? expediente = repoExpediente.ObtenerExpediente(tramite.ExpedienteId);
                 if(expediente != null)
                 {
                     expediente.IdUsuario=tramite.IdUsuario;

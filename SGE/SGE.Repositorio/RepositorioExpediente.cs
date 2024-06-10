@@ -25,14 +25,14 @@ public class RepositorioExpediente : IExpedienteRepositorio
         throw new NotImplementedException();
     }
 
-    public void agregarExpediente(Expediente expediente)
+    public void AgregarExpediente(Expediente expediente)
     {
         using var db = new Context();
         db.Expedientes.Add(expediente);
         db.SaveChanges();
     }
 
-    public bool eliminarExpediente(int id)
+    public bool EliminarExpediente(int id)
     {
         using var db = new Context();
         var query = db.Expedientes.Where(e => e.Id == id).SingleOrDefault();
@@ -45,14 +45,17 @@ public class RepositorioExpediente : IExpedienteRepositorio
             return false;
         }
     }
-    public bool modificarExpediente(string st, int idExpediente, int idUsuario)
+    public bool ModificarExpediente(Expediente expediente)
     {
         using var db = new Context();
-        var query = db.Expedientes.Where(e => e.Id == idExpediente).SingleOrDefault();
+        var query = db.Expedientes.Where(e => e.Id == expediente.Id).SingleOrDefault();
         if(query != null){
-            query.EstadoExpediente = EstadoExpediente.Parse<EstadoExpediente>(st);
-            query.IdUsuario = idUsuario;
+            query.Caratula = expediente.Caratula;
+            query.EstadoExpediente = expediente.EstadoExpediente;
+            query.IdUsuario = expediente.IdUsuario;
             query.FechaModiificacion = DateTime.Now;
+            db.SaveChanges();
+            
             return true;
         }
         else{
@@ -60,13 +63,13 @@ public class RepositorioExpediente : IExpedienteRepositorio
         }
     }
 
-    public Expediente? obtenerExpediente(int id)
+    public Expediente? ObtenerExpediente(int id)
     {
         using var db = new Context();
         return db.Expedientes.Where(e => e.Id == id).SingleOrDefault();
     }
 
-    public List<Expediente> obtenerListaExpediente()
+    public List<Expediente> ObtenerListaExpediente()
     {
         using var db = new Context();
         return db.Expedientes.ToList();
