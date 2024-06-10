@@ -1,22 +1,70 @@
 ﻿@page "/expediente/{Id:int?}"
+@using SGE.UI.Components
+
 @inject CasoDeUsoExpedienteConsultaPorId consulta
+@inject CasoDeUsoExpedienteAlta agregar
+
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
+@if(!_nuevoExpediente){
+    <h3>@_expediente.Caratula</h3>
+    <div>
+        <ul>
+            <li>El expediente se encuentra @_expediente.EstadoExpediente</li>
+            <li>La fecha de inicio del expediente fue: @_expediente.FechaCreacion</li>
+            <li>Su última modificación se realizó @_expediente.FechaModiificacion por el usuario con ID @_expediente.IdUsuario </li>
+        </ul>
+    </div>
+    
+    <button @onclick="_Volver" class="btn btn-primary" >Volver</button>
+}
+else{
+    <input placeholder="Carátula del expediente:" @bind="_expediente.Caratula" style="margin-bottom: 10px;">
+    <div>
+        <select @bind="_expediente.EstadoExpediente">
+            <option value="RecienIniciado">RecienIniciado</option>
+            <option value="ParaResolver">ParaResolver</option>
+            <option value="ConResolucion">ConResolucion</option>
+            <option value="EnNotificacion">EnNotificacion</option>
+            <option value="Finalizado">Finalizado</option>
+        </select>
+    </div>
+    <button @onclick="_Alta" class="btn btn-primary" >Aceptar</button>
+    <button @onclick="_Mensaje" class="btn btn-secondary" >Volver</button>
+}
 
-<h3>MostrarExpediente</h3>
-@expediente.Caratula
-<button @onclick="_Back" >Volver</button>
+<Mensaje @ref="_mensaje" Text="¿Está seguro que desea salir? Los datos que haya ingresado se perderán." eventCallback="_Volver" />
+
 @code {
     [Parameter] public int? Id {get; set;}
-    Expediente expediente = new Expediente();
+    private Expediente _expediente = new Expediente();
+
+    private bool _nuevoExpediente;
     protected override void OnParametersSet(){
         if(Id != null){
-            expediente = consulta.Ejecutar(this.Id.Value);
+            _nuevoExpediente = false;
+            _expediente = consulta.Ejecutar(this.Id.Value);
+        }
+        else{
+            _nuevoExpediente = true;
         }
     }   
-
-    private void _Back(){
+    private void _Volver(){
         navigationManager.NavigateTo("listarexpedientes");
+    }
+
+    private void _Alta(){
+        //provisio
+        _expediente.IdUsuario = 1;
+        //
+        agregar.Ejecutar(_expediente);
+        Id = _expediente.Id;
+        _expediente = new Expediente();
+        navigationManager.NavigateTo($"/expediente/{Id}");
+    }
+    private Mensaje _mensaje = null!;
+    private void _Mensaje(){
+        _mensaje.MostrarMensaje();
     }
 }

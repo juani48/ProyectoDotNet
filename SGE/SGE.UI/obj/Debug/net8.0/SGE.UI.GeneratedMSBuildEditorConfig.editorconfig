@@ -22,10 +22,6 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/1Teoria y Trabajos de la facultad/2doAño/1er Cuatrimestre/Seminario .NET/Proyecto2/ProyectoDotNet/SGE/SGE.UI/Components/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/1Teoria y Trabajos de la facultad/2doAño/1er Cuatrimestre/Seminario .NET/Proyecto2/ProyectoDotNet/SGE/SGE.UI/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -40,10 +36,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/1Teoria y Trabajos de la facultad/2doAño/1er Cuatrimestre/Seminario .NET/Proyecto2/ProyectoDotNet/SGE/SGE.UI/Components/Pages/MostrarExpediente.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3N0cmFyRXhwZWRpZW50ZS5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/1Teoria y Trabajos de la facultad/2doAño/1er Cuatrimestre/Seminario .NET/Proyecto2/ProyectoDotNet/SGE/SGE.UI/Components/Pages/Weather.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXZWF0aGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/1Teoria y Trabajos de la facultad/2doAño/1er Cuatrimestre/Seminario .NET/Proyecto2/ProyectoDotNet/SGE/SGE.UI/Components/Routes.razor]
@@ -61,3 +53,7 @@ build_metadata.AdditionalFiles.CssScope = b-k716zha75e
 [D:/1Teoria y Trabajos de la facultad/2doAño/1er Cuatrimestre/Seminario .NET/Proyecto2/ProyectoDotNet/SGE/SGE.UI/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-067s78a2ky
+
+[D:/1Teoria y Trabajos de la facultad/2doAño/1er Cuatrimestre/Seminario .NET/Proyecto2/ProyectoDotNet/SGE/SGE.UI/Components/Mensaje.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNZW5zYWplLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-4rl6kykox4

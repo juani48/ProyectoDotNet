@@ -1,0 +1,26 @@
+﻿
+@if(_visible){
+    <div class="dialogo-contenedor">
+        <div class="dialogo-contenido" >
+            <h3>@Text</h3>
+            <button @onclick="()=>Cerrar(true)" class="btn btn-primary" >Aceptar</button>
+            <button @onclick="()=>Cerrar(false)" class="btn btn-secondary" >cancelar</button>
+        </div>
+    </div>
+    
+}
+
+@code {
+    [Parameter] public string Text {get; set;} = "";
+    [Parameter] public EventCallback eventCallback {get; set;}
+    private bool _visible = false;
+    public void MostrarMensaje(){
+        _visible = true;
+    }
+    private void Cerrar(bool ok){
+        _visible = false;
+        if(ok){
+            eventCallback.InvokeAsync();
+        }
+    }
+}

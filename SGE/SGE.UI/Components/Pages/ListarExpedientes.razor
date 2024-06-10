@@ -31,13 +31,14 @@
     </tbody>
 </table>
 
+<button @onclick="()=>_VerExpediente(null)" class="btn btn-primary" >Agregar Expediente</button>
 
 @code {
     private List<Expediente> _lista = new List<Expediente>();
     protected override void OnInitialized(){
         _lista = listarExpeidentes.Ejecutar();
     }
-    private void _VerExpediente(int id){
+    private void _VerExpediente(int? id){
         navigationManager.NavigateTo($"expediente/{id}");
     }
 }
