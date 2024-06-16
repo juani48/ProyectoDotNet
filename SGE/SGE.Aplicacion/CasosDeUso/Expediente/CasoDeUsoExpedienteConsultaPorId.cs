@@ -19,4 +19,16 @@ public class CasoDeUsoExpedienteConsultaPorId(IExpedienteRepositorio expedienteR
         }
     }
     //Faltaria imprimir los datos en pantalla "Console.WriteLine(casoDeUso.Ejecutar(idExpediente));"
+    public Expediente Ejecutar(int idExpediente)
+    {
+        Expediente? expediente = expedienteRepo.ObtenerExpediente(idExpediente); //Obtengo el expediente 
+        if(expediente == null) 
+        {
+            throw new RepositorioException($"No se encontro el expediente con ID: {idExpediente}.");
+        }
+        else
+        {
+            return expediente;
+        }
+    }
 }

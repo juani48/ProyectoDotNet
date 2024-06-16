@@ -2,15 +2,18 @@
 @using SGE.UI.Components
 
 <!--Caso de uso para expedientes-->
-@inject CasoDeUsoExpedienteConsultaPorId consulta
-@inject CasoDeUsoExpedienteAlta agregar
-@inject CasoDeUsoExpedienteModificacion modificar
+@inject CasoDeUsoExpedienteConsultaPorId consulta // consultar expediente
+@inject CasoDeUsoExpedienteAlta agregar //Alta en la base de datos SQLite
 
-@inject NavigationManager navigationManager
-@rendermode InteractiveServer
 
-@if(!_error){
-    @if(!_nuevoExpediente){
+<!--Uso de la pagina-->
+@inject NavigationManager navigationManager //Navegar entre paginas
+@rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
+
+@if(!_error){ //En caso de error al consultar la base de datos (OnParamaetersSet)
+    @if(!_nuevoExpediente){ //En caso de que no se ingrese un nuevo expediente y se deba mostrar uno almacenado
+
+        <!--MOSTRAR INFORMACION DE UN EXPEDIENTE-->
         <h3>@_expediente.Caratula</h3>
         <div>
             <ul>
@@ -20,6 +23,7 @@
             </ul>
         </div>
         
+        <!--TABLA CON LOS TRAMITES ASOCIADOS-->
         <h4>Tramites asociados</h4>
         <table class="table">
             <thead>
@@ -33,7 +37,7 @@
                 </tr> 
             </thead>
             <tbody>
-                @foreach(var t in _lista){
+                @foreach(var t in _lista){ // Informacion de cada tramite
                     <tr>
                         <td>@t.Id</td>
                         <td>@t.EtiquetaTramite</td>
@@ -45,12 +49,17 @@
                 }
             </tbody>
         </table>
-        <button @onclick="_Volver" class="btn btn-primary" >Volver</button>
-        <button @onclick="_Modificar" class="btn btn-secondary" >Modificar</button>
+        <button @onclick="_Volver" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
+        <button @onclick="_ModificarExpediente" class="btn btn-primary" >Modificar</button> <!--Modificar el expediente-->
     }
-    else{
+    else{ // En caso de ingresar un nuevo expediente
+
         <h3>Ingrese los datos para el nuevo expediente</h3>
+
+        <!--Ingreso de la caratula-->
         <input placeholder="Carátula del expediente:" @bind="_expediente.Caratula" style="margin-bottom: 10px;">
+
+        <!--Selector del estado del expediente-->
         <div style="margin-bottom: 10px;">
             <select @bind="_expediente.EstadoExpediente">
                 <option value="RecienIniciado">RecienIniciado</option>
@@ -61,62 +70,64 @@
             </select>
         </div>
         <div>
-            <button @onclick="_Alta" class="btn btn-primary" >Aceptar</button>
-            <button @onclick="_Mensaje" class="btn btn-secondary" >Volver</button>
+            <button @onclick="_Alta" class="btn btn-primary" >Aceptar</button> <!--Llama al caso de uso altar-->
+            <button @onclick="_Mensaje" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
         </div>   
     }
 }
 else{
-    <ComponentError Text="@_stMensaje" />
+    <ComponentError Text="@_stMensaje" /> //En caso de error al instanciar el componenete (OnParamaetersSet)
 }
 
-<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Volver" />
+<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Volver" /> <!--Se asegura de que el usuario desee regresar al menu de expedientes-->
+
 
 @code {
 #region Expediente
-    [Parameter] public int? Id {get; set;}
-    private Expediente _expediente = new Expediente();
+    [Parameter] public int? Id {get; set;} //ID del expediente envia como parametro en la URL de la pagina
+    private Expediente _expediente = new Expediente(); //Obj expediente
 
     //lista de tramites asociados
     private List<Tramite> _lista = new List<Tramite>();
-    private bool _nuevoExpediente;
-    private bool _error = false;
-    protected override void OnParametersSet(){
+    
+    //Gestion de bools y errores
+    private bool _nuevoExpediente; //Para saber si se debe ingresar un nuevo expediente o mostrar uno almacenado
+    private bool _error = false; //Saber se ocurrio un error al acceder a la base de datos
+
+    //Metodos
+    protected override void OnParametersSet(){ 
         try{
-            if(Id != null){
+            if(Id != null){ //Se envio un ID "existente"
                 _nuevoExpediente = false;
-                _expediente = consulta.Ejecutar(this.Id.Value, out _lista);
+                _expediente = consulta.Ejecutar(this.Id.Value, out _lista); //caso de uso throw exception en caso de null
             }
             else{
                 _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
-                _nuevoExpediente = true;
+                _nuevoExpediente = true; //El ID fue null
             }
         }
-        catch (Exception e){
+        catch (Exception e){ //catch para los errores en el caso de suo
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
-            _error = true;
+            _error = true; //Muestra en la pagina el error
         }
     }
     private void _Alta(){
         try{
-            //provisio
+            //provisorio fasalta la gestion de usuairos
             _expediente.IdUsuario = 1;
             //
             agregar.Ejecutar(_expediente);
             Id = _expediente.Id;
             _expediente = new Expediente();
-            navigationManager.NavigateTo($"/expediente/{Id}");
+            navigationManager.NavigateTo($"/expediente/{Id}"); //En caso de hacer la alta, se envia a la pagina especifica del expediente
         }
         catch(Exception e){
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
-            _error = true;
+            _error = true; //Muestra en la pagina el error
         }
     }
-    private void _Modificar(){
-        _expediente.Caratula = "CaratulaModificada1";
-        _expediente.EstadoExpediente = EstadoExpediente.Finalizado;
-        modificar.Ejecutar(_expediente);
-        //navigationManager.NavigateTo($"/expediente/{_expediente.Id}");
+    private void _ModificarExpediente(){
+        navigationManager.NavigateTo($"/modificarexpediente/{_expediente.Id}");
     }
 #endregion Expediente
     private void _Volver(){

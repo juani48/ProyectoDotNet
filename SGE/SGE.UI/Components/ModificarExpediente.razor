@@ -1,0 +1,93 @@
+﻿@page "/modificarexpediente/{Id:int?}"
+
+<!--Caso de uso para expedientes-->
+@inject CasoDeUsoExpedienteConsultaPorId consulta // consultar expediente
+@inject CasoDeUsoExpedienteModificacion modificar //Modificar un expediente
+
+<!--Uso de la pagina-->
+@inject NavigationManager navigationManager //Navegar entre paginas
+@rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
+
+@if(!_error){
+    <div>
+        <h3 >Modificar Expediente</h3>
+    </div>
+
+    <!--Ingreso de la caratula-->
+    <input placeholder="Carátula modificada:" @bind="_expediente.Caratula" style="margin-bottom: 10px;">
+
+    <!--Selector del estado del expediente-->
+    <div style="margin-bottom: 10px;">
+        <select @bind="_expediente.EstadoExpediente">
+            <option value="RecienIniciado">RecienIniciado</option>
+            <option value="ParaResolver">ParaResolver</option>
+            <option value="ConResolucion">ConResolucion</option>
+            <option value="EnNotificacion">EnNotificacion</option>
+            <option value="Finalizado">Finalizado</option>
+        </select>
+    </div>
+
+    <div>
+        <button @onclick="()=>_Mensaje(true)" class="btn btn-primary" >Aceptar</button> <!--Llama al caso de uso altar-->
+        <button @onclick="()=>_Mensaje(false)" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
+    </div>
+}
+else{
+    <ComponentError Text="@_stMensaje" />
+}
+<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_VolverMensaje" />
+
+@code {
+    //Expeidente
+    [Parameter] public int? Id {get; set;}
+    private Expediente _expediente = new Expediente();
+
+    //Mensaje
+    private bool _error = false;
+    private string _stMensaje = "";
+    private Mensaje _mensaje = null!;
+    protected override void OnParametersSet(){
+        if(Id != null){
+            try{
+                _expediente = consulta.Ejecutar(Id.Value);
+                _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
+            }
+            catch (Exception e){ //catch para los errores en el caso de suo
+                _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+                _error = true; //Muestra en la pagina el error
+            }
+        }
+        else{
+            _stMensaje = "Ocurrio un error inesperado al cargar la pagina.";
+            _error = true;
+        }
+    }
+    private void _Mensaje(bool modificar){
+        if(!modificar){
+            _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
+            _opcion = true;
+        }
+        else{
+            _stMensaje = "Al aceptar los cambios y una vez modificado el expediente, no se puede recuperar el estado anterior!";
+            _opcion = false;
+        }
+        _mensaje.MostrarMensaje();
+    }
+    private bool _opcion = false;
+    private void _VolverMensaje(){
+        if(_opcion){
+            navigationManager.NavigateTo($"/expediente/{Id}");
+        }
+        else{
+            try{
+                _expediente.IdUsuario = 1; //provisorio
+                modificar.Ejecutar(_expediente);
+                navigationManager.NavigateTo($"/expediente/{Id}");
+            }
+            catch (Exception e){ //catch para los errores en el caso de suo
+                _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+                _error = true; //Muestra en la pagina el error
+            }
+        }
+    }
+}
