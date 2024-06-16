@@ -4,19 +4,19 @@
 @rendermode InteractiveServer
 @layout LoginLayout
 
-<h3>InicioSesion</h3>
+<h3  >InicioSesion</h3>
 
 <div>
     <h4>@_text</h4>
 </div>
 <div>
-    <button @onclick="_Click" class="btn btn-primary" >Iniciar sesion, sin iniciar sesion</button>
+    <button @onclick="_Click" class="form-control" >Iniciar sesion, sin iniciar sesion</button>
 </div>
 
 @code {
     private int _intentos = 5;
 
-    private string _text = "Intentos para iniciar sesion: ";
+    private string _text = "Intentos para iniciar sesion: "; 
 
     protected override void OnInitialized(){
         _text += _intentos;

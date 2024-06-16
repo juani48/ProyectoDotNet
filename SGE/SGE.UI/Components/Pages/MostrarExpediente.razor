@@ -83,17 +83,26 @@ else{
 
 
 @code {
-#region Expediente
+#region Variables Expedente
     [Parameter] public int? Id {get; set;} //ID del expediente envia como parametro en la URL de la pagina
     private Expediente _expediente = new Expediente(); //Obj expediente
 
+#endregion Variables Expedente
+
+#region Variables Tramites
     //lista de tramites asociados
     private List<Tramite> _lista = new List<Tramite>();
+
+#endregion Variables Tramites
     
+#region Variables Errores y Mensajes
     //Gestion de bools y errores
     private bool _nuevoExpediente; //Para saber si se debe ingresar un nuevo expediente o mostrar uno almacenado
     private bool _error = false; //Saber se ocurrio un error al acceder a la base de datos
 
+#endregion Variables Errores y Mensajes
+
+#region Metodos de pagina
     //Metodos
     protected override void OnParametersSet(){ 
         try{
@@ -111,6 +120,14 @@ else{
             _error = true; //Muestra en la pagina el error
         }
     }
+
+    //Regresa a la pagina con la lista de Expeidentes
+    private void _Volver(){
+        navigationManager.NavigateTo("/listarexpedientes");
+    }
+#endregion Metodos de pagina
+
+#region Metodos de Expedientes
     private void _Alta(){
         try{
             //provisorio fasalta la gestion de usuairos
@@ -119,27 +136,35 @@ else{
             agregar.Ejecutar(_expediente);
             Id = _expediente.Id;
             _expediente = new Expediente();
-            navigationManager.NavigateTo($"/expediente/{Id}"); //En caso de hacer la alta, se envia a la pagina especifica del expediente
+            navigationManager.NavigateTo($"/expediente/{Id}"); //En caso de hacer la alta, se envia a la pagina especifica del Expediente
         }
         catch(Exception e){
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
             _error = true; //Muestra en la pagina el error
         }
     }
+
+    //Envia al usuario a la pagina para modificar el Expediente
     private void _ModificarExpediente(){
         navigationManager.NavigateTo($"/modificarexpediente/{_expediente.Id}");
     }
-#endregion Expediente
-    private void _Volver(){
-        navigationManager.NavigateTo("/listarexpedientes");
-    }
 
-#region Mensajes
+
+    
+#endregion Metodos de Expedente
+
+#region Gestion de Mensajes
+
+    //Varaible para llamar al objeto Mensaje
     private Mensaje _mensaje = null!;
+
+    //String para los objetos Mensaje y para los Errores
     private string _stMensaje = "";
+
+    //Metodos que muestar el mensaje emergente
     private void _Mensaje(){
         _mensaje.MostrarMensaje();
     }
-#endregion Mensajes
+#endregion Gestion de Mensajes
 
 }

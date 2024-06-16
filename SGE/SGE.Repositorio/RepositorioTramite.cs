@@ -66,7 +66,7 @@ public class RepositorioTramite : ITramiteRepositorio
     public List<Tramite> ListarTramitesPorExpedienteID(int idExpediente) //Lista de todos los tramites asociados a un expediente
     {
         using var db = new Context();
-        return db.Tramites.Where(t => t.ExpedienteId == idExpediente).ToList();
+        return db.Tramites.Where(t => t.ExpedienteId == idExpediente).OrderBy(tramite => tramite.FechaModificacion).ToList();
     }
     public void EliminarTramitesPorIdExpediente(int idExpediente)
     {

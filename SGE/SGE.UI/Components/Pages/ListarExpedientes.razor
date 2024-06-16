@@ -18,7 +18,7 @@
                 <th>Estado</th>
                 <th>Fecha creacion</th>
                 <th>Fecha modificacion</th>
-                <th>Id de usuario</th>
+                <th>ID de usuario</th>
                 <th>Accion</th>
             </tr>
         </thead>
@@ -41,14 +41,21 @@
     </table>
 </div>
 
-
+<!--Agragar un Expediente-->
 <button @onclick="()=>_VerExpediente(null)" class="btn btn-primary" >Agregar Expediente</button>
 
 @code {
+
+#region 
+    //Listar los Expedientes
     private List<Expediente> _lista = new List<Expediente>();
+
+    //Al inicializar el componenet muestra la lista
     protected override void OnInitialized(){
         _lista = listarExpeidentes.Ejecutar();
     }
+
+    //Envia al usuarioa a la pagina del expeidente solicitado
     private void _VerExpediente(int? id){
         navigationManager.NavigateTo($"expediente/{id}");
     }
