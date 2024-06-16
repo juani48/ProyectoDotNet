@@ -14,7 +14,7 @@ public class CasoDeUsoTramiteModificacion(ITramiteRepositorio repo,IExpedienteRe
                 Expediente? expediente = repoExpediente.ObtenerExpediente(tramite.ExpedienteId);
                 if(expediente != null)
                 {
-                    expediente.IdUsuario=tramite.IdUsuario;
+                    expediente.IdUsuario = tramite.IdUsuario;
                     servicio.ActualizarEstadoExpediente(expediente);
                 }
                 else

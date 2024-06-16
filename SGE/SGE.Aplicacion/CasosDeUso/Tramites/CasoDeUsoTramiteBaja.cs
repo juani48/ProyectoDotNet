@@ -7,7 +7,7 @@ public class CasoDeUsoTramiteBaja(ITramiteRepositorio repotramite,IExpedienteRep
         if (autorizacion.PoseeElPermiso(tramite.IdUsuario,Permiso.TramiteBaja))
         {
                 tramite.ExpedienteId = repotramite.ObtenerIdExpediente(tramite.Id); //busco su expedienteID
-                if(tramite.ExpedienteId != -1 )
+                if(tramite.ExpedienteId != 0 )
                 {
                         repotramite.EliminarTramite(tramite.Id);
                         Expediente? expediente= repoExpediente.ObtenerExpediente(tramite.ExpedienteId); //le paso iExpediente
@@ -18,12 +18,12 @@ public class CasoDeUsoTramiteBaja(ITramiteRepositorio repotramite,IExpedienteRep
                         }
                         else
                         {
-                            throw new RepositorioException("no existe un expediente asociado.");
+                            throw new RepositorioException("No existe un expediente asociado.");
                         }
                     }
                     else
                     {
-                        throw new RepositorioException("no existe el tramite a eliminar.");
+                        throw new RepositorioException("No existe el tramite a eliminar.");
                     
                     }
         }

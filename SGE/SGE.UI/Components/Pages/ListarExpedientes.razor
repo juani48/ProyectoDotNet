@@ -1,37 +1,46 @@
 ﻿@page "/listarexpedientes"
+
+<!--Caso de uso Expedientes-->
 @inject CasoDeUsoExpedienteConsultaTodos listarExpeidentes
+
+<!--Uso de la pagina-->
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
 <h3>Lista de Expedientes</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Caratula</th>
-            <th>Estado</th>
-            <th>Fecha creacion</th>
-            <th>Fecha modificacion</th>
-            <th>Id de usuario</th>
-            <th>Accion</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var expediente in _lista){
+
+<div><!--Tabla con los expedientes-->
+    <table class="table">
+        <thead>
             <tr>
-                <td>@expediente.Id</td>
-                <td>@expediente.Caratula</td>
-                <td>@expediente.EstadoExpediente</td>
-                <td>@expediente.FechaCreacion</td>
-                <td>@expediente.FechaModiificacion</td>
-                <td>@expediente.IdUsuario</td>
-                <td>
-                    <button @onclick="()=>_VerExpediente(expediente.Id)" class="btn btn-primary" >Examinar</button>
-                </td>
+                <th>ID</th>
+                <th>Caratula</th>
+                <th>Estado</th>
+                <th>Fecha creacion</th>
+                <th>Fecha modificacion</th>
+                <th>Id de usuario</th>
+                <th>Accion</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach(var expediente in _lista){
+                <tr>
+                    <td>@expediente.Id</td>
+                    <td>@expediente.Caratula</td>
+                    <td>@expediente.EstadoExpediente</td>
+                    <td>@expediente.FechaCreacion</td>
+                    <td>@expediente.FechaModiificacion</td>
+                    <td>@expediente.IdUsuario</td>
+                    <td>
+                        <!--Examinar un expedientes especifico-->
+                        <button @onclick="()=>_VerExpediente(expediente.Id)" class="btn btn-primary" >Examinar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
 
 <button @onclick="()=>_VerExpediente(null)" class="btn btn-primary" >Agregar Expediente</button>
 

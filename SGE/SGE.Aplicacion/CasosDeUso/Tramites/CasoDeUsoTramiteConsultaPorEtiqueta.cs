@@ -10,7 +10,7 @@ public class CasoDeUsoTramiteConsultaPorEtiqueta(ITramiteRepositorio repo)
             }
             else
             {
-                throw new RepositorioException("no se encuentra el tramite.");
+                throw new RepositorioException("No se encuentra el tramite.");
             }
     }
 

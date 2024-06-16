@@ -1,7 +1,7 @@
 ﻿@page "/expediente/{Id:int?}"
 @using SGE.UI.Components
 
-<!--Caso de uso para expedientes-->
+<!--Caso de uso para Expedientes-->
 @inject CasoDeUsoExpedienteConsultaPorId consulta // consultar expediente
 @inject CasoDeUsoExpedienteAlta agregar //Alta en la base de datos SQLite
 
@@ -40,7 +40,7 @@
                 @foreach(var t in _lista){ // Informacion de cada tramite
                     <tr>
                         <td>@t.Id</td>
-                        <td>@t.EtiquetaTramite</td>
+                        <td>@t.Etiqueta</td>
                         <td>@t.Contenido</td>
                         <td>@t.FechaCreacion</td>
                         <td>@t.FechaModificacion</td>

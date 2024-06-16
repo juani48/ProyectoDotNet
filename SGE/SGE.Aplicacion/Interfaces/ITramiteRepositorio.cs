@@ -7,7 +7,7 @@ public interface ITramiteRepositorio
     bool EliminarTramite(int id);
     Tramite? ObtenerTramite(int id);
     void ModificarTramite(Tramite tramite);
-    List<Tramite> ListarTramitesPorEtiqueta(string etiqueta);
+    List<Tramite> ListarTramitesPorEtiqueta(EtiquetaTramite etiqueta);
 
     //interaccion con expedientes
     EtiquetaTramite? ObtenerEtiqueta(int id);
