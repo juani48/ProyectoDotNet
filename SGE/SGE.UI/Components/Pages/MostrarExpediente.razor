@@ -11,11 +11,12 @@
 @rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
 
 @if(!_error){ //En caso de error al consultar la base de datos (OnParamaetersSet)
+
     @if(!_nuevoExpediente){ //En caso de que no se ingrese un nuevo expediente y se deba mostrar uno almacenado
 
         <!--MOSTRAR INFORMACION DE UN EXPEDIENTE-->
         <h3>@_expediente.Caratula</h3>
-        <div>
+        <div style="font-size: large;">
             <ul>
                 <li>El expediente se encuentra @_expediente.EstadoExpediente</li>
                 <li>La fecha de inicio del expediente fue: @_expediente.FechaCreacion</li>
@@ -34,6 +35,7 @@
                     <th>Fecha creacion</th>
                     <th>Fecha modificacion</th>
                     <th>ID de usuario</th>
+                    <th>Acciones</th>
                 </tr> 
             </thead>
             <tbody>
@@ -45,19 +47,28 @@
                         <td>@t.FechaCreacion</td>
                         <td>@t.FechaModificacion</td>
                         <td>@t.IdUsuario</td>
+
+                        <td>
+                            <button @onclick="()=>_ModificarTramite(t.Id)" class="btn btn-primary" >Modificar</button>
+                            <button  class="btn btn-danger" >Eliminar</button>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <button @onclick="_Volver" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
-        <button @onclick="_ModificarExpediente" class="btn btn-primary" >Modificar</button> <!--Modificar el expediente-->
+        <div>
+            <button @onclick="_ModificarExpediente" class="btn btn-primary" >Modificar Expediente</button> <!--Modificar el expediente-->
+            <button class="btn btn-danger" >Eliminar Expediente</button>
+            <button @onclick="_Volver" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
+        </div>
+        
     }
     else{ // En caso de ingresar un nuevo expediente
 
-        <h3>Ingrese los datos para el nuevo expediente</h3>
+        <h3>Ingrese los datos para el nuevo Expediente</h3>
 
         <!--Ingreso de la caratula-->
-        <input placeholder="Carátula del expediente:" @bind="_expediente.Caratula" style="margin-bottom: 10px;">
+        <input placeholder="Carátula del expediente" @bind="_expediente.Caratula" style="margin-bottom: 10px;">
 
         <!--Selector del estado del expediente-->
         <div style="margin-bottom: 10px;">
@@ -86,7 +97,7 @@ else{
 #region Variables Expedente
     [Parameter] public int? Id {get; set;} //ID del expediente envia como parametro en la URL de la pagina
     private Expediente _expediente = new Expediente(); //Obj expediente
-
+    private bool _nuevoExpediente; //Para saber si se debe ingresar un nuevo expediente o mostrar uno almacenado
 #endregion Variables Expedente
 
 #region Variables Tramites
@@ -95,15 +106,19 @@ else{
 
 #endregion Variables Tramites
     
-#region Variables Errores y Mensajes
+#region Variables de Errores y Mensajes
     //Gestion de bools y errores
-    private bool _nuevoExpediente; //Para saber si se debe ingresar un nuevo expediente o mostrar uno almacenado
     private bool _error = false; //Saber se ocurrio un error al acceder a la base de datos
 
-#endregion Variables Errores y Mensajes
+    //Varaible para llamar al objeto Mensaje
+    private Mensaje _mensaje = null!;
+
+    //String para los objetos Mensaje y para los Errores
+    private string _stMensaje = "";
+
+#endregion Variables de Errores y Mensajes
 
 #region Metodos de pagina
-    //Metodos
     protected override void OnParametersSet(){ 
         try{
             if(Id != null){ //Se envio un ID "existente"
@@ -153,16 +168,18 @@ else{
 
 #region Gestion de Mensajes
 
-    //Varaible para llamar al objeto Mensaje
-    private Mensaje _mensaje = null!;
-
-    //String para los objetos Mensaje y para los Errores
-    private string _stMensaje = "";
-
     //Metodos que muestar el mensaje emergente
     private void _Mensaje(){
         _mensaje.MostrarMensaje();
     }
 #endregion Gestion de Mensajes
+
+#region Metodos de Tramites
+
+    private void _ModificarTramite(int id){
+        navigationManager.NavigateTo($"/tramite/{id}");
+    }
+
+#endregion Metodos de Tramites
 
 }

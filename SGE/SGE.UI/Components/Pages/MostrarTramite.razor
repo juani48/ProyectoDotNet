@@ -1,0 +1,136 @@
+﻿@page "/tramite/{Id:int?}"
+
+<!--Caso de uso para Tramites-->
+@inject CasoDeUsoTramiteConsultarPorId consultar
+@inject CasoDeUsoTramiteModificacion modificar
+@inject CasoDeUsoTramiteAlta alta
+
+<!--Uso de la pagina-->
+@inject NavigationManager navigationManager //Navegar entre paginas
+@rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
+
+@if(!_error){
+    if(!_nuevoTramite){ //En caso de modificar un tramite
+        <h3>Modificar Tramite</h3>
+    }
+    else{ //En caso de que sea un nuevo tramite
+        <h3>Ingrese los datos para el nuevo Tramite</h3>    
+    }
+
+    <div>
+        <!--Ingreso de la contenido-->
+        <input placeholder="Contenido del tramite" @bind="_tramite.Contenido" style="margin-bottom: 10px;">
+    </div>
+
+    <div>
+        <!--Ingreso del ID expediente-->
+        <input placeholder="ID de expediente asociado" @bind="_tramite.ExpedienteId" style="margin-bottom: 10px;" />
+    </div>
+
+    <!--Selector del etiqueta del tramite-->
+    <div style="margin-bottom: 10px;">
+        <select @bind="_tramite.Etiqueta">
+            <option value="EscritoPresentado">EscritoPresentado</option>
+            <option value="PaseAEstudio">PaseAEstudio</option>
+            <option value="Despacho">Despacho</option>
+            <option value="Resolucion">Resolucion</option>
+            <option value="Notificacion">Notificacion</option>
+            <option value="PaseAlArchivo">PaseAlArchivo</option>
+        </select>
+    </div>
+
+    <div>
+        <button @onclick="_Mensaje" class="btn btn-primary" >Aceptar</button> <!--Llama al caso de uso altar-->
+        <button @onclick="_MensajeConfirmar" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
+    </div> 
+}
+else{
+    <ComponentError Text="@_stMensaje" /> //En caso de error al instanciar el componenete (OnParamaetersSet)
+}
+
+<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_VolverMensaje" />
+
+<Mensaje @ref="_mensajeVolver" Text="¿Está seguro que desea salir? Los datos que haya ingresado se perderán." eventCallback="_Volver" />
+
+
+
+@code {
+
+#region Varibles Tramites
+    [Parameter] public int? Id {get; set;}
+    private Tramite _tramite = new Tramite();
+    private bool _nuevoTramite = false;
+
+#endregion Varibles Tramites
+
+#region Variables de Errores y Mensajes
+    private bool _error = false; //Saber se ocurrio un error al acceder a la base de datos
+    private string _stMensaje = ""; //Texto del mensaje o del error
+    private Mensaje _mensaje = null!; 
+
+    private Mensaje _mensajeVolver = null!;
+
+#endregion Variables de Errores y Mensajes
+
+#region Metodos de pagina
+    protected override void OnParametersSet(){
+        try{
+            if(Id != null){ //No es un tramite nuevo
+                _tramite = consultar.Ejecutar(Id.Value);
+                _nuevoTramite = false;
+            }
+            else{ //Es un tramite nuevo
+                _nuevoTramite = true;
+            }    
+        }
+        catch (Exception e){ //catch para los errores en el caso de suo
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
+        }
+    }
+    private void _Volver(){
+        navigationManager.NavigateTo($"/expediente/{_tramite.ExpedienteId}");
+    }
+
+#endregion Metodos de pagina
+
+#region Metodos de Mensajes
+
+    //Metodo para mostrara el mensaje emergente
+    private void _Mensaje(){ 
+        if(!_nuevoTramite){ //En caso de que se modifique un trmaite
+            _stMensaje = "Al aceptar los cambios y una vez modificado el tramite, no se puede recuperar el estado anterior!";
+        }
+        else{ //En caso de que sea un nuevo tramite
+            _stMensaje = "Seguro que quiere asociar este tramite al expeidente: " + _tramite.ExpedienteId;
+        }
+        _mensaje.MostrarMensaje();
+    }
+
+    //Metodo lanzado por el mensaje
+    private void _VolverMensaje(){
+        try{
+            if(_nuevoTramite){
+                _tramite.IdUsuario = 1; //provisorio
+                alta.Ejecutar(_tramite);
+            }
+            else{
+                _tramite.IdUsuario = 1; //provisorio
+                modificar.Ejecutar(_tramite);
+            }
+            navigationManager.NavigateTo($"/expediente/{_tramite.ExpedienteId}");
+        }
+        catch(Exception e){//catch para los errores en el caso de uso
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
+        }
+    }
+
+    //Confirma si el usuario quiere regresar al menu de expedientes
+    private void _MensajeConfirmar(){
+        _mensajeVolver.MostrarMensaje();
+    }
+
+#endregion Metodos de Mensajes
+
+}

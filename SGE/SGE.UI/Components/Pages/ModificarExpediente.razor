@@ -9,9 +9,7 @@
 @rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
 
 @if(!_error){
-    <div>
-        <h3 >Modificar Expediente</h3>
-    </div>
+    <h3>Modificar Expediente</h3>
 
     <!--Ingreso de la caratula-->
     <input placeholder="Carátula modificada:" @bind="_expediente.Caratula" style="margin-bottom: 10px;">
@@ -38,14 +36,21 @@ else{
 <Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_VolverMensaje" />
 
 @code {
+
+#region Variables Expediente
     //Expeidente
     [Parameter] public int? Id {get; set;}
     private Expediente _expediente = new Expediente();
 
+#endregion Varaibles Expedente
+
+#region Variables de Errores y Mensajes
     //Mensaje
     private bool _error = false;
     private string _stMensaje = "";
     private Mensaje _mensaje = null!;
+
+#endregion Variables de Errores y Mensajes
     protected override void OnParametersSet(){
         if(Id != null){
             try{
@@ -62,6 +67,8 @@ else{
             _error = true;
         }
     }
+
+#region Metodos de Mensajes
     private void _Mensaje(bool modificar){
         if(!modificar){
             _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
@@ -90,4 +97,6 @@ else{
             }
         }
     }
+
+#endregion Metodos de Mensajes
 }

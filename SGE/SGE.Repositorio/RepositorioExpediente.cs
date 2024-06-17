@@ -20,11 +20,6 @@ public class RepositorioExpediente : IExpedienteRepositorio
         }
     }
 
-    public bool ActualizarEstadoExpediente(Expediente expediente)
-    {
-        throw new NotImplementedException();
-    }
-
     public void AgregarExpediente(Expediente expediente)
     {
         using var db = new Context();

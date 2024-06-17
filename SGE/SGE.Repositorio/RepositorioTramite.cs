@@ -12,6 +12,7 @@ public class RepositorioTramite : ITramiteRepositorio
             db.SetJournalModeToDelete();
         } 
     }
+
 #region Tramite
     public void AgregarTramite(Tramite tramite) //Alta de tramites
     {
@@ -19,6 +20,7 @@ public class RepositorioTramite : ITramiteRepositorio
         db.Tramites.Add(tramite);
         db.SaveChanges();
     }
+
     public bool EliminarTramite(int id)
     {
         using var db = new Context();
@@ -32,11 +34,13 @@ public class RepositorioTramite : ITramiteRepositorio
             return false;
         }
     }
+
     public Tramite? ObtenerTramite(int id) //Retorna null si el tramite no existe
     {
         using var db = new Context();
         return db.Tramites.Where(t => t.Id == id).SingleOrDefault();
     }
+
     public void ModificarTramite(Tramite tramite)
     {
         using var db = new Context();
@@ -50,11 +54,13 @@ public class RepositorioTramite : ITramiteRepositorio
             db.SaveChanges();
         }
     }
+
     public List<Tramite> ListarTramitesPorEtiqueta(EtiquetaTramite etiqueta) //Retorna lista de tramites egun un etiqueta
     {
         using var db = new Context();
         return db.Tramites.Where(tramite => tramite.Etiqueta == etiqueta).ToList();
     }
+    
 #endregion Tramite
 
 #region InteraccionExpediente
@@ -63,11 +69,13 @@ public class RepositorioTramite : ITramiteRepositorio
         using var db = new Context();
         return db.Tramites.Where(tramite => tramite.ExpedienteId == idExpediente).FirstOrDefault()?.Etiqueta;
     }
+
     public List<Tramite> ListarTramitesPorExpedienteID(int idExpediente) //Lista de todos los tramites asociados a un expediente
     {
         using var db = new Context();
         return db.Tramites.Where(t => t.ExpedienteId == idExpediente).OrderBy(tramite => tramite.FechaModificacion).ToList();
     }
+
     public void EliminarTramitesPorIdExpediente(int idExpediente)
     {
         using var db = new Context();
@@ -77,6 +85,7 @@ public class RepositorioTramite : ITramiteRepositorio
         }
         db.SaveChanges();
     }
+
     public EtiquetaTramite ObtenerEtiquetaUltimoTramite(int idExpediente)
     {
         using var db = new Context();

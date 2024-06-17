@@ -1,21 +1,22 @@
 ﻿namespace SGE.Aplicacion;
 
-public class CasoDeUsoTramiteModificacion(ITramiteRepositorio repo,IExpedienteRepositorio repoExpediente,IServicioActualizacionEstado servicio,IServicioAutorizacion autorizacion)
+public class CasoDeUsoTramiteModificacion(ITramiteRepositorio tramiteRepositorio, IExpedienteRepositorio expedienteRepositorio, 
+                                            IServicioActualizacionEstado actualizacionEstado, IServicioAutorizacion autorizacion)
 {
     public void Ejecutar(Tramite tramite)
     { 
         if(autorizacion.PoseeElPermiso(tramite.IdUsuario,Permiso.tramiteModificacion))
         {
             TramiteValidador.ValidarTramite(tramite);
-            tramite.ExpedienteId = repo.ObtenerIdExpediente(tramite.Id); //busco su expedienteID
+            tramite.ExpedienteId = tramiteRepositorio.ObtenerIdExpediente(tramite.Id); //busco su expedienteID
             if(tramite.ExpedienteId != -1)
             {
-                repo.ModificarTramite(tramite);
-                Expediente? expediente = repoExpediente.ObtenerExpediente(tramite.ExpedienteId);
+                tramiteRepositorio.ModificarTramite(tramite);
+                Expediente? expediente = expedienteRepositorio.ObtenerExpediente(tramite.ExpedienteId);
                 if(expediente != null)
                 {
                     expediente.IdUsuario = tramite.IdUsuario;
-                    servicio.ActualizarEstadoExpediente(expediente);
+                    actualizacionEstado.ActualizarEstadoExpediente(expediente);
                 }
                 else
                 {

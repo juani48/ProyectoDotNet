@@ -8,7 +8,7 @@ public class ServicioActualizacionEstado (IExpedienteRepositorio _repositorioExp
         EstadoExpediente estadoActual = expediente.EstadoExpediente;
         EstadoExpediente nuevoEstado = new EspecificacionCambioEstado().DeterminarNuevoEstado(etiquetaUltimoTramite,estadoActual); //va a buscar el nuevo estado que corresponde
         expediente.EstadoExpediente=nuevoEstado;
-        if(!_repositorioExpediente.ActualizarEstadoExpediente(expediente)){
+        if(!_repositorioExpediente.ModificarExpediente(expediente)){
             throw new RepositorioException("No existe el expediente para actualizar estado.");
         }
     }
