@@ -4,6 +4,7 @@
 <!--Caso de uso para Expedientes-->
 @inject CasoDeUsoExpedienteConsultaPorId consulta // consultar expediente
 @inject CasoDeUsoExpedienteAlta agregar //Alta en la base de datos SQLite
+@inject CasoDeUsoExpedienteBaja eliminar
 
 
 <!--Uso de la pagina-->
@@ -59,12 +60,12 @@
             </table>
         }
         else{
-            <h4>No existen Tramites asociados</h4>
+            <h4 style="margin-bottom: 10px;" >No existen Tramites asociados</h4>
         }
         <div>
             <button @onclick="_ModificarExpediente" class="btn btn-primary" >Modificar Expediente</button> <!--Modificar el expediente-->
             <button @onclick="_NuevoTramite" class="btn btn-primary" >Agregar Tramite</button>
-            <button class="btn btn-danger" >Eliminar Expediente</button>
+            <button @onclick="_Baja" class="btn btn-danger" >Eliminar Expediente</button>
             <button @onclick="_Volver" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
         </div>
         
@@ -103,6 +104,7 @@ else{
 }
 
 <Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Volver" /> <!--Se asegura de que el usuario desee regresar al menu de expedientes-->
+
 
 
 @code {
@@ -165,6 +167,21 @@ else{
         }
     }
 
+    private void _Baja(){
+        try{
+             //provisorio fasalta la gestion de usuairos
+            _expediente.IdUsuario = 1;
+            //Mostar ConfirmarUsuario
+            eliminar.Ejecutar(_expediente);
+
+            navigationManager.NavigateTo("/listarexpedientes");
+        }
+        catch(Exception e){
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
+        }
+    }
+
     //Envia al usuario a la pagina para modificar el Expediente
     private void _ModificarExpediente(){
         navigationManager.NavigateTo($"/modificarexpediente/{_expediente.Id}");
@@ -183,11 +200,11 @@ else{
 #region Metodos de Tramites
 
     private void _ModificarTramite(int id){
-        navigationManager.NavigateTo($"/tramite/{id}");
+        navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{id}");
     }
 
     private void _NuevoTramite(){
-        navigationManager.NavigateTo($"/tramite/{null}");
+        navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{null}");
     }
 
 #endregion Metodos de Tramites

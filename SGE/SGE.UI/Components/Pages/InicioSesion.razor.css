@@ -10,3 +10,7 @@
     align-items: center; 
     justify-content: center;
 }
+.contenido{
+    padding: 20px;
+    background-color: white;
+}

@@ -1,4 +1,4 @@
-﻿@page "/tramite/{Id:int?}"
+﻿@page "/tramite/{IdExpediente:int?}/{Id:int?}"
 
 <!--Caso de uso para Tramites-->
 @inject CasoDeUsoTramiteConsultarPorId consultar
@@ -28,7 +28,7 @@
     <div>
         <!--Ingreso del ID expediente-->
         <p style="font-size: large;" >ID del Expediente asociado</p>
-        <input placeholder="ID de expediente asociado" @bind="_tramite.ExpedienteId" style="margin-bottom: 10px;" />
+        <input placeholder="ID de expediente asociado" @bind="IdExpediente" style="margin-bottom: 10px;" />
     </div>
 
     
@@ -63,6 +63,7 @@ else{
 
 #region Varibles Tramites
     [Parameter] public int? Id {get; set;}
+    [Parameter] public int? IdExpediente {get; set;}
     private Tramite _tramite = new Tramite();
     private bool _nuevoTramite = false;
 
@@ -79,11 +80,17 @@ else{
 #region Metodos de pagina
     protected override void OnParametersSet(){
         try{
-            if(Id != null){ //No es un tramite nuevo
+            if((Id != null)&&(IdExpediente != null)){ //No es un tramite nuevo
                 _tramite = consultar.Ejecutar(Id.Value);
                 _nuevoTramite = false;
             }
             else{ //Es un tramite nuevo
+                if(IdExpediente == null){
+                    IdExpediente = 0;
+                }
+                else{
+                    _tramite.ExpedienteId = IdExpediente.Value;
+                }
                 _nuevoTramite = true;
             }    
         }
@@ -106,7 +113,7 @@ else{
             _stMensaje = "Al aceptar los cambios y una vez modificado el tramite, no se puede recuperar el estado anterior!";
         }
         else{ //En caso de que sea un nuevo tramite
-            _stMensaje = "Seguro que quiere asociar este tramite al expeidente: " + _tramite.ExpedienteId;
+            _stMensaje = "Seguro que quiere asociar este tramite al expeidente: " + _tramite.ExpedienteId; //Mensaje ConfirmarUsuario
         }
         _mensaje.MostrarMensaje();
     }

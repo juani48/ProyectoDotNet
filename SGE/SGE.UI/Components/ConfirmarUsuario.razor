@@ -1,0 +1,29 @@
+﻿
+@if(_visible){
+    <div>
+        <div>
+            <h3>Para confimrmar usuario, por favor ingrese sus datos</h3>
+            
+
+        </div>
+    </div>
+}
+
+
+@code {
+
+    [Parameter] public EventCallback eventeCallback {get; set;}
+
+    //private string _nombreUsuario = "";
+    //private string _contraseña = "";
+    private bool _visible = false;
+
+    public void MostrarConfirmar(){
+        _visible = true;
+    }
+
+    private void _Cerrar(){
+        _visible = false;
+        //eventeCallback.InokeAsync();
+    }
+}
