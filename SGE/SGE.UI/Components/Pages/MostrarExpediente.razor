@@ -58,6 +58,7 @@
         </table>
         <div>
             <button @onclick="_ModificarExpediente" class="btn btn-primary" >Modificar Expediente</button> <!--Modificar el expediente-->
+            <button @onclick="_NuevoTramite" class="btn btn-primary" >Agregar Tramite</button>
             <button class="btn btn-danger" >Eliminar Expediente</button>
             <button @onclick="_Volver" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
         </div>
@@ -65,18 +66,24 @@
     }
     else{ // En caso de ingresar un nuevo expediente
 
-        <h3>Ingrese los datos para el nuevo Expediente</h3>
-
-        <!--Ingreso de la caratula-->
-        <input placeholder="Carátula del expediente" @bind="_expediente.Caratula" style="margin-bottom: 10px;">
-
-        <!--Selector del estado del expediente-->
+        <div>
+            <h3>Ingrese los datos para el nuevo Expediente</h3>
+        </div>
+        
+        <div>
+           <!--Ingreso de la caratula-->
+            <p style="font-size: large;" >Caratula del Expediente</p>
+            <input placeholder="Carátula del expediente" @bind="_expediente.Caratula" style="margin-bottom: 10px;"> 
+        </div>
+        
         <div style="margin-bottom: 10px;">
+            <!--Selector del estado del expediente-->
+            <p style="font-size: large;" >Estado del Expediente</p>
             <select @bind="_expediente.EstadoExpediente">
-                <option value="RecienIniciado">RecienIniciado</option>
-                <option value="ParaResolver">ParaResolver</option>
-                <option value="ConResolucion">ConResolucion</option>
-                <option value="EnNotificacion">EnNotificacion</option>
+                <option value="RecienIniciado">Recien Iniciado</option>
+                <option value="ParaResolver">Para Resolver</option>
+                <option value="ConResolucion">Con Resolucion</option>
+                <option value="EnNotificacion">En Notificacion</option>
                 <option value="Finalizado">Finalizado</option>
             </select>
         </div>
@@ -178,6 +185,10 @@ else{
 
     private void _ModificarTramite(int id){
         navigationManager.NavigateTo($"/tramite/{id}");
+    }
+
+    private void _NuevoTramite(){
+        navigationManager.NavigateTo($"/tramite/{null}");
     }
 
 #endregion Metodos de Tramites

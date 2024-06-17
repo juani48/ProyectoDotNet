@@ -93,12 +93,12 @@ public class RepositorioTramite : ITramiteRepositorio
         DateTime fecha = DateTime.MinValue;
         EtiquetaTramite etiquetaTramite = EtiquetaTramite.EscritoPresentado;
         foreach(Tramite tramite in query){ //Busco la ultima etiqueta en modificarce
-            if(tramite.FechaModificacion < fecha){
+            if(tramite.FechaModificacion > fecha){
                 fecha = tramite.FechaModificacion;
                 etiquetaTramite = tramite.Etiqueta;
             }
         }
-        return etiquetaTramite; // Y retorno el primer valor en caso de que el expediente no tenga trmaites asociados
+        return etiquetaTramite; // Y retorno el primer valor en caso de que el expediente no tenga tramites asociados
     }
     public int ObtenerIdExpediente(int idTramite){ //Devuelve el id de un expediente segun el id de un tramite o 0 en caso de que no exista (no deberia pasar)
         using var db = new Context();

@@ -2,7 +2,7 @@
 
 public class EspecificacionCambioEstado
 {
-    public EstadoExpediente DeterminarNuevoEstado(EtiquetaTramite etiquetaUltimoTramite,EstadoExpediente estadoActual)
+    public EstadoExpediente DeterminarNuevoEstado(EtiquetaTramite etiquetaUltimoTramite, EstadoExpediente estadoActual)
     {
         // Lógica para determinar el nuevo estado basado en la etiqueta del último trámite
         switch (etiquetaUltimoTramite)
