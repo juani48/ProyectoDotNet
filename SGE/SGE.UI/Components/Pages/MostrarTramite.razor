@@ -54,10 +54,9 @@ else{
     <ComponentError Text="@_stMensaje" /> //En caso de error al instanciar el componenete (OnParamaetersSet)
 }
 
-<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_VolverMensaje" />
+<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_VolverMensaje" /> <!--Confirnmar alta o midificacion-->
 
-<Mensaje @ref="_mensajeVolver" Text="¿Está seguro que desea salir? Los datos que haya ingresado se perderán." eventCallback="_Volver" />
-
+<Mensaje @ref="_mensajeVolver" Text="¿Está seguro que desea salir? Los datos que haya ingresado se perderán." eventCallback="_Volver" /> <!--Confirnmar volver-->
 
 
 @code {
@@ -73,7 +72,6 @@ else{
     private bool _error = false; //Saber se ocurrio un error al acceder a la base de datos
     private string _stMensaje = ""; //Texto del mensaje o del error
     private Mensaje _mensaje = null!; 
-
     private Mensaje _mensajeVolver = null!;
 
 #endregion Variables de Errores y Mensajes

@@ -4,14 +4,19 @@
 @rendermode InteractiveServer
 @layout LoginLayout
 
-<h3  >InicioSesion</h3>
+<div class="contenedor">
+    <div >
+        <h3>Inicio Sesion</h3>
+        <div>
+            <h4>@_text</h4>
+        </div>
+        <div>
+            <button @onclick="_Click" class="form-control" >Iniciar sesion, sin iniciar sesion</button>
+        </div>
+    </div>
+</div>
 
-<div>
-    <h4>@_text</h4>
-</div>
-<div>
-    <button @onclick="_Click" class="form-control" >Iniciar sesion, sin iniciar sesion</button>
-</div>
+
 
 @code {
     private int _intentos = 5;

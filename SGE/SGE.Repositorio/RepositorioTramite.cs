@@ -63,7 +63,7 @@ public class RepositorioTramite : ITramiteRepositorio
     
 #endregion Tramite
 
-#region InteraccionExpediente
+#region Interaccion Expediente
     public EtiquetaTramite? ObtenerEtiqueta(int idExpediente) //Devuelve null si no existe el trmaite asocicado al expedientes - sino la etiqueta
     {
         using var db = new Context();
@@ -73,7 +73,7 @@ public class RepositorioTramite : ITramiteRepositorio
     public List<Tramite> ListarTramitesPorExpedienteID(int idExpediente) //Lista de todos los tramites asociados a un expediente
     {
         using var db = new Context();
-        return db.Tramites.Where(t => t.ExpedienteId == idExpediente).OrderBy(tramite => tramite.FechaModificacion).ToList();
+        return db.Tramites.Where(t => t.ExpedienteId == idExpediente).OrderBy(tramite => tramite.FechaModificacion).Reverse().ToList();
     }
 
     public void EliminarTramitesPorIdExpediente(int idExpediente)
@@ -90,8 +90,10 @@ public class RepositorioTramite : ITramiteRepositorio
     {
         using var db = new Context();
         var query = db.Tramites.Where(tramite => tramite.ExpedienteId == idExpediente); // IEnumerator de todos tramites asociados a un expediente
+
         DateTime fecha = DateTime.MinValue;
-        EtiquetaTramite etiquetaTramite = EtiquetaTramite.EscritoPresentado;
+        EtiquetaTramite etiquetaTramite = EtiquetaTramite.Resolucion;
+
         foreach(Tramite tramite in query){ //Busco la ultima etiqueta en modificarce
             if(tramite.FechaModificacion > fecha){
                 fecha = tramite.FechaModificacion;
@@ -104,5 +106,5 @@ public class RepositorioTramite : ITramiteRepositorio
         using var db = new Context();
         return db.Tramites.Where(tramite => tramite.Id == idTramite).SingleOrDefault()?.ExpedienteId ?? 0;
     }
-#endregion InteraccionExpediente
+#endregion Interaccion Expediente
 }

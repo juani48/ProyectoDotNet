@@ -10,4 +10,5 @@ public class Expediente
     public DateTime FechaModiificacion { get; set; }= DateTime.Now; //fecha de la ultima modificiacion
     public int IdUsuario { get; set; } //identificador del ultimo usuario que modifico el expediente
     public EstadoExpediente EstadoExpediente { get; set; }=EstadoExpediente.RecienIniciado;
+    public List<Tramite>? Tramites = new List<Tramite>();
 }

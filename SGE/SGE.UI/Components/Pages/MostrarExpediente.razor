@@ -25,37 +25,42 @@
         </div>
         
         <!--TABLA CON LOS TRAMITES ASOCIADOS-->
-        <h4>Tramites asociados</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Etiqueta del tramite</th>
-                    <th>Contenido</th>
-                    <th>Fecha creacion</th>
-                    <th>Fecha modificacion</th>
-                    <th>ID de usuario</th>
-                    <th>Acciones</th>
-                </tr> 
-            </thead>
-            <tbody>
-                @foreach(var t in _lista){ // Informacion de cada tramite
+        if((_expediente.Tramites != null)&&(_expediente.Tramites.Count > 0)){
+            <h4>Tramites asociados</h4>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>@t.Id</td>
-                        <td>@t.Etiqueta</td>
-                        <td>@t.Contenido</td>
-                        <td>@t.FechaCreacion</td>
-                        <td>@t.FechaModificacion</td>
-                        <td>@t.IdUsuario</td>
+                        <th>ID</th>
+                        <th>Etiqueta del tramite</th>
+                        <th>Contenido</th>
+                        <th>Fecha creacion</th>
+                        <th>Fecha modificacion</th>
+                        <th>ID de usuario</th>
+                        <th>Acciones</th>
+                    </tr> 
+                </thead>
+                <tbody>
+                    @foreach(var t in _expediente.Tramites){ // Informacion de cada tramite
+                        <tr>
+                            <td>@t.Id</td>
+                            <td>@t.Etiqueta</td>
+                            <td>@t.Contenido</td>
+                            <td>@t.FechaCreacion</td>
+                            <td>@t.FechaModificacion</td>
+                            <td>@t.IdUsuario</td>
 
-                        <td>
-                            <button @onclick="()=>_ModificarTramite(t.Id)" class="btn btn-primary" >Modificar</button>
-                            <button  class="btn btn-danger" >Eliminar</button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                            <td>
+                                <button @onclick="()=>_ModificarTramite(t.Id)" class="btn btn-primary" >Modificar</button>
+                                <button  class="btn btn-danger" >Eliminar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else{
+            <h4>No existen Tramites asociados</h4>
+        }
         <div>
             <button @onclick="_ModificarExpediente" class="btn btn-primary" >Modificar Expediente</button> <!--Modificar el expediente-->
             <button @onclick="_NuevoTramite" class="btn btn-primary" >Agregar Tramite</button>
@@ -106,13 +111,7 @@ else{
     private Expediente _expediente = new Expediente(); //Obj expediente
     private bool _nuevoExpediente; //Para saber si se debe ingresar un nuevo expediente o mostrar uno almacenado
 #endregion Variables Expedente
-
-#region Variables Tramites
-    //lista de tramites asociados
-    private List<Tramite> _lista = new List<Tramite>();
-
-#endregion Variables Tramites
-    
+ 
 #region Variables de Errores y Mensajes
     //Gestion de bools y errores
     private bool _error = false; //Saber se ocurrio un error al acceder a la base de datos
@@ -130,7 +129,7 @@ else{
         try{
             if(Id != null){ //Se envio un ID "existente"
                 _nuevoExpediente = false;
-                _expediente = consulta.Ejecutar(this.Id.Value, out _lista); //caso de uso throw exception en caso de null
+                _expediente = consulta.Ejecutar(this.Id.Value); //caso de uso throw exception en caso de null
             }
             else{
                 _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
