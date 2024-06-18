@@ -1,7 +1,7 @@
-﻿@page "/"
+@page "/registro"
 
 <!--Caso de uso para Usuarios-->
-@inject CasoDeUsoIniciarSesion iniciarSesion
+@inject CasoDeUsoRegistrarUsuario registrarSesion
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager
@@ -11,34 +11,46 @@
 <div class="contenedor">
     <div class="contenido">
             <h3>Bienvenido al sistema</h3>
-            <h4>Inicie sesion</h4>
+            <h4>Registrese</h4>
 
             <div style="margin-bottom: 10px;" >
                 Nombre<br>
-                <input placeholder="Ingrese su nombre" @bind="_usuario.Nombre" ><br>
+                <input placeholder="Ingrese su nombre" @bind="_usuario.Nombre" >
             </div>
-            
+
+            <div style="margin-bottom: 10px;" >
+                Apellido<br>
+                <input placeholder="Ingrese su apellido" @bind="_usuario.Apellido" >
+            </div>
+
+            <div style="margin-bottom: 10px;" >
+                Correo<br>
+                <input placeholder="Ingrese su correo electronico" @bind="_usuario.Correo">
+            </div>
+
             <div style="margin-bottom: 10px;" >
                 Contraseña<br>
                 <input placeholder="Ingrese su contraseña" @bind="_usuario.Contraseña" ><br>
             </div>
-
-            <button @onclick="_IniciarSesion" style="margin-bottom: 10px;" class="btn btn-primary" >Iniciar sesion</button>
-            <p>¿No tiene una cuenta? Registrese <u><a href="/registro" >aqui</a></u>!</p>
+            
+            <button @onclick="_RegistrarSesion" style="margin-bottom: 10px;" class="btn btn-primary" >Registrase</button>
+            <p>¿Ya tiene una cuenta? <u><a href="/">Inicie sesion.</a></u></p>
+            
     </div>
 </div>
 
 <Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Limpiar" />
 
-@code {
+@code{
     private Usuario _usuario = new Usuario();
 
     private string _stMensaje = "";
     private Mensaje _mensaje = null!;
 
-    private void _IniciarSesion(){
+    private void _RegistrarSesion(){
         try{
-            iniciarSesion.Ejecutar(_usuario.Nombre, _usuario.Contraseña);
+            string _contraseña = _usuario.Contraseña;
+            registrarSesion.Ejecutar(_usuario, _contraseña);
             navigationManager.NavigateTo("/home");
         }
         catch(Exception e){
@@ -49,6 +61,5 @@
 
     private void _Limpiar(){
         _usuario = new Usuario();
-    }
-
+    } 
 }

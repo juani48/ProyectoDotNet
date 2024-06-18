@@ -1,14 +1,19 @@
-@page "/listarusuarios";
+@page "/listarusuarios"
+
+<!--Caso de uso para Usuarios-->
 @inject CasoDeUsoListarUsuarios listarUsuarios
+
+<!--Uso de la pagina-->
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
+
 
 <h3>Lista de Usuarios</h3>
 <div>
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>ID</th>
                 <th>Nombre</th>
                 <th>Acciones</th>
             </tr>
@@ -33,11 +38,11 @@
 
     protected override void OnInitialized()
     {
-        _lista = listarUsuarios.Ejecutar(1);//El 1 es provisorio
+        _lista = listarUsuarios.Ejecutar(1); //El 1 es provisorio
     }
 
-    private void _VerUsuario(int? id)
+    private void _VerUsuario(int id)
     {
-        navigationManager.NavigateTo($"Usuario/{id}");
+        navigationManager.NavigateTo($"usuario/{id}");
     }
 }

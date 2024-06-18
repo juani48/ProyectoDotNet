@@ -2,8 +2,11 @@ namespace SGE.Aplicacion;
 
 public class CasoDeUsoIniciarSesion(IUsuarioRepositorio usuarioRepositorio)
 {
-    public bool Ejecutar(string nombre, string contrasena)
+    public void Ejecutar(string nombre, string contrasena)
     {
-        return usuarioRepositorio.IniciarSesion(nombre, contrasena);
+        if(!usuarioRepositorio.IniciarSesion(nombre, contrasena)){
+
+            throw new RepositorioException($"No existe un usuario con nombre: {nombre}");
+        }
     }
 }

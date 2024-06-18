@@ -17,10 +17,10 @@ public class RepositorioExpediente : IExpedienteRepositorio
             db.Tramites.Add(new Tramite(){ExpedienteId = 2, Contenido = "Contenido1", IdUsuario = 1});
             db.Tramites.Add(new Tramite(){ExpedienteId = 1, Contenido = "Contenido2", IdUsuario = 1});
 
-            db.Usuarios.Add(new Usuario(){Nombre = "Usuario1", Id = 1});
-            db.Usuarios.Add(new Usuario() {Nombre = "Hola", Id = 2});
-            db.Usuarios.Add(new Usuario() {Nombre = "jeje", Id = 3});
-            db.Usuarios.Add(new Usuario() {Nombre = "Usuariooo", Id = 4});
+            db.Usuarios.Add(new Usuario(){Nombre = "Administrador"});
+            db.Usuarios.Add(new Usuario() {Nombre = "Juan", Apellido="Perez"});
+            db.Usuarios.Add(new Usuario() {Nombre = "Maria", Apellido="Del Carmen"});
+            db.Usuarios.Add(new Usuario() {Nombre = "Marcelo", Apellido="de la Fuente"});
             db.SaveChanges();
         }
     }
