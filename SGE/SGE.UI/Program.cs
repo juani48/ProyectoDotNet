@@ -25,13 +25,22 @@ builder.Services.AddTransient<CasoDeUsoTramiteBaja>();
 builder.Services.AddTransient<CasoDeUsoTramiteConsultaPorEtiqueta>();
 builder.Services.AddTransient<CasoDeUsoTramiteModificacion>();
 
+//casos de usos de usuarios
+builder.Services.AddTransient<CasoDeUsoAgregarPermiso>();
+builder.Services.AddTransient<CasoDeUsoEliminarPermiso>();
+builder.Services.AddTransient<CasoDeUsoListarUsuarios>();
+builder.Services.AddTransient<CasoDeUsoIniciarSesion>();
+builder.Services.AddTransient<CasoDeUsoRegistrarUsuario>();
+
 //repositorios
 builder.Services.AddSingleton<ITramiteRepositorio,RepositorioTramite>();
 builder.Services.AddSingleton<IExpedienteRepositorio,RepositorioExpediente>();
+builder.Services.AddSingleton<IUsuarioRepositorio, RepositorioUsuario>();
 
 //Inicilizacion de los repositorios
 RepositorioExpediente.Inicializar();
 RepositorioTramite.Inicializar();
+RepositorioUsuario.Inicializar();
 
 var app = builder.Build();
 
