@@ -2,7 +2,6 @@
 
 <!--Caso de uso para Usuarios-->
 @inject CasoDeUsoIniciarSesion iniciarSesion
-@inject ServicioSesionUsuario usuarioActual
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager
@@ -40,7 +39,6 @@
     private void _IniciarSesion(){
         try{
             iniciarSesion.Ejecutar(_usuario.Nombre, _usuario.Contraseña);
-            usuarioActual.UsuarioActual = _usuario;
             navigationManager.NavigateTo("/home");
         }
         catch(Exception e){
