@@ -4,7 +4,7 @@ public class CasoDeUsoTramiteBaja(ITramiteRepositorio repotramite,IExpedienteRep
 {
     public void Ejecutar(Tramite tramite) //recibo tramite con su id y idusuario
     {
-        if (autorizacion.PoseeElPermiso(tramite.IdUsuario,Permiso.TramiteBaja))
+        if (autorizacion.PoseeElPermiso(Permiso.TramiteBaja))
         {
                 tramite.ExpedienteId = repotramite.ObtenerIdExpediente(tramite.Id); //busco su expedienteID
                 if(tramite.ExpedienteId != 0 )
@@ -29,7 +29,7 @@ public class CasoDeUsoTramiteBaja(ITramiteRepositorio repotramite,IExpedienteRep
         }
         else
         {
-            throw new AutorizacionException("No posee los permisos.");
+            throw new AutorizacionException("El usuario no posee permisos para realizar una baja de Tramites.");
         }
     }
 

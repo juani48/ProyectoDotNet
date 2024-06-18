@@ -5,7 +5,7 @@ public class CasoDeUsoTramiteModificacion(ITramiteRepositorio tramiteRepositorio
 {
     public void Ejecutar(Tramite tramite)
     { 
-        if(autorizacion.PoseeElPermiso(tramite.IdUsuario,Permiso.tramiteModificacion))
+        if(autorizacion.PoseeElPermiso(Permiso.TramiteModificacion))
         {
             TramiteValidador.ValidarTramite(tramite);
             tramite.ExpedienteId = tramiteRepositorio.ObtenerIdExpediente(tramite.Id); //busco su expedienteID
@@ -30,7 +30,7 @@ public class CasoDeUsoTramiteModificacion(ITramiteRepositorio tramiteRepositorio
         }
         else
         {
-            throw new AutorizacionException("No posee permiso.");
+            throw new AutorizacionException("El usuario no posee permisos para modificar un Tramite.");
         }
 
     }

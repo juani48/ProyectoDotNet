@@ -8,5 +8,5 @@ public class Usuario
     public string Correo{get; set;} = "";
     public string Contraseña{get;set;} = "";
     public List<Permiso>? Permisos {get; set;} = new List<Permiso>();
-
+    public List<PermisoAdministrador>? PermisosAdministrador {get; set;} = new List<PermisoAdministrador>();
 }

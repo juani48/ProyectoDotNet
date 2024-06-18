@@ -17,10 +17,6 @@ public class RepositorioExpediente : IExpedienteRepositorio
             db.Tramites.Add(new Tramite(){ExpedienteId = 2, Contenido = "Contenido1", IdUsuario = 1});
             db.Tramites.Add(new Tramite(){ExpedienteId = 1, Contenido = "Contenido2", IdUsuario = 1});
 
-            db.Usuarios.Add(new Usuario(){Nombre = "Administrador"});
-            db.Usuarios.Add(new Usuario() {Nombre = "Juan", Apellido="Perez"});
-            db.Usuarios.Add(new Usuario() {Nombre = "Maria", Apellido="Del Carmen"});
-            db.Usuarios.Add(new Usuario() {Nombre = "Marcelo", Apellido="de la Fuente"});
             db.SaveChanges();
         }
     }

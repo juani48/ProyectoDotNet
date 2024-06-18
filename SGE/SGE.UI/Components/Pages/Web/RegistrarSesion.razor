@@ -39,7 +39,7 @@
     </div>
 </div>
 
-<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Limpiar" />
+<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Volver" />
 
 @code{
     private Usuario _usuario = new Usuario();
@@ -51,6 +51,7 @@
         try{
             string _contraseña = _usuario.Contraseña;
             registrarSesion.Ejecutar(_usuario, _contraseña);
+            _usuario = new Usuario();
             navigationManager.NavigateTo("/home");
         }
         catch(Exception e){
@@ -59,7 +60,7 @@
         }
     }
 
-    private void _Limpiar(){
-        _usuario = new Usuario();
+    private void _Volver(){
+        navigationManager.NavigateTo("/");
     } 
 }

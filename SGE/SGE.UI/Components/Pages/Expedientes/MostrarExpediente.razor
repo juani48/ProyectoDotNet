@@ -7,6 +7,9 @@
 @inject CasoDeUsoExpedienteBaja eliminar
 @inject CasoDeUsoTramiteBaja eliminarTramite
 
+<!--Caso de uso para Usuarios-->
+@inject CasoDeUsoVerificarUsuario verificacion
+
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager //Navegar entre paginas
 @rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
@@ -135,6 +138,7 @@ else{
                 _expediente = consulta.Ejecutar(this.Id.Value); //caso de uso throw exception en caso de null
             }
             else{
+                verificacion.Ejecutar(Permiso.ExpedienteAlta);
                 _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
                 _nuevoExpediente = true; //El ID fue null
             }
@@ -154,9 +158,6 @@ else{
 #region Metodos de Expedientes
     private void _Alta(){
         try{
-            //provisorio fasalta la gestion de usuairos
-            _expediente.IdUsuario = 1;
-            //
             agregar.Ejecutar(_expediente);
             Id = _expediente.Id;
             _expediente = new Expediente();
@@ -170,11 +171,7 @@ else{
 
     private void _Baja(){
         try{
-             //provisorio fasalta la gestion de usuairos
-            _expediente.IdUsuario = 1;
-            //Mostar ConfirmarUsuario
             eliminar.Ejecutar(_expediente);
-
             navigationManager.NavigateTo("/listarexpedientes");
         }
         catch(Exception e){
@@ -185,7 +182,15 @@ else{
 
     //Envia al usuario a la pagina para modificar el Expediente
     private void _ModificarExpediente(){
-        navigationManager.NavigateTo($"/modificarexpediente/{_expediente.Id}");
+        try{
+            verificacion.Ejecutar(Permiso.ExpedienteModificacion);
+            navigationManager.NavigateTo($"/modificarexpediente/{_expediente.Id}");
+        }
+        catch(Exception e){
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
+        }
+        
     }
     
 #endregion Metodos de Expedente
@@ -202,15 +207,36 @@ else{
 
     //Ventana emergente de ConfirmarUsuario
     private void _ModificarTramite(int id){
-        navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{id}");
+        try{
+            verificacion.Ejecutar(Permiso.TramiteModificacion);
+            navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{id}");
+        }
+        catch(Exception e){
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
+        }
     }
+
     private void _EliminarTramite(Tramite tramite){
-        eliminarTramite.Ejecutar(tramite);
-        navigationManager.NavigateTo($"/expediente/{Id}", forceLoad: true); //recargar pagina
+        try{
+            eliminarTramite.Ejecutar(tramite);
+            navigationManager.NavigateTo($"/expediente/{Id}", forceLoad: true); //recargar pagina
+        }
+        catch(Exception e){
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
+        }  
     }
 
     private void _NuevoTramite(){
-        navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{null}");
+        try{
+            verificacion.Ejecutar(Permiso.TramiteAlta);
+            navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{null}");
+        }
+        catch(Exception e){
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
+        }   
     }
 
 #endregion Metodos de Tramites

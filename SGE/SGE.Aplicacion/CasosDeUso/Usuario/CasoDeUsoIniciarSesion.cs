@@ -4,9 +4,10 @@ public class CasoDeUsoIniciarSesion(IUsuarioRepositorio usuarioRepositorio, Serv
 {
     public void Ejecutar(string nombre, string contrasena)
     {
-        if(!usuarioRepositorio.IniciarSesion(nombre, contrasena)){
-
+        Usuario? usuario = usuarioRepositorio.IniciarSesion(nombre, contrasena);
+        if(usuario == null){
             throw new RepositorioException($"No existe un usuario con nombre: {nombre}");
         }
+        servicioSesionUsuario.UsuarioActual = usuario;
     }
 }

@@ -10,8 +10,8 @@ builder.Services.AddRazorComponents()
 
 //servicion
 builder.Services.AddSingleton<IServicioActualizacionEstado, ServicioActualizacionEstado>();
-builder.Services.AddSingleton<IServicioAutorizacion, ServicioAutorizacionProvisorio>();
-builder.Services.AddScoped<ServicioSesionUsuario>(); //Servicio para gestion del usuario actual de la sesion
+builder.Services.AddSingleton<IServicioAutorizacion, ServicioAutorizacion>();
+builder.Services.AddSingleton<ServicioSesionUsuario>(); //Servicio para gestion del usuario actual de la sesion
 
 //casos de usos de expeidentes
 builder.Services.AddTransient<CasoDeUsoExpedienteAlta>();
@@ -33,6 +33,7 @@ builder.Services.AddTransient<CasoDeUsoEliminarPermiso>();
 builder.Services.AddTransient<CasoDeUsoListarUsuarios>();
 builder.Services.AddTransient<CasoDeUsoIniciarSesion>();
 builder.Services.AddTransient<CasoDeUsoRegistrarUsuario>();
+builder.Services.AddTransient<CasoDeUsoVerificarUsuario>();
 
 //repositorios
 builder.Services.AddSingleton<ITramiteRepositorio,RepositorioTramite>();

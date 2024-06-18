@@ -5,9 +5,9 @@ public class CasoDeUsoExpedienteBaja(IExpedienteRepositorio expedienteRepositori
     public void Ejecutar(Expediente expediente)
     {
         
-        if(!servicioAutorizacion.PoseeElPermiso(expediente.IdUsuario,  Permiso.ExpedienteBaja))
+        if(!servicioAutorizacion.PoseeElPermiso(Permiso.ExpedienteBaja))
         {
-            throw new AutorizacionException("El usuario no tiene el permiso para realizar una baja de expediente.");
+            throw new AutorizacionException("El usuario no tiene el permiso para realizar una baja de Expedientes.");
         }
         else
         {

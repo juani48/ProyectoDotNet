@@ -1,19 +1,17 @@
-﻿using System.Data.Common;
-using SGE.Aplicacion;
+﻿using SGE.Aplicacion;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace SGE.Repositorio;
 
-public class RepositorioUsuario:IUsuarioRepositorio  //Creo que tambien se podria pasar Context por el constructor primario
-{
-    public static void Inicializar(){
-        using var db = new Context();
-        if(db.Database.EnsureCreated()){
-            db.SetJournalModeToDelete();
-            db.SaveChanges();
-        }
+public class RepositorioUsuario : IUsuarioRepositorio  {//Creo que tambien se podria pasar Context por el constructor primario
+  public static void Inicializar(){
+    using var db = new Context();
+    if(db.Database.EnsureCreated()){
+      db.SetJournalModeToDelete();
+      db.SaveChanges();
     }
+  }
     
    //-----------------Metodos para permisos------------------------
     public Usuario? obtenerUsuario(int id)
@@ -26,6 +24,11 @@ public class RepositorioUsuario:IUsuarioRepositorio  //Creo que tambien se podri
     {
        var usuario = obtenerUsuario(id);
        return usuario?.Permisos ?? new List<Permiso>();
+    }
+
+  public List<PermisoAdministrador> obtenerPermisosAdministrador(int id){
+      var usuario = obtenerUsuario(id);
+      return usuario?.PermisosAdministrador ?? new List<PermisoAdministrador>();
     }
 
     //si tengo que hacer un manejo de excepciones en el caso de uso, este metodo lo pongo para devolver un booleano
@@ -76,21 +79,39 @@ public class RepositorioUsuario:IUsuarioRepositorio  //Creo que tambien se podri
 
 
  //---------------Inicio de sesion, registro----------------------- 
-  public bool IniciarSesion(string nombreUsuario, string contrasena) //Retorna verdadero si el usuario esta registrado
+  public Usuario? IniciarSesion(string nombreUsuario, string contrasena) //Retorna verdadero si el usuario esta registrado
   {
     using var db = new Context();
     var contrasenaEncriptada = EncriptarSHA256(contrasena);
-    return db.Usuarios.Any(u => u.Nombre == nombreUsuario && u.Contraseña == contrasenaEncriptada);
+    return db.Usuarios.Where(u => u.Nombre == nombreUsuario && u.Contraseña == contrasenaEncriptada).SingleOrDefault();
   }
 
-  public void RegistrarUsuario(Usuario usuario, string contrasena) //agregar usuarios
+  public bool RegistrarUsuario(Usuario usuario, string contrasena) //agregar usuarios
   {
     using var db = new Context();
+
     if (!db.Usuarios.Any(u => u.Nombre == usuario.Nombre))
     {
+      if(db.Usuarios.ToList().Count() == 0){
+        usuario.Permisos = new List<Permiso>{
+                            Permiso.ExpedienteAlta, 
+                            Permiso.ExpedienteBaja, 
+                            Permiso.ExpedienteModificacion,
+                            Permiso.TramiteAlta,
+                            Permiso.TramiteBaja,
+                            Permiso.TramiteModificacion};
+        usuario.PermisosAdministrador = new List<PermisoAdministrador>(){
+          PermisoAdministrador.ListarUsuario, PermisoAdministrador.UsuarioBaja, PermisoAdministrador.UsuarioModificacion
+        };
+      }
+
       usuario.Contraseña = EncriptarSHA256(contrasena);
       db.Usuarios.Add(usuario);
       db.SaveChanges();
+      return true;
+    }
+    else{
+      return false;
     }
   }
   private string EncriptarSHA256(string entrada)

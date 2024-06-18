@@ -5,7 +5,7 @@ public class CasoDeUsoExpedienteModificacion (IExpedienteRepositorio expedienteR
 {
     public void Ejecutar(Expediente expediente)
     {
-        if(servicioAutorizacion.PoseeElPermiso(expediente.IdUsuario, Permiso.ExpedienteModificacion))
+        if(servicioAutorizacion.PoseeElPermiso(Permiso.ExpedienteModificacion))
         {
             ExpedienteValidador.ValidarExpediente(expediente);
             if(!expedienteRepositorio.ModificarExpediente(expediente)){
@@ -14,7 +14,7 @@ public class CasoDeUsoExpedienteModificacion (IExpedienteRepositorio expedienteR
         }
         else
         {
-            throw new AutorizacionException("El usuario no posee permisos.");
+            throw new AutorizacionException("El usuario no posee permisos para modificar Expedientes.");
         }
     }
 }
