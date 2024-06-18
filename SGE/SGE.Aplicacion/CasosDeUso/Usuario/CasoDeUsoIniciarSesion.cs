@@ -8,5 +8,6 @@ public class CasoDeUsoIniciarSesion(IUsuarioRepositorio usuarioRepositorio)
 
             throw new RepositorioException($"No existe un usuario con nombre: {nombre}");
         }
+        
     }
 }

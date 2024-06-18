@@ -3,6 +3,9 @@
 <!--Caso de uso Expedientes-->
 @inject CasoDeUsoExpedienteConsultaTodos listarExpeidentes
 
+<!--Caso de uso Usarios-->
+@inject ServicioSesionUsuario usuarioActual //Para obtener el usuario actual
+
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
@@ -45,17 +48,30 @@
 <button @onclick="()=>_VerExpediente(null)" class="btn btn-primary" >Agregar Expediente</button>
 
 @code {
- 
+
+#region Varaibles de Expediente
     //Listar los Expedientes
     private List<Expediente> _lista = new List<Expediente>();
+
+#endregion Varaibles de Expediente
+
+#region Metodos de pagina
 
     //Al inicializar el componenet muestra la lista
     protected override void OnInitialized(){
         _lista = listarExpeidentes.Ejecutar();
     }
 
+#endregion Metodos de pagina
+
+#region Metodos de Expediente
+
     //Envia al usuarioa a la pagina del expeidente solicitado
     private void _VerExpediente(int? id){
         navigationManager.NavigateTo($"expediente/{id}");
     }
+
+#endregion Metodos de Expediente
+
+
 }

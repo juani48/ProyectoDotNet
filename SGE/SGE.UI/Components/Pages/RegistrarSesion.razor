@@ -2,6 +2,7 @@
 
 <!--Caso de uso para Usuarios-->
 @inject CasoDeUsoRegistrarUsuario registrarSesion
+@inject ServicioSesionUsuario usuarioActual // Guarda la sesion actual del usuario
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager
@@ -51,6 +52,7 @@
         try{
             string _contraseña = _usuario.Contraseña;
             registrarSesion.Ejecutar(_usuario, _contraseña);
+            usuarioActual.UsuarioActual = _usuario;
             navigationManager.NavigateTo("/home");
         }
         catch(Exception e){
