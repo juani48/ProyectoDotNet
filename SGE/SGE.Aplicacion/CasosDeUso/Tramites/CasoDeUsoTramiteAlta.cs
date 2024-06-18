@@ -17,7 +17,7 @@ public class CasoDeUsoTramiteAlta(ITramiteRepositorio repoTramite,IExpedienteRep
                 }
                 else
                 {
-                    throw new RepositorioException("no se encuentra un expediente relacionado con este tramite.");
+                    throw new RepositorioException("No se encuentra un expediente relacionado con este tramite.");
                 }
           }
           else

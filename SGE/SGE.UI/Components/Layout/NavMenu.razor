@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">SGE.UI</a>
+        <a class="navbar-brand" href="">S.G.E.</a>
     </div>
 </div>
 
@@ -9,7 +9,7 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="/home" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
             </NavLink>
         </div>
@@ -21,6 +21,23 @@
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Listar Expedientes
             </NavLink>
         </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="@_nuevoExpediente">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Agregar Expediente
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="@_nuevoTramite">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Agregar Tramite
+            </NavLink>
+        </div>
+
     </nav>
 </div>
 
+@code{
+    private string _nuevoExpediente = $"/expediente/{null}";
+    private string _nuevoTramite = $"/tramite{null}/{null}";
+}

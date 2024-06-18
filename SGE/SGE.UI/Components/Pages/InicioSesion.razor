@@ -1,0 +1,36 @@
+﻿@page "/"
+
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@layout LoginLayout
+
+<div class="contenedor">
+    <div class="contenido">
+            <h3>Inicio Sesion</h3>
+            <h4>@_text</h4>
+            <button @onclick="_Click" class="form-control" >Iniciar sesion, sin iniciar sesion</button>
+
+    </div>
+</div>
+
+
+
+@code {
+    private int _intentos = 5;
+
+    private string _text = "Intentos para iniciar sesion: "; 
+
+    protected override void OnInitialized(){
+        _text += _intentos;
+    }
+
+    private void _Click(){
+        if(_intentos == 0){
+            navigationManager.NavigateTo("/home");
+        }
+        else{
+            _intentos--;
+            _text = "Intentos para iniciar sesion: " + _intentos;
+        }
+    }
+}

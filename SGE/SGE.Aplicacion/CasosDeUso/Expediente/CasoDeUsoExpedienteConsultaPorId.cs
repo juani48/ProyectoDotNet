@@ -5,7 +5,7 @@ namespace SGE.Aplicacion;
 public class CasoDeUsoExpedienteConsultaPorId(IExpedienteRepositorio expedienteRepo, ITramiteRepositorio tramiteRepo)
 {
     //Tengo que retornar un expediente con todos sus tramites asociados
-    public Expediente Ejecutar(int idExpediente, out List<Tramite> lista)
+    public Expediente Ejecutar(int idExpediente)
     {
         Expediente? expediente = expedienteRepo.ObtenerExpediente(idExpediente); //Obtengo el expediente 
         if(expediente == null) 
@@ -14,9 +14,8 @@ public class CasoDeUsoExpedienteConsultaPorId(IExpedienteRepositorio expedienteR
         }
         else
         {
-            lista = tramiteRepo.ListarTramitesPorExpedienteID(idExpediente); //Recibo la lista de tramites asociados al expediente
+            expediente.Tramites = tramiteRepo.ListarTramitesPorExpedienteID(idExpediente); //Recibo la lista de tramites asociados al expediente
             return expediente;
         }
     }
-    //Faltaria imprimir los datos en pantalla "Console.WriteLine(casoDeUso.Ejecutar(idExpediente));"
 }

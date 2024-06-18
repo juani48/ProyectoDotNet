@@ -1,4 +1,6 @@
-﻿using SGE.Aplicacion;
+﻿using System.Data.Common;
+using System.Runtime.InteropServices;
+using SGE.Aplicacion;
 
 namespace SGE.Repositorio;
 
@@ -10,74 +12,99 @@ public class RepositorioTramite : ITramiteRepositorio
             db.SetJournalModeToDelete();
         } 
     }
+
 #region Tramite
-    public void AgregarTramite(Tramite tramite)
+    public void AgregarTramite(Tramite tramite) //Alta de tramites
     {
         using var db = new Context();
         db.Tramites.Add(tramite);
         db.SaveChanges();
     }
+
     public bool EliminarTramite(int id)
     {
         using var db = new Context();
-        var query = db.Tramites.Where(T => T.Id == id).SingleOrDefault();
+        var query = db.Tramites.Where(T => T.Id == id).SingleOrDefault(); //Busca si existe el tramite a eliminar
         if(query != null){
-            db.Tramites.Remove(query);
+            db.Tramites.Remove(query); //Elimina el trmaite
+            db.SaveChanges();
             return true;
         }
         else{
             return false;
         }
     }
-    public Tramite? ObtenerTramite(int id)
+
+    public Tramite? ObtenerTramite(int id) //Retorna null si el tramite no existe
     {
         using var db = new Context();
         return db.Tramites.Where(t => t.Id == id).SingleOrDefault();
     }
+
     public void ModificarTramite(Tramite tramite)
     {
         using var db = new Context();
-        var query = db.Tramites.Where(t => t.Id == tramite.Id).SingleOrDefault();
+        var query = db.Tramites.Where(t => t.Id == tramite.Id).SingleOrDefault(); //Busca el tramite a modificar
         if(query != null){
-            query.ExpedienteId = tramite.ExpedienteId;
-            query.EtiquetaTramite = tramite.EtiquetaTramite;
+            query.ExpedienteId = tramite.ExpedienteId; //Cambia el tramite alamcenado (query) por los datos del tramite ingresado (tramite)
+            query.Etiqueta = tramite.Etiqueta;
             query.Contenido = tramite.Contenido;
             query.FechaModificacion = DateTime.Now;
             query.IdUsuario = tramite.IdUsuario;
             db.SaveChanges();
         }
     }
-    public List<Tramite> ListarTramitesPorEtiqueta(string etiqueta)
-    {
-        throw new NotImplementedException();
-    }
-#endregion Tramite
 
-#region InteraccionExpediente
-    public EtiquetaTramite? ObtenerEtiqueta(int id)
-    {
-        throw new NotImplementedException();
-    }
-    public List<Tramite> ListarTramitesPorExpedienteID(int idExpediente)
+    public List<Tramite> ListarTramitesPorEtiqueta(EtiquetaTramite etiqueta) //Retorna lista de tramites egun un etiqueta
     {
         using var db = new Context();
-        return db.Tramites.Where(t => t.ExpedienteId == idExpediente).ToList();
+        return db.Tramites.Where(tramite => tramite.Etiqueta == etiqueta).ToList();
     }
+    
+#endregion Tramite
+
+#region Interaccion Expediente
+    public EtiquetaTramite? ObtenerEtiqueta(int idExpediente) //Devuelve null si no existe el trmaite asocicado al expedientes - sino la etiqueta
+    {
+        using var db = new Context();
+        return db.Tramites.Where(tramite => tramite.ExpedienteId == idExpediente).FirstOrDefault()?.Etiqueta;
+    }
+
+    public List<Tramite> ListarTramitesPorExpedienteID(int idExpediente) //Lista de todos los tramites asociados a un expediente
+    {
+        using var db = new Context();
+        return db.Tramites.Where(t => t.ExpedienteId == idExpediente).OrderBy(tramite => tramite.FechaModificacion).Reverse().ToList();
+    }
+
     public void EliminarTramitesPorIdExpediente(int idExpediente)
     {
         using var db = new Context();
-        var query = db.Tramites.Where(t => t.ExpedienteId == idExpediente);
-        foreach(var tramite in query){
+        var query = db.Tramites.Where(t => t.ExpedienteId == idExpediente); // IEnumerator de todos tramites asociados a un expediente
+        foreach(var tramite in query){ //Elimina de la base de datos cada tramite
             db.Tramites.Remove(tramite);
         }
         db.SaveChanges();
     }
+
     public EtiquetaTramite ObtenerEtiquetaUltimoTramite(int idExpediente)
     {
-        throw new NotImplementedException();
+        using var db = new Context();
+        var query = db.Tramites.Where(tramite => tramite.ExpedienteId == idExpediente); // IEnumerator de todos tramites asociados a un expediente
+
+        DateTime fecha = DateTime.MinValue;
+        EtiquetaTramite etiquetaTramite = EtiquetaTramite.Resolucion;
+
+        foreach(Tramite tramite in query){ //Busco la ultima etiqueta en modificarce
+            if(tramite.FechaModificacion > fecha){
+                fecha = tramite.FechaModificacion;
+                etiquetaTramite = tramite.Etiqueta;
+            }
+        }
+        return etiquetaTramite; // Y retorno el primer valor en caso de que el expediente no tenga tramites asociados
     }
-    public int ObtenerIdExpediente(int idTramite){
-        throw new NotImplementedException();
+    public int ObtenerIdExpediente(int idTramite){ //Devuelve el id de un expediente segun el id de un tramite o 0 en caso de que no exista (no deberia pasar)
+        using var db = new Context();
+        return db.Tramites.Where(tramite => tramite.Id == idTramite).SingleOrDefault()?.ExpedienteId ?? 0;
     }
-#endregion InteraccionExpediente
+#endregion Interaccion Expediente
 }

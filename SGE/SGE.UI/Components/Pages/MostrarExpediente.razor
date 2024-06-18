@@ -1,18 +1,24 @@
 ﻿@page "/expediente/{Id:int?}"
 @using SGE.UI.Components
 
-<!--Caso de uso para expedientes-->
-@inject CasoDeUsoExpedienteConsultaPorId consulta
-@inject CasoDeUsoExpedienteAlta agregar
-@inject CasoDeUsoExpedienteModificacion modificar
+<!--Caso de uso para Expedientes-->
+@inject CasoDeUsoExpedienteConsultaPorId consulta // consultar expediente
+@inject CasoDeUsoExpedienteAlta agregar //Alta en la base de datos SQLite
+@inject CasoDeUsoExpedienteBaja eliminar
+@inject CasoDeUsoTramiteBaja eliminarTramite
 
-@inject NavigationManager navigationManager
-@rendermode InteractiveServer
 
-@if(!_error){
-    @if(!_nuevoExpediente){
+<!--Uso de la pagina-->
+@inject NavigationManager navigationManager //Navegar entre paginas
+@rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
+
+@if(!_error){ //En caso de error al consultar la base de datos (OnParamaetersSet)
+
+    @if(!_nuevoExpediente){ //En caso de que no se ingrese un nuevo expediente y se deba mostrar uno almacenado
+
+        <!--MOSTRAR INFORMACION DE UN EXPEDIENTE-->
         <h3>@_expediente.Caratula</h3>
-        <div>
+        <div style="font-size: large;">
             <ul>
                 <li>El expediente se encuentra @_expediente.EstadoExpediente</li>
                 <li>La fecha de inicio del expediente fue: @_expediente.FechaCreacion</li>
@@ -20,115 +26,193 @@
             </ul>
         </div>
         
-        <h4>Tramites asociados</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Etiqueta del tramite</th>
-                    <th>Contenido</th>
-                    <th>Fecha creacion</th>
-                    <th>Fecha modificacion</th>
-                    <th>ID de usuario</th>
-                </tr> 
-            </thead>
-            <tbody>
-                @foreach(var t in _lista){
+        <!--TABLA CON LOS TRAMITES ASOCIADOS-->
+        if((_expediente.Tramites != null)&&(_expediente.Tramites.Count > 0)){
+            <h4>Tramites asociados</h4>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>@t.Id</td>
-                        <td>@t.EtiquetaTramite</td>
-                        <td>@t.Contenido</td>
-                        <td>@t.FechaCreacion</td>
-                        <td>@t.FechaModificacion</td>
-                        <td>@t.IdUsuario</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <button @onclick="_Volver" class="btn btn-primary" >Volver</button>
-        <button @onclick="_Modificar" class="btn btn-secondary" >Modificar</button>
+                        <th>ID</th>
+                        <th>Etiqueta del tramite</th>
+                        <th>Contenido</th>
+                        <th>Fecha creacion</th>
+                        <th>Fecha modificacion</th>
+                        <th>ID de usuario</th>
+                        <th>Acciones</th>
+                    </tr> 
+                </thead>
+                <tbody>
+                    @foreach(var t in _expediente.Tramites){ // Informacion de cada tramite
+                        <tr>
+                            <td>@t.Id</td>
+                            <td>@t.Etiqueta</td>
+                            <td>@t.Contenido</td>
+                            <td>@t.FechaCreacion</td>
+                            <td>@t.FechaModificacion</td>
+                            <td>@t.IdUsuario</td>
+
+                            <td>
+                                <button @onclick="()=>_ModificarTramite(t.Id)" class="btn btn-primary" >Modificar</button>
+                                <button @onclick="()=>_EliminarTramite(t)" class="btn btn-danger" >Eliminar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else{
+            <h4 style="margin-bottom: 10px;" >No existen Tramites asociados</h4>
+        }
+        <div>
+            <button @onclick="_ModificarExpediente" class="btn btn-primary" >Modificar Expediente</button> <!--Modificar el expediente-->
+            <button @onclick="_NuevoTramite" class="btn btn-primary" >Agregar Tramite</button>
+            <button @onclick="_Baja" class="btn btn-danger" >Eliminar Expediente</button>
+            <button @onclick="_Volver" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
+        </div>
+        
     }
-    else{
-        <h3>Ingrese los datos para el nuevo expediente</h3>
-        <input placeholder="Carátula del expediente:" @bind="_expediente.Caratula" style="margin-bottom: 10px;">
+    else{ // En caso de ingresar un nuevo expediente
+
+        <div>
+            <h3>Ingrese los datos para el nuevo Expediente</h3>
+        </div>
+        
+        <div>
+           <!--Ingreso de la caratula-->
+            <p style="font-size: large;" >Caratula del Expediente</p>
+            <input placeholder="Carátula del expediente" @bind="_expediente.Caratula" style="margin-bottom: 10px;"> 
+        </div>
+        
         <div style="margin-bottom: 10px;">
+            <!--Selector del estado del expediente-->
+            <p style="font-size: large;" >Estado del Expediente</p>
             <select @bind="_expediente.EstadoExpediente">
-                <option value="RecienIniciado">RecienIniciado</option>
-                <option value="ParaResolver">ParaResolver</option>
-                <option value="ConResolucion">ConResolucion</option>
-                <option value="EnNotificacion">EnNotificacion</option>
+                <option value="RecienIniciado">Recien Iniciado</option>
+                <option value="ParaResolver">Para Resolver</option>
+                <option value="ConResolucion">Con Resolucion</option>
+                <option value="EnNotificacion">En Notificacion</option>
                 <option value="Finalizado">Finalizado</option>
             </select>
         </div>
         <div>
-            <button @onclick="_Alta" class="btn btn-primary" >Aceptar</button>
-            <button @onclick="_Mensaje" class="btn btn-secondary" >Volver</button>
+            <button @onclick="_Alta" class="btn btn-primary" >Aceptar</button> <!--Llama al caso de uso altar-->
+            <button @onclick="_Mensaje" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
         </div>   
     }
 }
 else{
-    <ComponentError Text="@_stMensaje" />
+    <ComponentError Text="@_stMensaje" /> //En caso de error al instanciar el componenete (OnParamaetersSet)
 }
 
-<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Volver" />
+<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Volver" /> <!--Se asegura de que el usuario desee regresar al menu de expedientes-->
+
+
 
 @code {
-#region Expediente
-    [Parameter] public int? Id {get; set;}
-    private Expediente _expediente = new Expediente();
+#region Variables Expedente
+    [Parameter] public int? Id {get; set;} //ID del expediente envia como parametro en la URL de la pagina
+    private Expediente _expediente = new Expediente(); //Obj expediente
+    private bool _nuevoExpediente; //Para saber si se debe ingresar un nuevo expediente o mostrar uno almacenado
+#endregion Variables Expedente
+ 
+#region Variables de Errores y Mensajes
+    //Gestion de bools y errores
+    private bool _error = false; //Saber se ocurrio un error al acceder a la base de datos
 
-    //lista de tramites asociados
-    private List<Tramite> _lista = new List<Tramite>();
-    private bool _nuevoExpediente;
-    private bool _error = false;
-    protected override void OnParametersSet(){
+    //Varaible para llamar al objeto Mensaje
+    private Mensaje _mensaje = null!;
+
+    //String para los objetos Mensaje y para los Errores
+    private string _stMensaje = "";
+
+#endregion Variables de Errores y Mensajes
+
+#region Metodos de pagina
+    protected override void OnParametersSet(){ 
         try{
-            if(Id != null){
+            if(Id != null){ //Se envio un ID "existente"
                 _nuevoExpediente = false;
-                _expediente = consulta.Ejecutar(this.Id.Value, out _lista);
+                _expediente = consulta.Ejecutar(this.Id.Value); //caso de uso throw exception en caso de null
             }
             else{
                 _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
-                _nuevoExpediente = true;
+                _nuevoExpediente = true; //El ID fue null
             }
         }
-        catch (Exception e){
+        catch (Exception e){ //catch para los errores en el caso de suo
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
-            _error = true;
+            _error = true; //Muestra en la pagina el error
         }
     }
+
+    //Regresa a la pagina con la lista de Expeidentes
+    private void _Volver(){
+        navigationManager.NavigateTo("/listarexpedientes");
+    }
+#endregion Metodos de pagina
+
+#region Metodos de Expedientes
     private void _Alta(){
         try{
-            //provisio
+            //provisorio fasalta la gestion de usuairos
             _expediente.IdUsuario = 1;
             //
             agregar.Ejecutar(_expediente);
             Id = _expediente.Id;
             _expediente = new Expediente();
-            navigationManager.NavigateTo($"/expediente/{Id}");
+            navigationManager.NavigateTo($"/expediente/{Id}"); //En caso de hacer la alta, se envia a la pagina especifica del Expediente
         }
         catch(Exception e){
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
-            _error = true;
+            _error = true; //Muestra en la pagina el error
         }
     }
-    private void _Modificar(){
-        _expediente.Caratula = "CaratulaModificada1";
-        _expediente.EstadoExpediente = EstadoExpediente.Finalizado;
-        modificar.Ejecutar(_expediente);
-        //navigationManager.NavigateTo($"/expediente/{_expediente.Id}");
-    }
-#endregion Expediente
-    private void _Volver(){
-        navigationManager.NavigateTo("/listarexpedientes");
+
+    private void _Baja(){
+        try{
+             //provisorio fasalta la gestion de usuairos
+            _expediente.IdUsuario = 1;
+            //Mostar ConfirmarUsuario
+            eliminar.Ejecutar(_expediente);
+
+            navigationManager.NavigateTo("/listarexpedientes");
+        }
+        catch(Exception e){
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
+        }
     }
 
-#region Mensajes
-    private Mensaje _mensaje = null!;
-    private string _stMensaje = "";
+    //Envia al usuario a la pagina para modificar el Expediente
+    private void _ModificarExpediente(){
+        navigationManager.NavigateTo($"/modificarexpediente/{_expediente.Id}");
+    }
+    
+#endregion Metodos de Expedente
+
+#region Gestion de Mensajes
+
+    //Metodos que muestar el mensaje emergente
     private void _Mensaje(){
         _mensaje.MostrarMensaje();
     }
-#endregion Mensajes
+#endregion Gestion de Mensajes
+
+#region Metodos de Tramites
+
+    //Ventana emergente de ConfirmarUsuario
+    private void _ModificarTramite(int id){
+        navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{id}");
+    }
+    private void _EliminarTramite(Tramite tramite){
+        eliminarTramite.Ejecutar(tramite);
+        navigationManager.NavigateTo($"/expediente/{Id}", forceLoad: true);
+    }
+
+    private void _NuevoTramite(){
+        navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{null}");
+    }
+
+#endregion Metodos de Tramites
 
 }

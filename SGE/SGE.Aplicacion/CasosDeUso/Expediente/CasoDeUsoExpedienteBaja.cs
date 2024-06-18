@@ -14,7 +14,6 @@ public class CasoDeUsoExpedienteBaja(IExpedienteRepositorio expedienteRepositori
           if(expedienteRepositorio.EliminarExpediente(expediente.Id))//Si retorna verdadero, se ejecuta automaticamente y se elimina el expediente
           {
             tramiteRepositorio.EliminarTramitesPorIdExpediente(expediente.Id);
-            //Console.WriteLine("Expediente eliminado correctamente.");
           }
           else
             throw new RepositorioException($"El expediente con id {expediente.Id} no existe.");

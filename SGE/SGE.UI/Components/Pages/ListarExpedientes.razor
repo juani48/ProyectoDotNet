@@ -1,45 +1,60 @@
 ﻿@page "/listarexpedientes"
+
+<!--Caso de uso Expedientes-->
 @inject CasoDeUsoExpedienteConsultaTodos listarExpeidentes
+
+<!--Uso de la pagina-->
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
 <h3>Lista de Expedientes</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Caratula</th>
-            <th>Estado</th>
-            <th>Fecha creacion</th>
-            <th>Fecha modificacion</th>
-            <th>Id de usuario</th>
-            <th>Accion</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var expediente in _lista){
-            <tr>
-                <td>@expediente.Id</td>
-                <td>@expediente.Caratula</td>
-                <td>@expediente.EstadoExpediente</td>
-                <td>@expediente.FechaCreacion</td>
-                <td>@expediente.FechaModiificacion</td>
-                <td>@expediente.IdUsuario</td>
-                <td>
-                    <button @onclick="()=>_VerExpediente(expediente.Id)" class="btn btn-primary" >Examinar</button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
+<div><!--Tabla con los expedientes-->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Caratula</th>
+                <th>Estado</th>
+                <th>Fecha creacion</th>
+                <th>Fecha modificacion</th>
+                <th>ID de usuario</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var expediente in _lista){
+                <tr>
+                    <td>@expediente.Id</td>
+                    <td>@expediente.Caratula</td>
+                    <td>@expediente.EstadoExpediente</td>
+                    <td>@expediente.FechaCreacion</td>
+                    <td>@expediente.FechaModiificacion</td>
+                    <td>@expediente.IdUsuario</td>
+                    <td>
+                        <!--Examinar un expedientes especifico-->
+                        <button @onclick="()=>_VerExpediente(expediente.Id)" class="btn btn-primary" >Examinar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!--Agragar un Expediente-->
 <button @onclick="()=>_VerExpediente(null)" class="btn btn-primary" >Agregar Expediente</button>
 
 @code {
+ 
+    //Listar los Expedientes
     private List<Expediente> _lista = new List<Expediente>();
+
+    //Al inicializar el componenet muestra la lista
     protected override void OnInitialized(){
         _lista = listarExpeidentes.Ejecutar();
     }
+
+    //Envia al usuarioa a la pagina del expeidente solicitado
     private void _VerExpediente(int? id){
         navigationManager.NavigateTo($"expediente/{id}");
     }
