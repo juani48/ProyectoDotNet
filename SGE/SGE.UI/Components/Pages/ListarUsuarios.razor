@@ -1,0 +1,43 @@
+@page "/listarusuarios";
+@inject CasoDeUsoListarUsuarios listarUsuarios
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<h3>Lista de Usuarios</h3>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usuario in _lista)
+            {
+                <tr>
+                    <td>@usuario.Id</td>
+                    <td>@usuario.Nombre</td>
+                    <td>
+                        <button @onclick="() => _VerUsuario(usuario.Id)" class="btn btn-primary">Examinar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private List<Usuario> _lista = new List<Usuario>();
+
+    protected override void OnInitialized()
+    {
+        _lista = listarUsuarios.Ejecutar();
+    }
+
+    private void _VerUsuario(int? id)
+    {
+        navigationManager.NavigateTo($"Usuario/{id}");
+    }
+}

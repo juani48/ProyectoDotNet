@@ -109,6 +109,7 @@ else{
 
 
 @code {
+    
 #region Variables Expedente
     [Parameter] public int? Id {get; set;} //ID del expediente envia como parametro en la URL de la pagina
     private Expediente _expediente = new Expediente(); //Obj expediente
@@ -206,7 +207,7 @@ else{
     }
     private void _EliminarTramite(Tramite tramite){
         eliminarTramite.Ejecutar(tramite);
-        navigationManager.NavigateTo($"/expediente/{Id}", forceLoad: true);
+        navigationManager.NavigateTo($"/expediente/{Id}", forceLoad: true); //recargar pagina
     }
 
     private void _NuevoTramite(){
