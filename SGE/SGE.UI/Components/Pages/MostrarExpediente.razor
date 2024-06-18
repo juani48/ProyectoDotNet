@@ -5,6 +5,7 @@
 @inject CasoDeUsoExpedienteConsultaPorId consulta // consultar expediente
 @inject CasoDeUsoExpedienteAlta agregar //Alta en la base de datos SQLite
 @inject CasoDeUsoExpedienteBaja eliminar
+@inject CasoDeUsoTramiteBaja eliminarTramite
 
 
 <!--Uso de la pagina-->
@@ -52,7 +53,7 @@
 
                             <td>
                                 <button @onclick="()=>_ModificarTramite(t.Id)" class="btn btn-primary" >Modificar</button>
-                                <button  class="btn btn-danger" >Eliminar</button>
+                                <button @onclick="()=>_EliminarTramite(t)" class="btn btn-danger" >Eliminar</button>
                             </td>
                         </tr>
                     }
@@ -199,8 +200,13 @@ else{
 
 #region Metodos de Tramites
 
+    //Ventana emergente de ConfirmarUsuario
     private void _ModificarTramite(int id){
         navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{id}");
+    }
+    private void _EliminarTramite(Tramite tramite){
+        eliminarTramite.Ejecutar(tramite);
+        navigationManager.NavigateTo($"/expediente/{Id}", forceLoad: true);
     }
 
     private void _NuevoTramite(){

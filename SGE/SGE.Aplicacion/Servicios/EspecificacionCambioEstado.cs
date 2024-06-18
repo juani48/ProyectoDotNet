@@ -7,12 +7,15 @@ public class EspecificacionCambioEstado
         // Lógica para determinar el nuevo estado basado en la etiqueta del último trámite
         switch (etiquetaUltimoTramite)
         {
-            case EtiquetaTramite.Resolucion:
-                return EstadoExpediente.ConResolucion;
             case EtiquetaTramite.PaseAEstudio:
                 return EstadoExpediente.ParaResolver;
+
+            case EtiquetaTramite.Resolucion:
+                return EstadoExpediente.ConResolucion;
+
             case EtiquetaTramite.PaseAlArchivo:
                 return EstadoExpediente.Finalizado;
+                
             default:
                 return estadoActual;
         }
