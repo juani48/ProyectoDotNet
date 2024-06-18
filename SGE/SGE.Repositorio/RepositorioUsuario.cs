@@ -41,7 +41,7 @@ public class RepositorioUsuario:IUsuarioRepositorio  //Creo que tambien se podri
         //lista.Add(permiso);
     }
 
-  public void EliminarPermiso(int id, Permiso permiso)
+  public bool EliminarPermiso(int id, Permiso permiso)//Hacer que devuelva un booleano para poder manejar la excepcion
   {
     using var db = new Context();
     var usuario = db.Usuarios.Where(e => e.Id == id).SingleOrDefault(); //si invoco a obtenerUsuario estaria trabajando en otro contexto y no funcionaria, para poder usarlo tendria que modificarlo y pasarle el contexto por parametro
@@ -49,7 +49,9 @@ public class RepositorioUsuario:IUsuarioRepositorio  //Creo que tambien se podri
     {
         usuario.Permisos.Remove(permiso);
         db.SaveChanges();
+        return true;
     }
+    return false;
   }
 
 //----------------Eliminar/Listar usuarios-------------------
@@ -59,7 +61,7 @@ public class RepositorioUsuario:IUsuarioRepositorio  //Creo que tambien se podri
     return db.Usuarios.ToList();
   }
 
-  public void EliminarUsuario(int id)
+  public bool EliminarUsuario(int id) //Hacer que devuelva un booleano para poder manejar la excepcion
   {
     using var db = new Context();
     var usuario = db.Usuarios.SingleOrDefault(e => e.Id == id);
@@ -67,7 +69,9 @@ public class RepositorioUsuario:IUsuarioRepositorio  //Creo que tambien se podri
     {
       db.Usuarios.Remove(usuario);
       db.SaveChanges();
+      return true;
     }
+    return false;
   }
 
 
@@ -99,6 +103,18 @@ public class RepositorioUsuario:IUsuarioRepositorio  //Creo que tambien se podri
       builder.Append(b.ToString("x2"));
     }
     return builder.ToString();
+  }
+
+  public bool VerificarUsuario(Usuario usuario, string nombre, string contrasena)
+  {
+    using var db = new Context();
+    var usuarioEncontrado = db.Usuarios.FirstOrDefault(u => u.Id == usuario.Id);
+    if(usuarioEncontrado != null)
+    {
+      return usuarioEncontrado.Nombre == nombre &&
+             usuarioEncontrado.Contraseña == EncriptarSHA256(contrasena);
+    }
+    return false;
   }
 
 }

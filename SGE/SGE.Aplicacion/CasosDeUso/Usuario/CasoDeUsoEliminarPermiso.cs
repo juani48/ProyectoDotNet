@@ -6,7 +6,8 @@ public class CasoDeUsoEliminarPermiso(IUsuarioRepositorio usuarioRepositorio, IS
     {
         if(!servicioAutorzacion.PoseePermisoAdministrador(id, PermisoAdministrador.UsuarioBaja))
            throw new AutorizacionException("El usuario no posee el permiso.");
-        usuarioRepositorio.EliminarPermiso(idUsuario, permiso);
+        if(!usuarioRepositorio.EliminarPermiso(idUsuario, permiso))
+           throw new RepositorioException("El usuario al que se le quiere eliminar el permiso no existe.");
     }
 
 }
