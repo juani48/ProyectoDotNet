@@ -35,7 +35,7 @@
     </div>
 }
 else{
-    
+    <ComponentError />
 }
 
 @code {
@@ -45,7 +45,7 @@ else{
     protected override void OnInitialized()
     {   
         try{
-            _lista = listarUsuarios.Ejecutar(); //El 1 es provisorio
+            _lista = listarUsuarios.Ejecutar();
         }
         catch{
 

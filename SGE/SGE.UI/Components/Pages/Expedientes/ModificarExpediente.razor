@@ -12,10 +12,15 @@
     <h3>Modificar Expediente</h3>
 
     <!--Ingreso de la caratula-->
-    <input placeholder="Carátula modificada:" @bind="_expediente.Caratula" style="margin-bottom: 10px;">
+    <div style="margin-bottom: 10px;">
+        Ingrese la nueva caratula del Expediente: 
+        <input placeholder="Carátula modificada:" @bind="_expediente.Caratula">
+    </div>
+    
 
     <!--Selector del estado del expediente-->
     <div style="margin-bottom: 10px;">
+        Seleccione el nuevo estado del Expediente:
         <select @bind="_expediente.EstadoExpediente">
             <option value="RecienIniciado">RecienIniciado</option>
             <option value="ParaResolver">ParaResolver</option>

@@ -1,5 +1,84 @@
-﻿<h3>MostrarUsuario</h3>
+﻿@page "/usuario/{IdUsuario:int?}"
+
+<!--Caso de uso Usuarios-->
+@inject CasoDeUsoObtenerUsuario consultar
+
+<!--Uso de la pagina-->
+@inject NavigationManager navigationManager //Navegar entre paginas
+@rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
+
+@if(!_error){
+    if(!_modificarUsuario){ //no se modifica el usuario
+        <h3>Datos de Usuario</h3>
+        
+        <div style="font-size: large;">
+            <ul>
+                <li>Nombre: @_usuario.Nombre.</li>
+                <li>Apellido: @_usuario.Apellido.</li>
+                <li>Correo: @_usuario.Correo.</li>
+                @if((_usuario.Permisos != null)&&(_usuario.Permisos.Count == 0)){
+                    <li>El usuario no posee permisos adicionales.</li>
+                }
+                else if(_usuario.Permisos != null) {
+                   <li>Actualmente el usuario solo posee permisos para:
+                    <ul>
+                        @foreach(Permiso p in _usuario.Permisos){
+                            <li>@p.</li>
+                        }
+                    </ul>
+                </li> 
+                }
+                
+            </ul>
+        </div>
+    }
+    else{ //Se modifica el usuario
+        
+    }
+}
+else{
+    <ComponentError Text="@_stMensaje" />
+}
+
+
 
 @code {
 
+#region Variables de Usuario
+    [Parameter] public int? IdUsuario {get; set;}
+    private Usuario _usuario = new Usuario();
+    private bool _modificarUsuario = false;
+
+#endregion Varaibles de Usuario
+
+#region Variables de Errores y Mensajes
+    //Gestion de bools y errores
+    private bool _error = false; //Saber se ocurrio un error al acceder a la base de datos
+
+    //Varaible para llamar al objeto Mensaje
+    //private Mensaje _mensaje = null!;
+
+    //String para los objetos Mensaje y para los Errores
+    private string _stMensaje = "";
+
+#endregion Variables de Errores y Mensajes
+
+#region Metodos de pagina
+    protected override void OnParametersSet(){
+        try{
+            if(IdUsuario != null){
+                _usuario = consultar.Ejecutar(IdUsuario.Value);
+            }
+        }
+        catch (Exception e){ //catch para los errores en el caso de suo
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
+        }
+    }
+
+    private void _Volver(){ //Solo administrador
+        navigationManager.NavigateTo("/listarusuarios");
+    }
+
+#endregion Metodos de pagina
 }

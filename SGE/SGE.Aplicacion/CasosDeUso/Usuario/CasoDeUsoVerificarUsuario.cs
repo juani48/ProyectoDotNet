@@ -2,10 +2,14 @@ namespace SGE.Aplicacion;
 
 public class CasoDeUsoVerificarUsuario(IUsuarioRepositorio usuarioRepositorio, IServicioAutorizacion servicioAutorizacion, ServicioSesionUsuario servicioSesionUsuario)
 {
-    public void Ejecutar(string nombre, string contrasena)
-    {
-        if(!usuarioRepositorio.VerificarUsuario(servicioSesionUsuario.UsuarioActual, nombre, contrasena))
-           throw new RepositorioException("El nombre y la contraseña ingresados no coinciden con el usuario que inicio sesion anteriormente.");
+    public void Ejecutar(string nombre, string contraseña)
+    {   
+        if((nombre == "")||(contraseña == "")){
+            throw new ValidacionException("Los datos ingresados son invalidos.");
+        }
+        if(!usuarioRepositorio.VerificarUsuario(servicioSesionUsuario.UsuarioActual, nombre, contraseña)){
+                throw new RepositorioException("El nombre y la contraseña ingresados no coinciden con el usuario que inicio sesion.");
+        }        
     }
 
     public void Ejecutar(PermisoAdministrador permisoAdministrador){

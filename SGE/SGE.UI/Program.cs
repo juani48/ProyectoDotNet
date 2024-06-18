@@ -34,6 +34,7 @@ builder.Services.AddTransient<CasoDeUsoListarUsuarios>();
 builder.Services.AddTransient<CasoDeUsoIniciarSesion>();
 builder.Services.AddTransient<CasoDeUsoRegistrarUsuario>();
 builder.Services.AddTransient<CasoDeUsoVerificarUsuario>();
+builder.Services.AddTransient<CasoDeUsoObtenerUsuario>();
 
 //repositorios
 builder.Services.AddSingleton<ITramiteRepositorio,RepositorioTramite>();

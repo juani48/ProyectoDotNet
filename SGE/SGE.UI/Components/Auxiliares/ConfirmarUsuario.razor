@@ -1,29 +1,58 @@
 ﻿
-@if(_visible){
-    <div>
-        <div>
-            <h3>Para confimrmar usuario, por favor ingrese sus datos</h3>
-            
+@inject CasoDeUsoVerificarUsuario verificar
 
+@if(_visible){
+    <div class="contenedor">
+        <div class="contenido">
+            <h3>Por cuestion de seguridad, por favor ingrese sus credenciales</h3>
+            
+            <div>
+                Ingrese su nombre: <br>
+                <input placeholder="Nombre" @bind="_usuario.Nombre">
+                
+            </div>
+            <div>
+                Ingrese su contraseña: <br>
+                <input placeholder="Contraseña" @bind="_usuario.Contraseña" >
+            </div>
+
+            <button @onclick="_ConfirmarUsuario" class="btn btn-primary" >Aceptar</button>
         </div>
     </div>
 }
 
+<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Cerrar" /> 
 
 @code {
 
-    [Parameter] public EventCallback eventeCallback {get; set;}
+    [Parameter] public EventCallback eventCallback {get; set;}
 
-    //private string _nombreUsuario = "";
-    //private string _contraseña = "";
+    private Usuario _usuario = new Usuario();
     private bool _visible = false;
 
+    private Mensaje _mensaje = null!;
+    private string _stMensaje = "";
+
     public void MostrarConfirmar(){
+        
         _visible = true;
     }
 
     private void _Cerrar(){
+        _usuario = new Usuario();
         _visible = false;
-        //eventeCallback.InokeAsync();
+    }
+
+    private void _ConfirmarUsuario(){
+        try{
+            verificar.Ejecutar(_usuario.Nombre, _usuario.Contraseña);
+            _visible = false;
+            _usuario = new Usuario();
+            eventCallback.InvokeAsync();
+        }
+        catch(Exception e){
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _mensaje.MostrarMensaje();
+        }
     }
 }

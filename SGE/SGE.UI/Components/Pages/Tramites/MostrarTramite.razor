@@ -10,41 +10,57 @@
 @rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
 
 @if(!_error){
-    <div>
+
         @if(!_nuevoTramite){ //En caso de modificar un tramite
             <h3>Modificar Tramite</h3>
+
+            <div>
+                <!--Ingreso de la contenido-->
+                Ingrese el nuevo contenido del Tramite:
+                <input placeholder="Contenido del tramite" @bind="_tramite.Contenido" style="margin-bottom: 10px;">
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <!--Selector del etiqueta del tramite-->
+                Modifique la etiqueta del tramite:
+                <select @bind="_tramite.Etiqueta">
+                    <option value="EscritoPresentado">Escrito Presentado</option>
+                    <option value="PaseAEstudio">Pase a Estudio</option>
+                    <option value="Despacho">Despacho</option>
+                    <option value="Resolucion">Resolucion</option>
+                    <option value="Notificacion">Notificacion</option>
+                    <option value="PaseAlArchivo">Pase al Archivo</option>
+                </select>
+            </div>
+
         }
         else{ //En caso de que sea un nuevo tramite
-            <h3>Ingrese los datos para el nuevo Tramite</h3>    
+            <h3>Ingrese los datos para el nuevo Tramite</h3>  
+            <div>
+                <!--Ingreso de la contenido-->
+                Ingrese el contenido del nuevo Tramite:
+                <input placeholder="Contenido del tramite" @bind="_tramite.Contenido" style="margin-bottom: 10px;">
+            </div> 
+
+            <div>
+                <!--Ingreso del ID expediente-->
+                Ingrese el ID del Expediente al que asociar el Tramite:
+                <input placeholder="ID de expediente asociado" @bind="IdExpediente" style="margin-bottom: 10px;" />
+            </div> 
+
+            <div style="margin-bottom: 10px;">
+                <!--Selector del etiqueta del tramite-->
+                Seleccione la etiqueta del nuevo Tramite:
+                <select @bind="_tramite.Etiqueta">
+                    <option value="EscritoPresentado">Escrito Presentado</option>
+                    <option value="PaseAEstudio">Pase a Estudio</option>
+                    <option value="Despacho">Despacho</option>
+                    <option value="Resolucion">Resolucion</option>
+                    <option value="Notificacion">Notificacion</option>
+                    <option value="PaseAlArchivo">Pase al Archivo</option>
+                </select>
+            </div>
         }
-    </div>
-
-    <div>
-        <!--Ingreso de la contenido-->
-        <p style="font-size: large;" >Contenido del Tramite</p>
-        <input placeholder="Contenido del tramite" @bind="_tramite.Contenido" style="margin-bottom: 10px;">
-    </div>
-
-    <div>
-        <!--Ingreso del ID expediente-->
-        <p style="font-size: large;" >ID del Expediente asociado</p>
-        <input placeholder="ID de expediente asociado" @bind="IdExpediente" style="margin-bottom: 10px;" />
-    </div>
-
-    
-    <div style="margin-bottom: 10px;">
-        <!--Selector del etiqueta del tramite-->
-        <p style="font-size: large;" >Eriqueta del tramite</p>
-        <select @bind="_tramite.Etiqueta">
-            <option value="EscritoPresentado">Escrito Presentado</option>
-            <option value="PaseAEstudio">Pase a Estudio</option>
-            <option value="Despacho">Despacho</option>
-            <option value="Resolucion">Resolucion</option>
-            <option value="Notificacion">Notificacion</option>
-            <option value="PaseAlArchivo">Pase al Archivo</option>
-        </select>
-    </div>
-
     <div>
         <button @onclick="_Mensaje" class="btn btn-primary" >Aceptar</button> <!--Llama al caso de uso altar-->
         <button @onclick="_MensajeConfirmar" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->

@@ -1,5 +1,4 @@
 ﻿@page "/expediente/{Id:int?}"
-@using SGE.UI.Components
 
 <!--Caso de uso para Expedientes-->
 @inject CasoDeUsoExpedienteConsultaPorId consulta // consultar expediente
@@ -68,7 +67,7 @@
         <div>
             <button @onclick="_ModificarExpediente" class="btn btn-primary" >Modificar Expediente</button> <!--Modificar el expediente-->
             <button @onclick="_NuevoTramite" class="btn btn-primary" >Agregar Tramite</button>
-            <button @onclick="_Baja" class="btn btn-danger" >Eliminar Expediente</button>
+            <button @onclick="_ConfirmarUsuario" class="btn btn-danger" >Eliminar Expediente</button>
             <button @onclick="_Volver" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
         </div>
         
@@ -81,13 +80,13 @@
         
         <div>
            <!--Ingreso de la caratula-->
-            <p style="font-size: large;" >Caratula del Expediente</p>
+            Ingrese la caratula del nuevo Expediente:
             <input placeholder="Carátula del expediente" @bind="_expediente.Caratula" style="margin-bottom: 10px;"> 
         </div>
         
         <div style="margin-bottom: 10px;">
             <!--Selector del estado del expediente-->
-            <p style="font-size: large;" >Estado del Expediente</p>
+            Seleccione un estado del nuevo Expediente:
             <select @bind="_expediente.EstadoExpediente">
                 <option value="RecienIniciado">Recien Iniciado</option>
                 <option value="ParaResolver">Para Resolver</option>
@@ -108,7 +107,7 @@ else{
 
 <Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Volver" /> <!--Se asegura de que el usuario desee regresar al menu de expedientes-->
 
-
+<ConfirmarUsuario @ref="_confirmarUsuario" eventCallback="_Baja" />
 
 @code {
     
@@ -127,6 +126,9 @@ else{
 
     //String para los objetos Mensaje y para los Errores
     private string _stMensaje = "";
+    
+    //Varaibles para llamar al confimar usuario
+    private ConfirmarUsuario _confirmarUsuario = null!;
 
 #endregion Variables de Errores y Mensajes
 
@@ -200,6 +202,10 @@ else{
     //Metodos que muestar el mensaje emergente
     private void _Mensaje(){
         _mensaje.MostrarMensaje();
+    }
+
+    private void _ConfirmarUsuario(){
+        _confirmarUsuario.MostrarConfirmar();
     }
 #endregion Gestion de Mensajes
 
