@@ -33,7 +33,7 @@
 
     protected override void OnInitialized()
     {
-        _lista = listarUsuarios.Ejecutar();
+        _lista = listarUsuarios.Ejecutar(1);//El 1 es provisorio
     }
 
     private void _VerUsuario(int? id)
