@@ -20,7 +20,7 @@ public class CasoDeUsoModificarUsuario (IUsuarioRepositorio usuarioRepositorio, 
            throw new RepositorioException("El usuario al que se le quiere eliminar el permiso no existe.");
     }
 
-    public void Moidificar(Usuario usuario, string contraseña){
+    public void Modificar(Usuario usuario, string contraseña){
         if(contraseña != ""){
             usuario.Contraseña = contraseña;
         }
