@@ -49,8 +49,7 @@
 
     private void _RegistrarSesion(){
         try{
-            string _contraseña = _usuario.Contraseña;
-            sesion.RegistrarUsuario(_usuario, _contraseña);
+            sesion.RegistrarUsuario(_usuario);
             _usuario = new Usuario();
             navigationManager.NavigateTo("/home");
         }

@@ -34,7 +34,10 @@
             </ul>
         </div>
 
-        <button @onclick="_MensajeCerrarSesion" class="btn btn-primary">Cerrar sesion</button>
+        if(_usuario.Id == sesion.SesionActual().Id){
+            <button @onclick="_MensajeCerrarSesion" class="btn btn-primary">Cerrar sesion</button>
+        }
+        
         <button @onclick="_PaginaModificar" class="btn btn-secondary">Modificar datos personales</button>
 
     }
@@ -254,7 +257,7 @@ else{
     }
 
     private void _ModificarUsuario(){
-        _usuario.Contraseña = _contraseñaNueva;
+        modificar.Modificar(_usuario, _contraseñaNueva);
         _VolverUsuario();
     }
 

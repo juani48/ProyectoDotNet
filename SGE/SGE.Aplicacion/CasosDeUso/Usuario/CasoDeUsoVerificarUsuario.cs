@@ -5,7 +5,7 @@ public class CasoDeUsoVerificarUsuario(IUsuarioRepositorio usuarioRepositorio, I
     public void Ejecutar(string nombre, string contraseña)
     {   
         if((nombre == "")||(contraseña == "")){
-            throw new ValidacionException("Los datos ingresados son invalidos.");
+            throw new ValidacionException("Los datos ingresados no pueden estar vacios.");
         }
         if(!usuarioRepositorio.VerificarUsuario(servicioSesionUsuario.UsuarioActual, nombre, contraseña)){
                 throw new RepositorioException("El nombre y la contraseña ingresados no coinciden con el usuario que inicio sesion.");

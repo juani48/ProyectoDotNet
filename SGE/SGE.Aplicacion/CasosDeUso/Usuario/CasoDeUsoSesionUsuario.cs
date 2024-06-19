@@ -16,19 +16,17 @@ public class CasoDeUsoSesionUsuario (IUsuarioRepositorio usuarioRepositorio, Ser
         }
         
     }
-    public void RegistrarUsuario(Usuario usuario, string contrasena)
+    public void RegistrarUsuario(Usuario usuario)
     {   
-        if((usuario.Nombre == "")||(contrasena == "")||(usuario.Correo == "")||(usuario.Apellido == "")){
-            throw new ValidacionException("Los datos ingresados no pueden estar vacios.");
-        }
-        if(!usuarioRepositorio.RegistrarUsuario(usuario, contrasena)){
+        UsuarioValidador.ValidarUsuario(usuario);
+        if(!usuarioRepositorio.RegistrarUsuario(usuario, usuario.Contraseña)){
             throw new RepositorioException("Ya existe un usuario con ese nombre y contraseña");
         }
         servicioSesionUsuario.UsuarioActual = usuario;
     }
     public Usuario SesionActual(){
         return servicioSesionUsuario.UsuarioActual;
-    }
+    } 
     public void CerrarSesion (Usuario usuario){
         if(usuario == servicioSesionUsuario.UsuarioActual){
             servicioSesionUsuario.UsuarioActual = new Usuario();
@@ -37,7 +35,7 @@ public class CasoDeUsoSesionUsuario (IUsuarioRepositorio usuarioRepositorio, Ser
     public void UsuarioActivo(out bool error){
         if(servicioSesionUsuario.UsuarioActual.Id == 0){
             error = true;
-            throw new ValidacionException("Se debe iniciar sesion para acceder al sistem");
+            throw new ValidacionException("Se debe iniciar sesion para acceder al sistema.");
         }
         error = false;
     }
