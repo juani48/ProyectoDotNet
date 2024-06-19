@@ -35,7 +35,7 @@
         </div>
 
         if(_usuario.Id == sesion.SesionActual().Id){
-            <button @onclick="_MensajeCerrarSesion" class="btn btn-primary">Cerrar sesion</button>
+            <button @onclick="_MensajeCerrarSesion" class="btn btn-primary" style="margin-right: 10px;" >Cerrar sesion</button>
         }
         
         <button @onclick="_PaginaModificar" class="btn btn-secondary">Modificar datos personales</button>
@@ -75,7 +75,7 @@
             <p>Inidque los permisos a otorgar y quitar</p>
 
             <div>
-                @if((_usuario.Permisos != null)&&(_usuario.Permisos.Count() > 0)){
+                @if((_usuario.Permisos != null)&&(_usuario.Permisos.Count() < 6)){
                     <table class="table"> <!--Tabla para agregar permisos-->
                         <tr>
                             <th>Permisos a otorgar:</th>
@@ -126,7 +126,7 @@
                 }  
             </div>
             <div>
-                @if((_usuario.Permisos != null)&&(_usuario.Permisos.Count() == 0)){
+                @if((_usuario.Permisos != null)&&(_usuario.Permisos.Count() > 0)){
                     <table class="table"> <!--Tabla para eliminar permisos-->
                         <tr>
                             <th>Permisos a quitar:</th>
@@ -136,31 +136,31 @@
                             <tr>
                                 @if(_usuario.Permisos.Contains(Permiso.ExpedienteAlta)){
                                 <td>Permiso de alta de Expedientes</td>
-                                <td><button @onclick="()=>_EliminarPermiso(Permiso.ExpedienteAlta)" class="btn btn-danger">Agregar</button></td>
+                                <td><button @onclick="()=>_EliminarPermiso(Permiso.ExpedienteAlta)" class="btn btn-danger">Eliminar</button></td>
                                 }
                             </tr>
                             <tr>
                                 @if(_usuario.Permisos.Contains(Permiso.ExpedienteBaja)){
                                     <td>Permiso de baja de Expedientes</td>
-                                    <td><button @onclick="()=>_EliminarPermiso(Permiso.ExpedienteBaja)" class="btn btn-danger" >Agregar</button></td>
+                                    <td><button @onclick="()=>_EliminarPermiso(Permiso.ExpedienteBaja)" class="btn btn-danger" >Eliminar</button></td>
                                 }
                             </tr>
                             <tr>
                                 @if(_usuario.Permisos.Contains(Permiso.ExpedienteModificacion)){
                                     <td>Permiso de modificacion de Expedientes</td>
-                                    <td><button @onclick="()=>_EliminarPermiso(Permiso.ExpedienteModificacion)" class="btn btn-danger" >Agregar</button></td>
+                                    <td><button @onclick="()=>_EliminarPermiso(Permiso.ExpedienteModificacion)" class="btn btn-danger" >Eliminar</button></td>
                                 }
                             </tr>
                             <tr>
                                 @if(_usuario.Permisos.Contains(Permiso.TramiteAlta)){
                                     <td>Permiso de alta de Tramites</td>
-                                    <td><button @onclick="()=>_EliminarPermiso(Permiso.TramiteAlta)" class="btn btn-danger" >Agregar</button></td>
+                                    <td><button @onclick="()=>_EliminarPermiso(Permiso.TramiteAlta)" class="btn btn-danger" >Eliminar</button></td>
                                 }
                             </tr>
                             <tr>
                                 @if(_usuario.Permisos.Contains(Permiso.TramiteBaja)){
                                     <td>Permiso de baja de Tramites</td>
-                                    <td><button @onclick="()=>_EliminarPermiso(Permiso.TramiteBaja)" class="btn btn-danger" >Agregar</button></td>
+                                    <td><button @onclick="()=>_EliminarPermiso(Permiso.TramiteBaja)" class="btn btn-danger" >Eliminar</button></td>
                                 }
                             </tr>
                             <tr>
@@ -177,7 +177,7 @@
                 } 
             </div>
 
-            <button @onclick="_MensajePerderDatos" class="btn btn-secondary" >Volver</button>
+            <button @onclick="_VolverUsuario" class="btn btn-secondary" >Volver</button>
         }   
     }
 }
@@ -252,7 +252,6 @@ else{
 
     private void _EliminarPermiso(Permiso permiso){
        modificar.EliminarPermiso(_usuario.Id, permiso);
-       _modificarUsuario = false;
        _usuario.Permisos = consultar.Ejecutar(_usuario.Id).Permisos;
     }
 
