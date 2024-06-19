@@ -82,13 +82,13 @@
         
         <div>
            <!--Ingreso de la caratula-->
-            Ingrese la caratula del nuevo Expediente:
+            Ingrese la caratula del nuevo Expediente: <br>
             <input placeholder="Carátula del expediente" @bind="_expediente.Caratula" style="margin-bottom: 10px;"> 
         </div>
         
         <div style="margin-bottom: 10px;">
             <!--Selector del estado del expediente-->
-            Seleccione un estado del nuevo Expediente:
+            Seleccione un estado del nuevo Expediente: <br>
             <select @bind="_expediente.EstadoExpediente">
                 <option value="RecienIniciado">Recien Iniciado</option>
                 <option value="ParaResolver">Para Resolver</option>
@@ -104,7 +104,7 @@
     }
 }
 else{
-    <ComponentError Text="@_stMensaje" /> //En caso de error al instanciar el componenete (OnParamaetersSet)
+    <ComponentError Text="@_stMensaje" ErrorSesion="@_error" /> //En caso de error al instanciar el componenete (OnParamaetersSet)
 }
 
 <Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Volver" /> <!--Se asegura de que el usuario desee regresar al menu de expedientes-->
@@ -122,7 +122,6 @@ else{
 #region Variables de Errores y Mensajes
     //Gestion de bools y errores
     private bool _error = false; //Saber se ocurrio un error al acceder a la base de datos
-
     //Varaible para llamar al objeto Mensaje
     private Mensaje _mensaje = null!;
 
@@ -137,6 +136,7 @@ else{
 #region Metodos de pagina
     protected override void OnParametersSet(){ 
         try{
+            sesion.UsuarioActivo(out _error);
             if(Id != null){ //Se envio un ID "existente"
                 _nuevoExpediente = false;
                 _expediente = consulta.Ejecutar(this.Id.Value); //caso de uso throw exception en caso de null

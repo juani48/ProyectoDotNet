@@ -70,7 +70,7 @@
     </div> 
 }
 else{
-    <ComponentError Text="@_stMensaje" /> //En caso de error al instanciar el componenete (OnParamaetersSet)
+    <ComponentError Text="@_stMensaje" ErrorSesion="@_error" /> //En caso de error al instanciar el componenete (OnParamaetersSet)
 }
 
 <Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_VolverMensaje" /> <!--Confirnmar alta o midificacion-->
@@ -99,6 +99,7 @@ else{
 #region Metodos de pagina
     protected override void OnParametersSet(){
         try{
+            sesion.UsuarioActivo(out _error);
             if((Id != null)&&(IdExpediente != null)){ //No es un tramite nuevo
                 _tramite = consultar.Ejecutar(Id.Value);
                 _nuevoTramite = false;

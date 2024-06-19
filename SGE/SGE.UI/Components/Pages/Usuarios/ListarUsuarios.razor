@@ -2,7 +2,7 @@
 
 <!--Caso de uso para Usuarios-->
 @inject CasoDeUsoListarUsuarios listarUsuarios
-
+@inject CasoDeUsoSesionUsuario sesion
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager
@@ -35,22 +35,23 @@
     </div>
 }
 else{
-    <ComponentError />
+    <ComponentError Text="@_stMensaje"  ErrorSesion="_error" />
 }
 
 @code {
     private List<Usuario> _lista = new List<Usuario>();
-
+    private string _stMensaje = "";
     private bool _error = false;
     protected override void OnInitialized()
     {   
         try{
+            sesion.UsuarioActivo(out _error);
             _lista = listarUsuarios.Ejecutar();
         }
-        catch{
-
+        catch (Exception e){ //catch para los errores en el caso de suo
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
         }
-        
     }
 
     private void _VerUsuario(int id)

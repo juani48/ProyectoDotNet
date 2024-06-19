@@ -4,48 +4,55 @@
 @inject CasoDeUsoExpedienteConsultaTodos listarExpeidentes
 
 <!--Caso de uso Usarios-->
-@inject ServicioSesionUsuario usuarioActual //Para obtener el usuario actual
+@inject CasoDeUsoSesionUsuario sesion //Para obtener el usuario actual
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
-<h3>Lista de Expedientes</h3>
 
-<div><!--Tabla con los expedientes-->
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Caratula</th>
-                <th>Estado</th>
-                <th>Fecha creacion</th>
-                <th>Fecha modificacion</th>
-                <th>ID de usuario</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var expediente in _lista){
+@if(!_error){
+    <h3>Lista de Expedientes</h3>
+
+    <div><!--Tabla con los expedientes-->
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@expediente.Id</td>
-                    <td>@expediente.Caratula</td>
-                    <td>@expediente.EstadoExpediente</td>
-                    <td>@expediente.FechaCreacion</td>
-                    <td>@expediente.FechaModiificacion</td>
-                    <td>@expediente.IdUsuario</td>
-                    <td>
-                        <!--Examinar un expedientes especifico-->
-                        <button @onclick="()=>_VerExpediente(expediente.Id)" class="btn btn-primary" >Examinar</button>
-                    </td>
+                    <th>ID</th>
+                    <th>Caratula</th>
+                    <th>Estado</th>
+                    <th>Fecha creacion</th>
+                    <th>Fecha modificacion</th>
+                    <th>ID de usuario</th>
+                    <th>Acciones</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach(var expediente in _lista){
+                    <tr>
+                        <td>@expediente.Id</td>
+                        <td>@expediente.Caratula</td>
+                        <td>@expediente.EstadoExpediente</td>
+                        <td>@expediente.FechaCreacion</td>
+                        <td>@expediente.FechaModiificacion</td>
+                        <td>@expediente.IdUsuario</td>
+                        <td>
+                            <!--Examinar un expedientes especifico-->
+                            <button @onclick="()=>_VerExpediente(expediente.Id)" class="btn btn-primary" >Examinar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-<!--Agragar un Expediente-->
-<button @onclick="()=>_VerExpediente(null)" class="btn btn-primary" >Agregar Expediente</button>
+    <!--Agragar un Expediente-->
+    <button @onclick="()=>_VerExpediente(null)" class="btn btn-primary" >Agregar Expediente</button>
+
+}
+else{
+    <ComponentError Text="@_stMensaje" ErrorSesion= "@_error" />
+}
 
 @code {
 
@@ -55,11 +62,24 @@
 
 #endregion Varaibles de Expediente
 
+#region Variables de Errores
+    private bool _error = false;
+    private string _stMensaje = "";
+
+#endregion Variables de Errores
+
 #region Metodos de pagina
 
     //Al inicializar el componenet muestra la lista
     protected override void OnInitialized(){
-        _lista = listarExpeidentes.Ejecutar();
+        try{
+            sesion.UsuarioActivo(out _error);
+            _lista = listarExpeidentes.Ejecutar();
+        }
+        catch (Exception e){
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+        }
+        
     }
 
 #endregion Metodos de pagina

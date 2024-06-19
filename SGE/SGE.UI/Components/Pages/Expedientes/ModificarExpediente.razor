@@ -39,7 +39,7 @@
     </div>
 }
 else{
-    <ComponentError Text="@_stMensaje" />
+    <ComponentError Text="@_stMensaje" ErrorSesion="@_error" />
 }
 <Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_VolverMensaje" />
 
@@ -62,19 +62,20 @@ else{
 
 #region Metodos de pagina
     protected override void OnParametersSet(){
-        if(Id != null){
-            try{
+        try{
+            if(Id != null){
+                sesion.UsuarioActivo(out _error);
                 _expediente = consulta.Ejecutar(Id.Value);
                 _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
             }
-            catch (Exception e){ //catch para los errores en el caso de suo
-                _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
-                _error = true; //Muestra en la pagina el error
+            else{
+                _stMensaje = $"Ocurrio un error inesperado. Se esta queriendo acceder a un expediente inexistente.";
+                _error = true;
             }
         }
-        else{
-            _stMensaje = "Ocurrio un error inesperado al cargar la pagina.";
-            _error = true;
+        catch (Exception e){ //catch para los errores en el caso de suo
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
         }
     }
 

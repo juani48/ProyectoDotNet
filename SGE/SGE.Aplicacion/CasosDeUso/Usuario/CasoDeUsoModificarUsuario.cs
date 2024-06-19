@@ -21,7 +21,6 @@ public class CasoDeUsoModificarUsuario (IUsuarioRepositorio usuarioRepositorio, 
     }
 
     public void Moidificar(Usuario usuario){
-        //Asegurase de que el usuario que quiere modificar sea el se la cuenta
         usuarioRepositorio.ModificarUsuario(usuario); //El metodo retona bool
     }
 }

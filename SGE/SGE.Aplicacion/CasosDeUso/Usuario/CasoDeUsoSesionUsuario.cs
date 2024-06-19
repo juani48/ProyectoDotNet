@@ -16,7 +16,6 @@ public class CasoDeUsoSesionUsuario (IUsuarioRepositorio usuarioRepositorio, Ser
         }
         
     }
-
     public void RegistrarUsuario(Usuario usuario, string contrasena)
     {   
         if((usuario.Nombre == "")||(contrasena == "")||(usuario.Correo == "")||(usuario.Apellido == "")){
@@ -27,14 +26,19 @@ public class CasoDeUsoSesionUsuario (IUsuarioRepositorio usuarioRepositorio, Ser
         }
         servicioSesionUsuario.UsuarioActual = usuario;
     }
-
     public Usuario SesionActual(){
         return servicioSesionUsuario.UsuarioActual;
     }
-
     public void CerrarSesion (Usuario usuario){
         if(usuario == servicioSesionUsuario.UsuarioActual){
             servicioSesionUsuario.UsuarioActual = new Usuario();
         }
+    }
+    public void UsuarioActivo(out bool error){
+        if(servicioSesionUsuario.UsuarioActual.Id == 0){
+            error = true;
+            throw new ValidacionException("Se debe iniciar sesion para acceder al sistem");
+        }
+        error = false;
     }
 }

@@ -61,7 +61,10 @@ public class RepositorioUsuario : IUsuarioRepositorio  {//Creo que tambien se po
     using var db = new Context();
     var query = db.Usuarios.Where(u => u.Id == usuario.Id).SingleOrDefault();
     if(query != null){
-      query = usuario;
+      query.Nombre = usuario.Nombre;
+      query.Correo = usuario.Correo;
+      query.Apellido = usuario.Apellido;
+      query.Contraseña = EncriptarSHA256(usuario.Contraseña);
       db.SaveChanges();
       return true;
     }

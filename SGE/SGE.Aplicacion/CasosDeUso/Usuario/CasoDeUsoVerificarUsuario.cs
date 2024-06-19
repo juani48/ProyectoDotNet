@@ -11,7 +11,6 @@ public class CasoDeUsoVerificarUsuario(IUsuarioRepositorio usuarioRepositorio, I
                 throw new RepositorioException("El nombre y la contraseña ingresados no coinciden con el usuario que inicio sesion.");
         }        
     }
-
     public void Ejecutar(PermisoAdministrador permisoAdministrador){
         if(!servicioAutorizacion.PoseePermisoAdministrador(permisoAdministrador)){
             throw new AutorizacionException("El usuario no posee permisos de administrador.");
