@@ -57,6 +57,19 @@ public class RepositorioUsuario : IUsuarioRepositorio  {//Creo que tambien se po
     return false;
   }
 
+  public bool ModificarUsuario( Usuario usuario){
+    using var db = new Context();
+    var query = db.Usuarios.Where(u => u.Id == usuario.Id).SingleOrDefault();
+    if(query != null){
+      query = usuario;
+      db.SaveChanges();
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
 //----------------Eliminar/Listar usuarios-------------------
   public List<Usuario> obtenerUsuarios()
   {

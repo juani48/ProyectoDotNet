@@ -1,7 +1,7 @@
 ﻿@page "/"
 
 <!--Caso de uso para Usuarios-->
-@inject CasoDeUsoIniciarSesion iniciarSesion
+@inject CasoDeUsoSesionUsuario sesion
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager
@@ -38,7 +38,7 @@
 
     private void _IniciarSesion(){
         try{
-            iniciarSesion.Ejecutar(_usuario.Nombre, _usuario.Contraseña);
+            sesion.IniciarSesion(_usuario.Nombre, _usuario.Contraseña);
             navigationManager.NavigateTo("/home");
         }
         catch(Exception e){

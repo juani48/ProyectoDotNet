@@ -8,6 +8,8 @@ public interface IUsuarioRepositorio
     void AgregarPermiso(int id, Permiso permiso);
 
     bool EliminarPermiso(int id, Permiso permiso);
+
+    bool ModificarUsuario(Usuario usuario);
     List<Usuario> obtenerUsuarios();
     
     bool EliminarUsuario(int id);

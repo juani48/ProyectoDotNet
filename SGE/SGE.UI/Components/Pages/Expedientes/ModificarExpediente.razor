@@ -4,6 +4,9 @@
 @inject CasoDeUsoExpedienteConsultaPorId consulta // consultar expediente
 @inject CasoDeUsoExpedienteModificacion modificar //Modificar un expediente
 
+<!--Caso de uso para Usuarios-->
+@inject CasoDeUsoSesionUsuario sesion
+
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager //Navegar entre paginas
 @rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
@@ -56,6 +59,8 @@ else{
     private Mensaje _mensaje = null!;
 
 #endregion Variables de Errores y Mensajes
+
+#region Metodos de pagina
     protected override void OnParametersSet(){
         if(Id != null){
             try{
@@ -72,6 +77,8 @@ else{
             _error = true;
         }
     }
+
+#endregion Metodos de pagina
 
 #region Metodos de Mensajes
     private void _Mensaje(bool modificar){
@@ -92,7 +99,7 @@ else{
         }
         else{
             try{
-                _expediente.IdUsuario = 1; //provisorio
+                _expediente.IdUsuario = sesion.SesionActual().Id;
                 modificar.Ejecutar(_expediente);
                 navigationManager.NavigateTo($"/expediente/{Id}");
             }

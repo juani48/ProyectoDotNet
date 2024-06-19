@@ -17,6 +17,7 @@
             </div>
 
             <button @onclick="_ConfirmarUsuario" class="btn btn-primary" >Aceptar</button>
+            <button @onclick="_Cerrar" class="btn btn-secondary" >Cerrar</button>
         </div>
     </div>
 }
@@ -34,7 +35,6 @@
     private string _stMensaje = "";
 
     public void MostrarConfirmar(){
-        
         _visible = true;
     }
 

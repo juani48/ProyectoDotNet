@@ -8,6 +8,7 @@
 
 <!--Caso de uso para Usuarios-->
 @inject CasoDeUsoVerificarUsuario verificacion
+@inject CasoDeUsoSesionUsuario sesion
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager //Navegar entre paginas
@@ -66,7 +67,8 @@
         }
         <div>
             <button @onclick="_ModificarExpediente" class="btn btn-primary" >Modificar Expediente</button> <!--Modificar el expediente-->
-            <button @onclick="_NuevoTramite" class="btn btn-primary" >Agregar Tramite</button>
+            
+            <button @onclick="_NuevoTramite" class="btn btn-primary" >Agregar Tramite</button> <br><br>
             <button @onclick="_ConfirmarUsuario" class="btn btn-danger" >Eliminar Expediente</button>
             <button @onclick="_Volver" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
         </div>
@@ -160,6 +162,7 @@ else{
 #region Metodos de Expedientes
     private void _Alta(){
         try{
+            _expediente.IdUsuario = sesion.SesionActual().Id;
             agregar.Ejecutar(_expediente);
             Id = _expediente.Id;
             _expediente = new Expediente();

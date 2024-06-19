@@ -28,13 +28,11 @@ builder.Services.AddTransient<CasoDeUsoTramiteModificacion>();
 builder.Services.AddTransient<CasoDeUsoTramiteConsultarPorId>();
 
 //casos de usos de usuarios
-builder.Services.AddTransient<CasoDeUsoAgregarPermiso>();
-builder.Services.AddTransient<CasoDeUsoEliminarPermiso>();
+builder.Services.AddTransient<CasoDeUsoModificarUsuario>();
 builder.Services.AddTransient<CasoDeUsoListarUsuarios>();
-builder.Services.AddTransient<CasoDeUsoIniciarSesion>();
-builder.Services.AddTransient<CasoDeUsoRegistrarUsuario>();
 builder.Services.AddTransient<CasoDeUsoVerificarUsuario>();
 builder.Services.AddTransient<CasoDeUsoObtenerUsuario>();
+builder.Services.AddTransient<CasoDeUsoSesionUsuario>();
 
 //repositorios
 builder.Services.AddSingleton<ITramiteRepositorio,RepositorioTramite>();

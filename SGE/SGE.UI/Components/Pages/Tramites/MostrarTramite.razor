@@ -5,6 +5,9 @@
 @inject CasoDeUsoTramiteModificacion modificar
 @inject CasoDeUsoTramiteAlta alta
 
+<!--Caso de uso para Usuarios-->
+@inject CasoDeUsoSesionUsuario sesion
+
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager //Navegar entre paginas
 @rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
@@ -16,13 +19,13 @@
 
             <div>
                 <!--Ingreso de la contenido-->
-                Ingrese el nuevo contenido del Tramite:
+                Ingrese el nuevo contenido del Tramite: <br>
                 <input placeholder="Contenido del tramite" @bind="_tramite.Contenido" style="margin-bottom: 10px;">
             </div>
 
             <div style="margin-bottom: 10px;">
                 <!--Selector del etiqueta del tramite-->
-                Modifique la etiqueta del tramite:
+                Modifique la etiqueta del Tramite: <br>
                 <select @bind="_tramite.Etiqueta">
                     <option value="EscritoPresentado">Escrito Presentado</option>
                     <option value="PaseAEstudio">Pase a Estudio</option>
@@ -38,19 +41,19 @@
             <h3>Ingrese los datos para el nuevo Tramite</h3>  
             <div>
                 <!--Ingreso de la contenido-->
-                Ingrese el contenido del nuevo Tramite:
+                Ingrese el contenido del nuevo Tramite: <br>
                 <input placeholder="Contenido del tramite" @bind="_tramite.Contenido" style="margin-bottom: 10px;">
             </div> 
 
             <div>
                 <!--Ingreso del ID expediente-->
-                Ingrese el ID del Expediente al que asociar el Tramite:
+                Ingrese el ID del Expediente al que asociar el Tramite: <br>
                 <input placeholder="ID de expediente asociado" @bind="IdExpediente" style="margin-bottom: 10px;" />
             </div> 
 
             <div style="margin-bottom: 10px;">
                 <!--Selector del etiqueta del tramite-->
-                Seleccione la etiqueta del nuevo Tramite:
+                Seleccione la etiqueta del nuevo Tramite: <br>
                 <select @bind="_tramite.Etiqueta">
                     <option value="EscritoPresentado">Escrito Presentado</option>
                     <option value="PaseAEstudio">Pase a Estudio</option>
@@ -138,11 +141,11 @@ else{
     private void _VolverMensaje(){
         try{
             if(_nuevoTramite){
-                _tramite.IdUsuario = 1; //provisorio
+                _tramite.IdUsuario = sesion.SesionActual().Id;
                 alta.Ejecutar(_tramite);
             }
             else{
-                _tramite.IdUsuario = 1; //provisorio
+                _tramite.IdUsuario = sesion.SesionActual().Id;
                 modificar.Ejecutar(_tramite);
             }
             navigationManager.NavigateTo($"/expediente/{_tramite.ExpedienteId}");
