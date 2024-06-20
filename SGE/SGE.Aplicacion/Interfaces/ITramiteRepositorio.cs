@@ -8,6 +8,7 @@ public interface ITramiteRepositorio
     Tramite? ObtenerTramite(int id);
     void ModificarTramite(Tramite tramite);
     List<Tramite> ListarTramitesPorEtiqueta(EtiquetaTramite etiqueta);
+    List<Tramite> ListarTramites();
 
     //interaccion con expedientes
     EtiquetaTramite? ObtenerEtiqueta(int id);

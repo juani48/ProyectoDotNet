@@ -2,6 +2,7 @@
 
 <!-- Caso de uso para Usuarios -->
 @inject CasoDeUsoListarUsuarios listarUsuarios
+@inject CasoDeUsoEliminarUsuario eliminar
 
 <!-- Caso de uso Sesion -->
 @inject CasoDeUsoUsuarioActivo usuarioActivo
@@ -51,11 +52,24 @@ else {
     </div>
 }
 
+<ConfirmarUsuario @ref="_confirmar" eventCallback="_EliminarUsuario" />
+
 @code {
+
+#region Variables de usuario
     private List<Usuario> _lista = new List<Usuario>();
+    private int _id = 0;
+
+#endregion Variables de usuario
+
+#region Variables de error y mensaje
     private string _stMensaje = "";
     private bool _error = false;
+    private ConfirmarUsuario _confirmar = null!;
 
+#endregion Variables de error y mensaje
+
+#region Metodos de pagina
     protected override void OnInitialized()
     {
         try
@@ -69,8 +83,24 @@ else {
         }
     }
 
-    private void _VerUsuario(int id)
-    {
+    private void _VerUsuario(int id){
         navigationManager.NavigateTo($"usuario/{id}");
     }
+#endregion Metodos de pagina
+
+#region Metodos de mensaje
+    private void _ConfirmarUsuario(int idUsuario){
+        _id = idUsuario;
+        _confirmar.MostrarConfirmar();
+    }
+
+#endregion Metodos de mensaje
+    
+#region Metodos de usuario
+    private void _EliminarUsuario(){
+        eliminar.Ejecutar(_id);
+        _lista = listarUsuarios.Ejecutar();
+    }
+
+#endregion Metodos de usuario
 }
