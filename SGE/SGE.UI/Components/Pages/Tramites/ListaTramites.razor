@@ -1,5 +1,136 @@
-﻿<h3>ListaTramites</h3>
+﻿@page "/listartramites"
+
+@inject CasoDeUsoTramiteListar listar
+@inject CasoDeUsoTramiteListarPorEtiqueta listarEtiqueta
+@inject CasoDeUsoTramiteConsultarPorId consulta
+
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@inject CasoDeUsoUsuarioActivo usuarioActivo
+
+@if(!_error){
+
+    <h3>Buscar Tramites</h3>
+
+    <div>
+
+        Ingrese in ID de algun tramite existente: <br>
+        <input @bind="_idTramite" > <br>
+        <button @onclick="_BuscarId" class="btn btn-primary" >Buscar por ID</button>
+    </div>
+    
+    <div>
+        Seleccione alguna etiqueta: <br>
+        <select @bind="_etiqueta">
+            <option value="EscritoPresentado">Escrito Presentado</option>
+            <option value="PaseAEstudio">Pase a Estudio</option>
+            <option value="Despacho">Despacho</option>
+            <option value="Resolucion">Resolucion</option>
+            <option value="Notificacion">Notificacion</option>
+            <option value="PaseAlArchivo">Pase al Archivo</option>
+        </select>
+
+        <button @onclick="_BuscarEtiqueta" class="btn btn-primary" >Buscar por Etiqueta</button>
+    </div>
+
+    <h4>Lista de Tramites</h4>
+
+    <div><!--Tabla con los expedientes-->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Contenido</th>
+                    <th>Etiqueta</th>
+                    <th>ID de Expediente asociado</th>
+                    <th>Fecha creacion</th>
+                    <th>Fecha modificacion</th>
+                    <th>ID de usuario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var tramite in _lista){
+                    <tr>
+                        <td>@tramite.Id</td>
+                        <td>@tramite.Contenido</td>
+                        <td>@tramite.Etiqueta</td>
+                        <td>@tramite.ExpedienteId</td>
+                        <td>@tramite.FechaCreacion</td>
+                        <td>@tramite.FechaModificacion</td>
+                        <td>@tramite.IdUsuario</td>
+                        <td>
+                            <!--Examinar un expedientes especifico-->
+                            <button @onclick="()=>_VerExpediente(tramite.ExpedienteId)" class="btn btn-primary" >Ver Expediente</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <button @onclick="_BuscarTodos" class="btn btn-secondary" >Buscar todos los Tramites</button>
+    </div>
+
+}
+else{
+    <ComponentError Text="@_stMensaje" ErrorSesion= "@_error" />
+}
+
 
 @code {
+    #region Varaibles de Expediente
+    //Listar los Expedientes
+    private List<Tramite> _lista = new List<Tramite>();
+
+    private int? _idTramite;
+
+    private EtiquetaTramite? _etiqueta;
+
+#endregion Varaibles de Expediente
+
+#region Variables de Errores
+    private bool _error = false;
+    private string _stMensaje = "";
+
+#endregion Variables de Errores
+
+#region Metodos de pagina
+
+    //Al inicializar el componenet muestra la lista
+    protected override void OnInitialized(){
+        try{
+            usuarioActivo.Ejecutar(out _error);
+            _lista = listar.Ejecutar();
+        }
+        catch (Exception e){
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+        }
+        
+    }
+
+#endregion Metodos de pagina
+
+#region Metodos de Tramites
+
+    private void _BuscarId(){
+        _lista = consulta.Ejecutar(_idTramite);
+    }
+
+    private void _BuscarEtiqueta(){
+        _lista = listarEtiqueta.Ejecutar(_etiqueta);
+    }
+
+    private void _BuscarTodos(){
+        _lista = listar.Ejecutar();
+    }
+
+    private void _VerExpediente(int id){
+        navigationManager.NavigateTo($"/expediente/{id}");
+    }
+
+#endregion Metodos de Tramites
 
 }
