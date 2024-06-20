@@ -5,8 +5,8 @@
 @inject CasoDeUsoExpedienteModificacion modificar // Modificar un expediente
 
 <!-- Caso de uso para Sesión -->
-@inject CasoDeUsoUsuarioActivo usuarioActivo
-@inject CasoDeUsoObtenerSesionActual sesionActual
+@inject CasoDeUsoUsuarioActivo usuarioActivo //Pasa verificar que el usuario inicio sesion
+@inject CasoDeUsoObtenerSesionActual sesionActual //Para asignar el ID se la sesion actual al expedeinte modificado
 
 <!-- Uso de la página -->
 @inject NavigationManager navigationManager // Navegar entre páginas

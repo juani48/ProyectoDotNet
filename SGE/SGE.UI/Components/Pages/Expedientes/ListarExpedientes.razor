@@ -10,7 +10,8 @@
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
-@if (!_error) {
+@if (!_error) { //En caso de error al inicializar la pagina
+
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-10">
@@ -49,12 +50,11 @@
                     </table>
                 </div>
 
-                <!-- Agregar un Expediente -->
-                <button @onclick="()=>_VerExpediente(null)" class="btn btn-primary">Agregar Expediente</button>
             </div>
         </div>
     </div>
-} else {
+}
+else {
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -62,10 +62,6 @@
             </div>
         </div>
     </div>
-
-}
-else{
-    <ComponentError Text="@_stMensaje" ErrorSesion= "@_error" />
 }
 
 @code {

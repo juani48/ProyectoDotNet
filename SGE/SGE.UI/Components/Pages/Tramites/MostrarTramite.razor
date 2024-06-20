@@ -16,76 +16,72 @@
 @if (!_error) {
 
     @if (!_nuevoTramite) { <!-- En caso de modificar un tramite -->
-        <div class="container mt-4">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <h3>Modificar Trámite</h3>
+        <div class="text-center">
+            <h3>Modificar Trámite</h3>
 
-                    <div class="form-group">
-                        <!-- Ingreso del contenido -->
-                        <label for="contenido">Ingrese el nuevo contenido del Trámite:</label>
-                        <input id="contenido" class="form-control" placeholder="Contenido del trámite" @bind="_tramite.Contenido">
-                    </div>
+            <div style="margin-bottom: 10px;" >
+                <!-- Ingreso del contenido -->
+                Ingrese el nuevo contenido del Trámite: <br>
+                <input placeholder="Contenido del trámite" @bind="_tramite.Contenido" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;" >
+            </div>
 
-                    <div class="form-group">
-                        <!-- Selector de la etiqueta del tramite -->
-                        <label for="etiqueta">Modifique la etiqueta del Trámite:</label>
-                        <select id="etiqueta" class="form-control" @bind="_tramite.Etiqueta">
-                            <option value="EscritoPresentado">Escrito Presentado</option>
-                            <option value="PaseAEstudio">Pase a Estudio</option>
-                            <option value="Despacho">Despacho</option>
-                            <option value="Resolucion">Resolución</option>
-                            <option value="Notificacion">Notificación</option>
-                            <option value="PaseAlArchivo">Pase al Archivo</option>
-                        </select>
-                    </div>
+            <div style="margin-bottom: 10px;">
+                <!-- Selector de la etiqueta del tramite -->
+                Modifique la etiqueta del Trámite: <br>
+                <select @bind="_tramite.Etiqueta" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                    <option value="EscritoPresentado">Escrito Presentado</option>
+                    <option value="PaseAEstudio">Pase a Estudio</option>
+                    <option value="Despacho">Despacho</option>
+                    <option value="Resolucion">Resolución</option>
+                    <option value="Notificacion">Notificación</option>
+                    <option value="PaseAlArchivo">Pase al Archivo</option>
+                </select>
+            </div>
 
-                    <div class="form-group">
-                        <button @onclick="_Mensaje" class="btn btn-primary">Aceptar</button> <!-- Llama al caso de uso modificar -->
-                        <button @onclick="_MensajeConfirmar" class="btn btn-secondary">Volver</button> <!-- Volver al menú con todos los expedientes -->
-                    </div>
-                </div>
+            <div>
+                <button @onclick="_Mensaje" class="btn btn-primary">Aceptar</button> <!-- Llama al caso de uso modificar -->
+                <button @onclick="_MensajeConfirmar" class="btn btn-secondary">Volver</button> <!-- Volver al menú con todos los expedientes -->
             </div>
         </div>
     } 
     else { <!-- En caso de que sea un nuevo tramite -->
-        <div class="container mt-4">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <h3>Ingresar datos para el nuevo Trámite</h3>
+        <div class="text-center" >
+            <div>
+                <h3 >Ingrese los datos para el nuevo Tramite</h3>
+            </div>
 
-                    <div class="form-group">
-                        <!-- Ingreso del contenido -->
-                        <label for="contenido">Ingrese el contenido del nuevo Trámite:</label>
-                        <input id="contenido" class="form-control" placeholder="Contenido del trámite" @bind="_tramite.Contenido">
-                    </div>
+            <div>
+                <!-- Ingreso del contenido -->
+                Ingrese el contenido del nuevo Trámite: <br>
+                <input placeholder="Contenido del trámite" @bind="_tramite.Contenido" style="margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" >
+            </div>
 
-                    <div class="form-group">
-                        <!-- Ingreso del ID expediente -->
-                        <label for="idExpediente">Ingrese el ID del Expediente al que asociar el Trámite:</label>
-                        <input id="idExpediente" class="form-control" placeholder="ID de expediente asociado" @bind="IdExpediente">
-                    </div>
+            <div  >
+                <!-- Ingreso del ID expediente -->
+                Ingrese el ID del Expediente al que asociar el Trámite: <br>
+                <input placeholder="ID de expediente asociado" @bind="IdExpediente" style="margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" >
+            </div>
 
-                    <div class="form-group">
-                        <!-- Selector de la etiqueta del tramite -->
-                        <label for="etiqueta">Seleccione la etiqueta del nuevo Trámite:</label>
-                        <select id="etiqueta" class="form-control" @bind="_tramite.Etiqueta">
-                            <option value="EscritoPresentado">Escrito Presentado</option>
-                            <option value="PaseAEstudio">Pase a Estudio</option>
-                            <option value="Despacho">Despacho</option>
-                            <option value="Resolucion">Resolución</option>
-                            <option value="Notificacion">Notificación</option>
-                            <option value="PaseAlArchivo">Pase al Archivo</option>
-                        </select>
-                    </div>
+            <div style="margin-bottom: 10px;" >
+                <!-- Selector de la etiqueta del tramite -->
+                Seleccione la etiqueta del nuevo Trámite: <br>
+                <select @bind="_tramite.Etiqueta" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;" >
+                    <option value="EscritoPresentado">Escrito Presentado</option>
+                    <option value="PaseAEstudio">Pase a Estudio</option>
+                    <option value="Despacho">Despacho</option>
+                    <option value="Resolucion">Resolución</option>
+                    <option value="Notificacion">Notificación</option>
+                    <option value="PaseAlArchivo">Pase al Archivo</option>
+                </select>
+            </div>
 
-                    <div class="form-group">
-                        <button @onclick="_Mensaje" class="btn btn-primary">Aceptar</button> <!-- Llama al caso de uso alta -->
-                        <button @onclick="_MensajeConfirmar" class="btn btn-secondary">Volver</button> <!-- Volver al menú con todos los expedientes -->
-                    </div>
-                </div>
+            <div >
+                <button @onclick="_Mensaje" class="btn btn-primary">Aceptar</button> <!-- Llama al caso de uso alta -->
+                <button @onclick="_MensajeConfirmar" class="btn btn-secondary">Volver</button> <!-- Volver al menú con todos los expedientes -->
             </div>
         </div>
+        
+
     }
 
 } else {

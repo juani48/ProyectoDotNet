@@ -33,6 +33,7 @@
                                 <td>@usuario.Nombre</td>
                                 <td>
                                     <button @onclick="() => _VerUsuario(usuario.Id)" class="btn btn-primary">Examinar</button>
+                                    <button @onclick="()=>_ConfirmarUsuario(usuario.Id)" class="btn btn-danger" >Eliminar</button>
                                 </td>
                             </tr>
                         }

@@ -10,73 +10,86 @@
 @inject CasoDeUsoUsuarioActivo usuarioActivo
 
 @if(!_error){
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                
+                    <h3>Buscar Tramites</h3>
 
-    <h3>Buscar Tramites</h3>
+                    <div style="margin-bottom: 10px;" >
+                        Ingrese in ID de algun tramite existente: <br>
+                        <input @bind="_idTramite" style="margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" > <br>
+                        <button @onclick="_BuscarId" class="btn btn-primary" >Buscar por ID</button>
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;" >
+                        Seleccione alguna etiqueta: <br>
+                        <select @bind="_etiqueta" style="margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" >
+                            <option value="EscritoPresentado">Escrito Presentado</option>
+                            <option value="PaseAEstudio">Pase a Estudio</option>
+                            <option value="Despacho">Despacho</option>
+                            <option value="Resolucion">Resolucion</option>
+                            <option value="Notificacion">Notificacion</option>
+                            <option value="PaseAlArchivo">Pase al Archivo</option>
+                        </select>
+                        <br>
+                        <button @onclick="_BuscarEtiqueta" class="btn btn-primary" >Buscar por Etiqueta</button>
+                    </div>
 
-    <div>
+                
+                
+                <h4>Lista de Tramites</h4>
 
-        Ingrese in ID de algun tramite existente: <br>
-        <input @bind="_idTramite" > <br>
-        <button @onclick="_BuscarId" class="btn btn-primary" >Buscar por ID</button>
-    </div>
-    
-    <div>
-        Seleccione alguna etiqueta: <br>
-        <select @bind="_etiqueta">
-            <option value="EscritoPresentado">Escrito Presentado</option>
-            <option value="PaseAEstudio">Pase a Estudio</option>
-            <option value="Despacho">Despacho</option>
-            <option value="Resolucion">Resolucion</option>
-            <option value="Notificacion">Notificacion</option>
-            <option value="PaseAlArchivo">Pase al Archivo</option>
-        </select>
+                <div class="table-responsive"  >
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Contenido</th>
+                                <th>Etiqueta</th>
+                                <th>ID de Expediente asociado</th>
+                                <th>Fecha creacion</th>
+                                <th>Fecha modificacion</th>
+                                <th>ID de usuario</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var tramite in _lista){
+                                <tr>
+                                    <td>@tramite.Id</td>
+                                    <td>@tramite.Contenido</td>
+                                    <td>@tramite.Etiqueta</td>
+                                    <td>@tramite.ExpedienteId</td>
+                                    <td>@tramite.FechaCreacion</td>
+                                    <td>@tramite.FechaModificacion</td>
+                                    <td>@tramite.IdUsuario</td>
+                                    <td>
+                                        <!--Examinar un expedientes especifico-->
+                                        <button @onclick="()=>_VerExpediente(tramite.ExpedienteId)" class="btn btn-primary" >Expediente</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
 
-        <button @onclick="_BuscarEtiqueta" class="btn btn-primary" >Buscar por Etiqueta</button>
-    </div>
-
-    <h4>Lista de Tramites</h4>
-
-    <div><!--Tabla con los expedientes-->
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Contenido</th>
-                    <th>Etiqueta</th>
-                    <th>ID de Expediente asociado</th>
-                    <th>Fecha creacion</th>
-                    <th>Fecha modificacion</th>
-                    <th>ID de usuario</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach(var tramite in _lista){
-                    <tr>
-                        <td>@tramite.Id</td>
-                        <td>@tramite.Contenido</td>
-                        <td>@tramite.Etiqueta</td>
-                        <td>@tramite.ExpedienteId</td>
-                        <td>@tramite.FechaCreacion</td>
-                        <td>@tramite.FechaModificacion</td>
-                        <td>@tramite.IdUsuario</td>
-                        <td>
-                            <!--Examinar un expedientes especifico-->
-                            <button @onclick="()=>_VerExpediente(tramite.ExpedienteId)" class="btn btn-primary" >Ver Expediente</button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
-    <div>
-        <button @onclick="_BuscarTodos" class="btn btn-secondary" >Buscar todos los Tramites</button>
+                <div class="text-center" >
+                    <button @onclick="_BuscarTodos" class="btn btn-secondary" >Buscar todos los Tramites</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 }
 else{
-    <ComponentError Text="@_stMensaje" ErrorSesion= "@_error" />
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <ComponentError Text="@_stMensaje" ErrorSesion="@_error" />
+            </div>
+        </div>
+    </div>
 }
 
 
