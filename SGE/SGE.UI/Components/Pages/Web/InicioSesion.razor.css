@@ -1,16 +1,81 @@
-.contenedor{
+.contenedor {
     position: fixed;
-    top:0;
+    top: 0;
     left: 0;
     right: 0;
-    bottom:0;
+    bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
     display: flex;
     align-items: center; 
     justify-content: center;
 }
-.contenido{
+
+
+.contenido {
     padding: 20px;
     background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+
+.form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+
+.form-control:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+
+.btn.btn-primary {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+
+.btn.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+
+.registro-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+
+.registro-link:hover {
+    text-decoration: underline;
 }

@@ -10,21 +10,21 @@
 
 <div class="contenedor">
     <div class="contenido">
-            <h3>Bienvenido al sistema</h3>
-            <h4>Inicie sesion</h4>
+        <h3>Bienvenido al sistema</h3>
+        <h4>Inicie sesion</h4>
 
-            <div style="margin-bottom: 10px;" >
-                Nombre<br>
-                <input placeholder="Ingrese su nombre" @bind="_usuario.Nombre" ><br>
-            </div>
-            
-            <div style="margin-bottom: 10px;" >
-                Contraseña<br>
-                <input placeholder="Ingrese su contraseña" @bind="_usuario.Contraseña" ><br>
-            </div>
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" placeholder="Ingrese su nombre" @bind="_usuario.Nombre" class="form-control"><br>
+        </div>
+        
+        <div class="form-group">
+            <label for="contrasena">Contraseña</label>
+            <input id="contrasena" type="password" placeholder="Ingrese su contraseña" @bind="_usuario.Contraseña" class="form-control"><br>
+        </div>
 
-            <button @onclick="_IniciarSesion" style="margin-bottom: 10px;" class="btn btn-primary" >Iniciar sesion</button>
-            <p>¿No tiene una cuenta? Registrese <u><a href="/registro" >aqui</a></u>!</p>
+        <button @onclick="_IniciarSesion" class="btn btn-primary">Iniciar sesion</button>
+        <p>¿No tiene una cuenta? Regístrese <u><a href="/registro" class="registro-link">aqui</a></u>!</p>
     </div>
 </div>
 
@@ -50,5 +50,4 @@
     private void _Limpiar(){
         _usuario = new Usuario();
     }
-
 }

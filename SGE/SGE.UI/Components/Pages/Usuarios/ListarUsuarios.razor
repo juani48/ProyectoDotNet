@@ -1,56 +1,69 @@
 @page "/listarusuarios"
 
-<!--Caso de uso para Usuarios-->
+<!-- Caso de uso para Usuarios -->
 @inject CasoDeUsoListarUsuarios listarUsuarios
 
-<!--Caso de uso Sesion-->
+<!-- Caso de uso Sesion -->
 @inject CasoDeUsoUsuarioActivo usuarioActivo
 
-<!--Uso de la pagina-->
+<!-- Uso de la pagina -->
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
-@if(!_error){
-    <h3>Lista de Usuarios</h3>
-    <div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var usuario in _lista)
-                {
-                    <tr>
-                        <td>@usuario.Id</td>
-                        <td>@usuario.Nombre</td>
-                        <td>
-                            <button @onclick="() => _VerUsuario(usuario.Id)" class="btn btn-primary">Examinar</button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+@if(!_error) {
+    <div class="container">
+        <h3 class="mt-4 mb-3">Lista de Usuarios</h3>
+        <div class="table-responsive">
+            @if (_lista != null && _lista.Count > 0)
+            {
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var usuario in _lista)
+                        {
+                            <tr>
+                                <td>@usuario.Id</td>
+                                <td>@usuario.Nombre</td>
+                                <td>
+                                    <button @onclick="() => _VerUsuario(usuario.Id)" class="btn btn-primary">Examinar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No hay usuarios para mostrar.</p>
+            }
+        </div>
     </div>
 }
-else{
-    <ComponentError Text="@_stMensaje"  ErrorSesion="_error" />
+else {
+    <div class="container mt-4">
+        <ComponentError Text="@_stMensaje" ErrorSesion="_error" />
+    </div>
 }
 
 @code {
     private List<Usuario> _lista = new List<Usuario>();
     private string _stMensaje = "";
     private bool _error = false;
+
     protected override void OnInitialized()
-    {   
-        try{
+    {
+        try
+        {
             usuarioActivo.Ejecutar(out _error);
             _lista = listarUsuarios.Ejecutar();
         }
-        catch (Exception e){ //catch para los errores en el caso de suo
+        catch (Exception e){  //catch para los errores en el caso de uso
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
             _error = true; //Muestra en la pagina el error
         }

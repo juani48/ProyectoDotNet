@@ -1,12 +1,12 @@
 ﻿@page "/expediente/{Id:int?}"
 
-<!--Caso de uso para Expedientes-->
-@inject CasoDeUsoExpedienteConsultaPorId consulta // consultar expediente
+<!-- Caso de uso para Expedientes -->
+@inject CasoDeUsoExpedienteConsultaPorId consulta //consultar expediente
 @inject CasoDeUsoExpedienteAlta agregar //Alta en la base de datos SQLite
 @inject CasoDeUsoExpedienteBaja eliminar
 @inject CasoDeUsoTramiteBaja eliminarTramite
 
-<!--Caso de uso Verficar-->
+<!--Caso de uso Verificar-->
 @inject CasoDeUsoVerificarPermiso verificarPermiso
 
 <!--Caso de uso para Sesion-->
@@ -15,26 +15,25 @@
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager //Navegar entre paginas
-@rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
+@rendermode InteractiveServer
 
-@if(!_error){ //En caso de error al consultar la base de datos (OnParamaetersSet)
-
-    @if(!_nuevoExpediente){ //En caso de que no se ingrese un nuevo expediente y se deba mostrar uno almacenado
-
+@if(!_error) { //En caso de error al consultar la base de datos (OnParamaetersSet)
+    @if(!_nuevoExpediente) { //En caso de que no se ingrese un nuevo expediente y se deba mostrar uno almacenado
+    
         <!--MOSTRAR INFORMACION DE UN EXPEDIENTE-->
         <h3>@_expediente.Caratula</h3>
         <div style="font-size: large;">
             <ul>
                 <li>El expediente se encuentra @_expediente.EstadoExpediente</li>
                 <li>La fecha de inicio del expediente fue: @_expediente.FechaCreacion</li>
-                <li>Su última modificación se realizó @_expediente.FechaModiificacion por el usuario con ID @_expediente.IdUsuario </li>
+                <li>Su última modificación se realizó @_expediente.FechaModiificacion por el usuario con ID @_expediente.IdUsuario</li>
             </ul>
         </div>
         
         <!--TABLA CON LOS TRAMITES ASOCIADOS-->
-        if((_expediente.Tramites != null)&&(_expediente.Tramites.Count > 0)){
+        @if((_expediente.Tramites != null) && (_expediente.Tramites.Count > 0)) {
             <h4>Tramites asociados</h4>
-            <table class="table">
+            <table style="width: 100%; border-collapse: collapse;">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -47,7 +46,7 @@
                     </tr> 
                 </thead>
                 <tbody>
-                    @foreach(var t in _expediente.Tramites){ // Informacion de cada tramite
+                    @foreach(var t in _expediente.Tramites) { //Informacion de cada tramite
                         <tr>
                             <td>@t.Id</td>
                             <td>@t.Etiqueta</td>
@@ -55,44 +54,38 @@
                             <td>@t.FechaCreacion</td>
                             <td>@t.FechaModificacion</td>
                             <td>@t.IdUsuario</td>
-
                             <td>
-                                <button @onclick="()=>_ModificarTramite(t.Id)" class="btn btn-primary" >Modificar</button>
-                                <button @onclick="()=>_EliminarTramite(t)" class="btn btn-danger" >Eliminar</button>
+                                <button @onclick="()=>_ModificarTramite(t.Id)" class="btn btn-primary">Modificar</button>
+                                <button @onclick="()=>_EliminarTramite(t)" class="btn btn-danger">Eliminar</button>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
+        } else {
+            <h4 style="margin-bottom: 10px;">No existen Tramites asociados</h4>
         }
-        else{
-            <h4 style="margin-bottom: 10px;" >No existen Tramites asociados</h4>
-        }
-        <div>
-            <button @onclick="_ModificarExpediente" class="btn btn-primary" >Modificar Expediente</button> <!--Modificar el expediente-->
-            
-            <button @onclick="_NuevoTramite" class="btn btn-primary" >Agregar Tramite</button> <br><br>
-            <button @onclick="_ConfirmarUsuario" class="btn btn-danger" >Eliminar Expediente</button>
-            <button @onclick="_Volver" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
+        <div class="text-center"> 
+            <button @onclick="_ModificarExpediente" class="btn btn-primary">Modificar Expediente</button> <!--Modificar el expediente-->
+            <button @onclick="_NuevoTramite" class="btn btn-primary">Agregar Tramite</button>
+            <button @onclick="_ConfirmarUsuario" class="btn btn-danger">Eliminar Expediente</button>
+            <button @onclick="_Volver" class="btn btn-secondary">Volver</button> <!--Volver al menu con todos los expedientes-->
         </div>
-        
-    }
-    else{ // En caso de ingresar un nuevo expediente
-
-        <div>
+    } else { //En caso de ingresar un nuevo expediente
+        <div class="text-center"> 
             <h3>Ingrese los datos para el nuevo Expediente</h3>
         </div>
         
-        <div>
-           <!--Ingreso de la caratula-->
-            Ingrese la caratula del nuevo Expediente: <br>
-            <input placeholder="Carátula del expediente" @bind="_expediente.Caratula" style="margin-bottom: 10px;"> 
+        <div class="text-center"> 
+            <!--Ingreso de la caratula-->
+            Ingrese la carátula del nuevo Expediente: <br>
+            <input placeholder="Carátula del expediente" @bind="_expediente.Caratula" style="margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
         </div>
         
-        <div style="margin-bottom: 10px;">
-            <!--Selector del estado del expediente-->
+        <div class="text-center" style="margin-bottom: 10px;">
+            <!--Selector del estado del expediente--> 
             Seleccione un estado del nuevo Expediente: <br>
-            <select @bind="_expediente.EstadoExpediente">
+            <select @bind="_expediente.EstadoExpediente" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                 <option value="RecienIniciado">Recien Iniciado</option>
                 <option value="ParaResolver">Para Resolver</option>
                 <option value="ConResolucion">Con Resolucion</option>
@@ -100,14 +93,13 @@
                 <option value="Finalizado">Finalizado</option>
             </select>
         </div>
-        <div>
-            <button @onclick="_Alta" class="btn btn-primary" >Aceptar</button> <!--Llama al caso de uso altar-->
-            <button @onclick="_Mensaje" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
-        </div>   
+        <div class="text-center"> 
+            <button @onclick="_Alta" class="btn btn-primary">Aceptar</button>
+            <button @onclick="_Mensaje" class="btn btn-secondary">Volver</button>
+        </div>
     }
-}
-else{
-    <ComponentError Text="@_stMensaje" ErrorSesion="@_error" /> //En caso de error al instanciar el componenete (OnParamaetersSet)
+} else {
+    <ComponentError Text="@_stMensaje" ErrorSesion="@_error" /> //En caso de error al instanciar el componente (OnParamaetersSet)
 }
 
 <Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_Volver" /> <!--Se asegura de que el usuario desee regresar al menu de expedientes-->
@@ -115,142 +107,128 @@ else{
 <ConfirmarUsuario @ref="_confirmarUsuario" eventCallback="_Baja" />
 
 @code {
-    
+
 #region Variables Expedente
-    [Parameter] public int? Id {get; set;} //ID del expediente envia como parametro en la URL de la pagina
+    [Parameter] public int? Id { get; set; } //ID del expediente envia como parametro en la URL de la pagina
     private Expediente _expediente = new Expediente(); //Obj expediente
     private bool _nuevoExpediente; //Para saber si se debe ingresar un nuevo expediente o mostrar uno almacenado
 #endregion Variables Expedente
- 
+
 #region Variables de Errores y Mensajes
     //Gestion de bools y errores
-    private bool _error = false; //Saber se ocurrio un error al acceder a la base de datos
-    //Varaible para llamar al objeto Mensaje
-    private Mensaje _mensaje = null!;
-
-    //String para los objetos Mensaje y para los Errores
+    private bool _error = false;
+    //Variable para llamar al objeto mensaje
     private string _stMensaje = "";
-    
-    //Varaibles para llamar al confimar usuario
+    //String para los objetos Mensaje y para los Errores
+    private Mensaje _mensaje = null!;
+    //Variables para llamar al confirmar usuario
     private ConfirmarUsuario _confirmarUsuario = null!;
-
 #endregion Variables de Errores y Mensajes
 
 #region Metodos de pagina
-    protected override void OnParametersSet(){ 
-        try{
+    protected override void OnParametersSet() {
+        try {
             usuarioActivo.Ejecutar(out _error);
-            if(Id != null){ //Se envio un ID "existente"
+            if(Id != null) { //Se envio un ID "existente"
                 _nuevoExpediente = false;
                 _expediente = consulta.Ejecutar(this.Id.Value); //caso de uso throw exception en caso de null
-            }
-            else{
+            } else {
                 verificarPermiso.Ejecutar(Permiso.ExpedienteAlta);
                 _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
                 _nuevoExpediente = true; //El ID fue null
             }
         }
-        catch (Exception e){ //catch para los errores en el caso de suo
+         catch (Exception e) { //catch para los errores en el caso de uso
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
             _error = true; //Muestra en la pagina el error
         }
     }
 
-    //Regresa a la pagina con la lista de Expeidentes
-    private void _Volver(){
+    //Regresa a la pagina con la lista de Expedientes
+    private void _Volver() {
         navigationManager.NavigateTo("/listarexpedientes");
     }
 #endregion Metodos de pagina
 
-#region Metodos de Expedientes
-    private void _Alta(){
-        try{
+#region Metodos de expedientes
+    private void _Alta() {
+        try {
             _expediente.IdUsuario = sesionActual.Ejecutar().Id;
             agregar.Ejecutar(_expediente);
             Id = _expediente.Id;
             _expediente = new Expediente();
             navigationManager.NavigateTo($"/expediente/{Id}"); //En caso de hacer la alta, se envia a la pagina especifica del Expediente
-        }
-        catch(Exception e){
+        } 
+        catch(Exception e) {
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
             _error = true; //Muestra en la pagina el error
         }
     }
 
-    private void _Baja(){
-        try{
+    private void _Baja() {
+        try {
             eliminar.Ejecutar(_expediente);
             navigationManager.NavigateTo("/listarexpedientes");
-        }
-        catch(Exception e){
+        } catch(Exception e) {
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
-            _error = true; //Muestra en la pagina el error
+            _error = true;
         }
-    }
-
-    //Envia al usuario a la pagina para modificar el Expediente
-    private void _ModificarExpediente(){
-        try{
-            verificarPermiso.Ejecutar(Permiso.ExpedienteModificacion);
-            navigationManager.NavigateTo($"/modificarexpediente/{_expediente.Id}");
-        }
-        catch(Exception e){
-            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
-            _error = true; //Muestra en la pagina el error
-        }
-        
     }
     
-#endregion Metodos de Expedente
+    //Envia al usuario a la pagina para modificar el Expediente
+    private void _ModificarExpediente() {
+        try {
+            verificarPermiso.Ejecutar(Permiso.ExpedienteModificacion);
+            navigationManager.NavigateTo($"/modificarexpediente/{_expediente.Id}");
+        } catch(Exception e) {
+            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
+            _error = true; //Muestra en la pagina el error
+        }
+    }
+#endregion Metodos de Expediente
 
 #region Gestion de Mensajes
 
-    //Metodos que muestar el mensaje emergente
-    private void _Mensaje(){
+    //Metodos que muestran el mensaje emergente
+    private void _Mensaje() {
         _mensaje.MostrarMensaje();
     }
 
-    private void _ConfirmarUsuario(){
+    private void _ConfirmarUsuario() {
         _confirmarUsuario.MostrarConfirmar();
     }
 #endregion Gestion de Mensajes
 
 #region Metodos de Tramites
-
     //Ventana emergente de ConfirmarUsuario
-    private void _ModificarTramite(int id){
-        try{
+    private void _ModificarTramite(int id) {
+        try {
             verificarPermiso.Ejecutar(Permiso.TramiteModificacion);
             navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{id}");
-        }
-        catch(Exception e){
+        } catch(Exception e) {
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
             _error = true; //Muestra en la pagina el error
         }
     }
 
-    private void _EliminarTramite(Tramite tramite){
-        try{
+    private void _EliminarTramite(Tramite tramite) {
+        try {
             eliminarTramite.Ejecutar(tramite);
-            navigationManager.NavigateTo($"/expediente/{Id}", forceLoad: true); //recargar pagina
-        }
-        catch(Exception e){
+            navigationManager.NavigateTo($"/expediente/{Id}", forceLoad: true); //recarga pagina
+        } catch(Exception e) {
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
             _error = true; //Muestra en la pagina el error
         }  
     }
 
-    private void _NuevoTramite(){
-        try{
+    private void _NuevoTramite() {
+        try {
             verificarPermiso.Ejecutar(Permiso.TramiteAlta);
             navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{null}");
-        }
-        catch(Exception e){
+        } catch(Exception e) {
             _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
             _error = true; //Muestra en la pagina el error
         }   
     }
-
 #endregion Metodos de Tramites
-
 }

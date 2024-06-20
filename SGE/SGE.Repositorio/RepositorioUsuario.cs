@@ -2,7 +2,7 @@
 
 namespace SGE.Repositorio;
 
-public class RepositorioUsuario : IUsuarioRepositorio  {//Creo que tambien se podria pasar Context por el constructor primario
+public class RepositorioUsuario : IUsuarioRepositorio  {
   public static void Inicializar(){
     using var db = new Context();
     if(db.Database.EnsureCreated()){
@@ -30,22 +30,20 @@ public class RepositorioUsuario : IUsuarioRepositorio  {//Creo que tambien se po
     }
 
     //si tengo que hacer un manejo de excepciones en el caso de uso, este metodo lo pongo para devolver un booleano
-    public void AgregarPermiso(int id, Permiso permiso) //Hay que actualizar primero los datos de la lista y despues agregarlos a la base de datos o directamente interactuar con la base de datos?
+    public void AgregarPermiso(int id, Permiso permiso) 
     {
-        using var db = new Context();//si invoco a obtenerUsuario estaria trabajando en otro contecto y no funcionaria
+        using var db = new Context();
         var usuario = db.Usuarios.Where(e => e.Id == id).SingleOrDefault();//Interactuando con la base de datos directamente
         if(usuario != null && usuario?.Permisos != null && !usuario.Permisos.Contains(permiso)){
            usuario?.Permisos?.Add(permiso);
            db.SaveChanges(); 
         }
-        //List<Permiso> lista = obtenerPermisos(id); //Actualizando la lista y despues guardando cambios
-        //lista.Add(permiso);
     }
 
   public bool EliminarPermiso(int id, Permiso permiso)//Hacer que devuelva un booleano para poder manejar la excepcion
   {
     using var db = new Context();
-    var usuario = db.Usuarios.Where(e => e.Id == id).SingleOrDefault(); //si invoco a obtenerUsuario estaria trabajando en otro contexto y no funcionaria, para poder usarlo tendria que modificarlo y pasarle el contexto por parametro
+    var usuario = db.Usuarios.Where(e => e.Id == id).SingleOrDefault(); 
      if (usuario != null && usuario?.Permisos != null && usuario.Permisos.Contains(permiso))
     {
         usuario.Permisos.Remove(permiso);
@@ -93,7 +91,7 @@ public class RepositorioUsuario : IUsuarioRepositorio  {//Creo que tambien se po
 
  
  //---------------Inicio de sesion, registro----------------------- 
-  public Usuario? IniciarSesion(string nombreUsuario, string contraseña) //Retorna verdadero si el usuario esta registrado
+  public Usuario? IniciarSesion(string nombreUsuario, string contraseña) 
   {
     using var db = new Context();
     return db.Usuarios.Where(u => u.Nombre == nombreUsuario && u.Contraseña == contraseña).SingleOrDefault();

@@ -1,168 +1,191 @@
 ﻿@page "/tramite/{IdExpediente:int?}/{Id:int?}"
 
-<!--Caso de uso para Tramites-->
+<!-- Caso de uso para Tramites -->
 @inject CasoDeUsoTramiteConsultarPorId consultar
 @inject CasoDeUsoTramiteModificacion modificar
 @inject CasoDeUsoTramiteAlta alta
 
-<!--Caso de uso para Sesion-->
+<!-- Caso de uso para Sesión -->
 @inject CasoDeUsoUsuarioActivo usuarioActivo
 @inject CasoDeUsoObtenerSesionActual sesionActual
 
-<!--Uso de la pagina-->
-@inject NavigationManager navigationManager //Navegar entre paginas
-@rendermode InteractiveServer //Para que se actulice la pagina en caso de errores
+<!-- Uso de la página -->
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
 
-@if(!_error){
+@if (!_error) {
 
-        @if(!_nuevoTramite){ //En caso de modificar un tramite
-            <h3>Modificar Tramite</h3>
+    @if (!_nuevoTramite) { <!-- En caso de modificar un tramite -->
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h3>Modificar Trámite</h3>
 
-            <div>
-                <!--Ingreso de la contenido-->
-                Ingrese el nuevo contenido del Tramite: <br>
-                <input placeholder="Contenido del tramite" @bind="_tramite.Contenido" style="margin-bottom: 10px;">
+                    <div class="form-group">
+                        <!-- Ingreso del contenido -->
+                        <label for="contenido">Ingrese el nuevo contenido del Trámite:</label>
+                        <input id="contenido" class="form-control" placeholder="Contenido del trámite" @bind="_tramite.Contenido">
+                    </div>
+
+                    <div class="form-group">
+                        <!-- Selector de la etiqueta del tramite -->
+                        <label for="etiqueta">Modifique la etiqueta del Trámite:</label>
+                        <select id="etiqueta" class="form-control" @bind="_tramite.Etiqueta">
+                            <option value="EscritoPresentado">Escrito Presentado</option>
+                            <option value="PaseAEstudio">Pase a Estudio</option>
+                            <option value="Despacho">Despacho</option>
+                            <option value="Resolucion">Resolución</option>
+                            <option value="Notificacion">Notificación</option>
+                            <option value="PaseAlArchivo">Pase al Archivo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <button @onclick="_Mensaje" class="btn btn-primary">Aceptar</button> <!-- Llama al caso de uso modificar -->
+                        <button @onclick="_MensajeConfirmar" class="btn btn-secondary">Volver</button> <!-- Volver al menú con todos los expedientes -->
+                    </div>
+                </div>
             </div>
+        </div>
+    } 
+    else { <!-- En caso de que sea un nuevo tramite -->
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h3>Ingresar datos para el nuevo Trámite</h3>
 
-            <div style="margin-bottom: 10px;">
-                <!--Selector del etiqueta del tramite-->
-                Modifique la etiqueta del Tramite: <br>
-                <select @bind="_tramite.Etiqueta">
-                    <option value="EscritoPresentado">Escrito Presentado</option>
-                    <option value="PaseAEstudio">Pase a Estudio</option>
-                    <option value="Despacho">Despacho</option>
-                    <option value="Resolucion">Resolucion</option>
-                    <option value="Notificacion">Notificacion</option>
-                    <option value="PaseAlArchivo">Pase al Archivo</option>
-                </select>
+                    <div class="form-group">
+                        <!-- Ingreso del contenido -->
+                        <label for="contenido">Ingrese el contenido del nuevo Trámite:</label>
+                        <input id="contenido" class="form-control" placeholder="Contenido del trámite" @bind="_tramite.Contenido">
+                    </div>
+
+                    <div class="form-group">
+                        <!-- Ingreso del ID expediente -->
+                        <label for="idExpediente">Ingrese el ID del Expediente al que asociar el Trámite:</label>
+                        <input id="idExpediente" class="form-control" placeholder="ID de expediente asociado" @bind="IdExpediente">
+                    </div>
+
+                    <div class="form-group">
+                        <!-- Selector de la etiqueta del tramite -->
+                        <label for="etiqueta">Seleccione la etiqueta del nuevo Trámite:</label>
+                        <select id="etiqueta" class="form-control" @bind="_tramite.Etiqueta">
+                            <option value="EscritoPresentado">Escrito Presentado</option>
+                            <option value="PaseAEstudio">Pase a Estudio</option>
+                            <option value="Despacho">Despacho</option>
+                            <option value="Resolucion">Resolución</option>
+                            <option value="Notificacion">Notificación</option>
+                            <option value="PaseAlArchivo">Pase al Archivo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <button @onclick="_Mensaje" class="btn btn-primary">Aceptar</button> <!-- Llama al caso de uso alta -->
+                        <button @onclick="_MensajeConfirmar" class="btn btn-secondary">Volver</button> <!-- Volver al menú con todos los expedientes -->
+                    </div>
+                </div>
             </div>
+        </div>
+    }
 
-        }
-        else{ //En caso de que sea un nuevo tramite
-            <h3>Ingrese los datos para el nuevo Tramite</h3>  
-            <div>
-                <!--Ingreso de la contenido-->
-                Ingrese el contenido del nuevo Tramite: <br>
-                <input placeholder="Contenido del tramite" @bind="_tramite.Contenido" style="margin-bottom: 10px;">
-            </div> 
-
-            <div>
-                <!--Ingreso del ID expediente-->
-                Ingrese el ID del Expediente al que asociar el Tramite: <br>
-                <input placeholder="ID de expediente asociado" @bind="IdExpediente" style="margin-bottom: 10px;" />
-            </div> 
-
-            <div style="margin-bottom: 10px;">
-                <!--Selector del etiqueta del tramite-->
-                Seleccione la etiqueta del nuevo Tramite: <br>
-                <select @bind="_tramite.Etiqueta">
-                    <option value="EscritoPresentado">Escrito Presentado</option>
-                    <option value="PaseAEstudio">Pase a Estudio</option>
-                    <option value="Despacho">Despacho</option>
-                    <option value="Resolucion">Resolucion</option>
-                    <option value="Notificacion">Notificacion</option>
-                    <option value="PaseAlArchivo">Pase al Archivo</option>
-                </select>
+} else {
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <ComponentError Text="@_stMensaje" ErrorSesion="@_error" />
             </div>
-        }
-    <div>
-        <button @onclick="_Mensaje" class="btn btn-primary" >Aceptar</button> <!--Llama al caso de uso altar-->
-        <button @onclick="_MensajeConfirmar" class="btn btn-secondary" >Volver</button> <!--Volver al menu con todos los expedientes-->
-    </div> 
+        </div>
+    </div>
 }
-else{
-    <ComponentError Text="@_stMensaje" ErrorSesion="@_error" /> //En caso de error al instanciar el componenete (OnParamaetersSet)
-}
 
-<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_VolverMensaje" /> <!--Confirnmar alta o midificacion-->
+<Mensaje @ref="_mensaje" Text="@_stMensaje" eventCallback="_VolverMensaje" /> <!-- Confirmar alta o modificación -->
 
-<Mensaje @ref="_mensajeVolver" Text="¿Está seguro que desea salir? Los datos que haya ingresado se perderán." eventCallback="_Volver" /> <!--Confirnmar volver-->
-
+<Mensaje @ref="_mensajeVolver" Text="¿Está seguro que desea salir? Los datos que haya ingresado se perderán." eventCallback="_Volver" /> <!-- Confirmar volver -->
 
 @code {
 
-#region Varibles Tramites
-    [Parameter] public int? Id {get; set;}
-    [Parameter] public int? IdExpediente {get; set;}
+#region Variables Tramites
+
+    [Parameter] public int? Id { get; set; }
+    [Parameter] public int? IdExpediente { get; set; }
     private Tramite _tramite = new Tramite();
     private bool _nuevoTramite = false;
 
-#endregion Varibles Tramites
+#endregion Variables Tramites
 
 #region Variables de Errores y Mensajes
-    private bool _error = false; //Saber se ocurrio un error al acceder a la base de datos
-    private string _stMensaje = ""; //Texto del mensaje o del error
-    private Mensaje _mensaje = null!; 
+
+    private bool _error = false; // Indica si ocurrió un error al acceder a la base de datos
+    private string _stMensaje = ""; // Texto del mensaje o del error
+    private Mensaje _mensaje = null!;
     private Mensaje _mensajeVolver = null!;
 
 #endregion Variables de Errores y Mensajes
 
-#region Metodos de pagina
-    protected override void OnParametersSet(){
-        try{
+#region Métodos de página
+
+    // Al inicializar el componente muestra los datos del tramite a modificar o prepara para agregar uno nuevo
+    protected override void OnParametersSet() {
+        try {
             usuarioActivo.Ejecutar(out _error);
-            if((Id != null)&&(IdExpediente != null)){ //No es un tramite nuevo
+            if (Id != null && IdExpediente != null) { // No es un tramite nuevo
                 _tramite = consultar.Ejecutar(Id.Value);
                 _nuevoTramite = false;
-            }
-            else{ //Es un tramite nuevo
-                if(IdExpediente == null){
+            } else { // Es un tramite nuevo
+                if (IdExpediente == null) {
                     IdExpediente = 0;
-                }
-                else{
+                } else {
                     _tramite.ExpedienteId = IdExpediente.Value;
                 }
                 _nuevoTramite = true;
-            }    
-        }
-        catch (Exception e){ //catch para los errores en el caso de suo
-            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
-            _error = true; //Muestra en la pagina el error
+            }
+        } catch (Exception e) { // Manejo de errores
+            _stMensaje = $"Ocurrió un error inesperado. {e.Message}";
+            _error = true;
         }
     }
-    private void _Volver(){
+
+    // Navega de regreso al detalle del expediente
+    private void _Volver() {
         navigationManager.NavigateTo($"/expediente/{_tramite.ExpedienteId}");
     }
 
-#endregion Metodos de pagina
+#endregion Métodos de página
 
-#region Metodos de Mensajes
+#region Métodos de Mensajes
 
-    //Metodo para mostrara el mensaje emergente
-    private void _Mensaje(){ 
-        if(!_nuevoTramite){ //En caso de que se modifique un trmaite
-            _stMensaje = "Al aceptar los cambios y una vez modificado el tramite, no se puede recuperar el estado anterior!";
-        }
-        else{ //En caso de que sea un nuevo tramite
-            _stMensaje = "Seguro que quiere asociar este tramite al expeidente: " + _tramite.ExpedienteId; //Mensaje ConfirmarUsuario
+    // Muestra el mensaje de confirmación antes de realizar la acción (alta o modificación)
+    private void _Mensaje() {
+        if (!_nuevoTramite) { // Modificación de tramite
+            _stMensaje = "Al aceptar los cambios y una vez modificado el trámite, no se puede recuperar el estado anterior!";
+        } else { // Nuevo tramite
+            _stMensaje = "Seguro que quiere asociar este trámite al expediente: " + _tramite.ExpedienteId;
         }
         _mensaje.MostrarMensaje();
     }
 
-    //Metodo lanzado por el mensaje
-    private void _VolverMensaje(){
-        try{
-            if(_nuevoTramite){
+    // Procesa la acción (alta o modificación) después de la confirmación
+    private void _VolverMensaje() {
+        try {
+            if (_nuevoTramite) {
                 _tramite.IdUsuario = sesionActual.Ejecutar().Id;
                 alta.Ejecutar(_tramite);
-            }
-            else{
+            } else {
                 _tramite.IdUsuario = sesionActual.Ejecutar().Id;
                 modificar.Ejecutar(_tramite);
             }
             navigationManager.NavigateTo($"/expediente/{_tramite.ExpedienteId}");
-        }
-        catch(Exception e){//catch para los errores en el caso de uso
-            _stMensaje = $"Ocurrio un error inesperado. {e.Message}";
-            _error = true; //Muestra en la pagina el error
+        } catch (Exception e) { // Manejo de errores
+            _stMensaje = $"Ocurrió un error inesperado. {e.Message}";
+            _error = true;
         }
     }
 
-    //Confirma si el usuario quiere regresar al menu de expedientes
-    private void _MensajeConfirmar(){
+    // Muestra el mensaje de confirmación antes de volver atrás
+    private void _MensajeConfirmar() {
         _mensajeVolver.MostrarMensaje();
     }
 
-#endregion Metodos de Mensajes
+#endregion Métodos de Mensajes
 
 }
