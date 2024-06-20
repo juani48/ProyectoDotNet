@@ -11,6 +11,8 @@ builder.Services.AddRazorComponents()
 //servicion
 builder.Services.AddSingleton<IServicioActualizacionEstado, ServicioActualizacionEstado>();
 builder.Services.AddSingleton<IServicioAutorizacion, ServicioAutorizacion>();
+builder.Services.AddSingleton<IServicioEncriptador, ServicioEncriptador>();
+
 builder.Services.AddSingleton<ServicioSesionUsuario>(); //Servicio para gestion del usuario actual de la sesion
 
 //casos de usos de expeidentes
@@ -28,11 +30,27 @@ builder.Services.AddTransient<CasoDeUsoTramiteModificacion>();
 builder.Services.AddTransient<CasoDeUsoTramiteConsultarPorId>();
 
 //casos de usos de usuarios
-builder.Services.AddTransient<CasoDeUsoModificarUsuario>();
-builder.Services.AddTransient<CasoDeUsoListarUsuarios>();
-builder.Services.AddTransient<CasoDeUsoVerificarUsuario>();
-builder.Services.AddTransient<CasoDeUsoObtenerUsuario>();
-builder.Services.AddTransient<CasoDeUsoSesionUsuario>();
+    //CRUD
+    builder.Services.AddTransient<CasoDeUsoObtenerUsuario>();
+    builder.Services.AddTransient<CasoDeUsoModificarUsuario>();
+    builder.Services.AddTransient<CasoDeUsoListarUsuarios>();
+    builder.Services.AddTransient<CasoDeUsoEliminarUsuario>();
+
+    //Permisos
+    builder.Services.AddTransient<CasoDeUsoAgregarPermiso>();
+    builder.Services.AddTransient<CasoDeUsoEliminarPermiso>();
+
+    //Sesion
+    builder.Services.AddTransient<CasoDeUsoCerrarSesionActual>();
+    builder.Services.AddTransient<CasoDeUsoIniciarSesion>();
+    builder.Services.AddTransient<CasoDeUsoObtenerSesionActual>();
+    builder.Services.AddTransient<CasoDeUsoRegistrarUsuario>();
+    builder.Services.AddTransient<CasoDeUsoUsuarioActivo>();
+
+    //Verificar
+    builder.Services.AddTransient<CasoDeUsoVerificarIdentidad>();
+    builder.Services.AddTransient<CasoDeUsoVerificarPermiso>();
+    builder.Services.AddTransient<CasoDeUsoVerifivarPermisoAdministrador>();
 
 //repositorios
 builder.Services.AddSingleton<ITramiteRepositorio,RepositorioTramite>();

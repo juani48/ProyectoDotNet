@@ -5,8 +5,9 @@
 @inject CasoDeUsoTramiteModificacion modificar
 @inject CasoDeUsoTramiteAlta alta
 
-<!--Caso de uso para Usuarios-->
-@inject CasoDeUsoSesionUsuario sesion
+<!--Caso de uso para Sesion-->
+@inject CasoDeUsoUsuarioActivo usuarioActivo
+@inject CasoDeUsoObtenerSesionActual sesionActual
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager //Navegar entre paginas
@@ -99,7 +100,7 @@ else{
 #region Metodos de pagina
     protected override void OnParametersSet(){
         try{
-            sesion.UsuarioActivo(out _error);
+            usuarioActivo.Ejecutar(out _error);
             if((Id != null)&&(IdExpediente != null)){ //No es un tramite nuevo
                 _tramite = consultar.Ejecutar(Id.Value);
                 _nuevoTramite = false;
@@ -142,11 +143,11 @@ else{
     private void _VolverMensaje(){
         try{
             if(_nuevoTramite){
-                _tramite.IdUsuario = sesion.SesionActual().Id;
+                _tramite.IdUsuario = sesionActual.Ejecutar().Id;
                 alta.Ejecutar(_tramite);
             }
             else{
-                _tramite.IdUsuario = sesion.SesionActual().Id;
+                _tramite.IdUsuario = sesionActual.Ejecutar().Id;
                 modificar.Ejecutar(_tramite);
             }
             navigationManager.NavigateTo($"/expediente/{_tramite.ExpedienteId}");

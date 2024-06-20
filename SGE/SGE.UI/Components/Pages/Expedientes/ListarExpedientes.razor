@@ -4,7 +4,7 @@
 @inject CasoDeUsoExpedienteConsultaTodos listarExpeidentes
 
 <!--Caso de uso Usarios-->
-@inject CasoDeUsoSesionUsuario sesion //Para obtener el usuario actual
+@inject CasoDeUsoUsuarioActivo usuarioActual //Para obtener el usuario actual
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager
@@ -73,7 +73,7 @@ else{
     //Al inicializar el componenet muestra la lista
     protected override void OnInitialized(){
         try{
-            sesion.UsuarioActivo(out _error);
+            usuarioActual.Ejecutar(out _error);
             _lista = listarExpeidentes.Ejecutar();
         }
         catch (Exception e){

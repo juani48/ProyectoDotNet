@@ -4,8 +4,9 @@
 @inject CasoDeUsoExpedienteConsultaPorId consulta // consultar expediente
 @inject CasoDeUsoExpedienteModificacion modificar //Modificar un expediente
 
-<!--Caso de uso para Usuarios-->
-@inject CasoDeUsoSesionUsuario sesion
+<!--Caso de uso para Sesion-->
+@inject CasoDeUsoUsuarioActivo usuarioActivo
+@inject CasoDeUsoObtenerSesionActual sesionActual
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager //Navegar entre paginas
@@ -64,7 +65,7 @@ else{
     protected override void OnParametersSet(){
         try{
             if(Id != null){
-                sesion.UsuarioActivo(out _error);
+                usuarioActivo.Ejecutar(out _error);
                 _expediente = consulta.Ejecutar(Id.Value);
                 _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
             }
@@ -100,7 +101,7 @@ else{
         }
         else{
             try{
-                _expediente.IdUsuario = sesion.SesionActual().Id;
+                _expediente.IdUsuario = sesionActual.Ejecutar().Id;
                 modificar.Ejecutar(_expediente);
                 navigationManager.NavigateTo($"/expediente/{Id}");
             }

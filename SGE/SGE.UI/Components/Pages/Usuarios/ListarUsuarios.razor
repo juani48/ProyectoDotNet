@@ -2,7 +2,9 @@
 
 <!--Caso de uso para Usuarios-->
 @inject CasoDeUsoListarUsuarios listarUsuarios
-@inject CasoDeUsoSesionUsuario sesion
+
+<!--Caso de uso Sesion-->
+@inject CasoDeUsoUsuarioActivo usuarioActivo
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager
@@ -45,7 +47,7 @@ else{
     protected override void OnInitialized()
     {   
         try{
-            sesion.UsuarioActivo(out _error);
+            usuarioActivo.Ejecutar(out _error);
             _lista = listarUsuarios.Ejecutar();
         }
         catch (Exception e){ //catch para los errores en el caso de suo

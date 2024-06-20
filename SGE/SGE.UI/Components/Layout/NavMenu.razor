@@ -1,6 +1,10 @@
-﻿@inject IServicioAutorizacion verificacion
-@inject CasoDeUsoSesionUsuario sesion
+﻿
+<!--Caso de uso para verificacion-->
+@inject IServicioAutorizacion autorizacion
 
+<!--Caso de uso de sesion-->
+@inject CasoDeUsoUsuarioActivo usuarioActivo
+@inject CasoDeUsoObtenerSesionActual sesionActual
 
 @if(!_error){
     <div class="top-row ps-3 navbar navbar-dark">
@@ -86,17 +90,17 @@
     protected override void OnInitialized(){
         try{
             bool ok;
-            sesion.UsuarioActivo(out ok);
-            if(!verificacion.PoseePermisoAdministrador(PermisoAdministrador.ListarUsuario)){
+            usuarioActivo.Ejecutar(out ok);
+            if(!autorizacion.PoseePermisoAdministrador(PermisoAdministrador.ListarUsuario)){
                 _verUsuarios = false;
             }
-            if(!verificacion.PoseeElPermiso(Permiso.ExpedienteAlta)){
+            if(!autorizacion.PoseeElPermiso(Permiso.ExpedienteAlta)){
                 _altaExpedientes = false;
             }
-            if(!verificacion.PoseeElPermiso(Permiso.TramiteAlta)){
+            if(!autorizacion.PoseeElPermiso(Permiso.TramiteAlta)){
                 _altaTramites = false;
             }
-            _usuarioId = $"/usuario/{sesion.SesionActual().Id}";
+            _usuarioId = $"/usuario/{sesionActual.Ejecutar().Id}";
         }
         catch{ //catch para los errores en el caso de suo
             _error = true; //Muestra en la pagina el error

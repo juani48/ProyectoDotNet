@@ -1,6 +1,6 @@
 ﻿namespace SGE.Aplicacion;
 
-public class CasoDeUsoExpedienteBaja(IExpedienteRepositorio expedienteRepositorio, IServicioAutorizacion servicioAutorizacion, ITramiteRepositorio tramiteRepositorio)
+public class CasoDeUsoExpedienteBaja(IExpedienteRepositorio expedienteRepositorio, IServicioAutorizacion servicioAutorizacion)
 {
     public void Ejecutar(Expediente expediente)
     {
@@ -11,12 +11,11 @@ public class CasoDeUsoExpedienteBaja(IExpedienteRepositorio expedienteRepositori
         }
         else
         {
-          if(expedienteRepositorio.EliminarExpediente(expediente.Id))//Si retorna verdadero, se ejecuta automaticamente y se elimina el expediente
+          if(!expedienteRepositorio.EliminarExpediente(expediente.Id))//Si retorna verdadero, se ejecuta automaticamente y se elimina el expediente
           {
-            tramiteRepositorio.EliminarTramitesPorIdExpediente(expediente.Id);
-          }
-          else
             throw new RepositorioException($"El expediente con id {expediente.Id} no existe.");
+          }
+            
         }
     }
 

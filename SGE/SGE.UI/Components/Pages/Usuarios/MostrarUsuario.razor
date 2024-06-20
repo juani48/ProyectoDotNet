@@ -2,8 +2,17 @@
 
 <!--Caso de uso Usuarios-->
 @inject CasoDeUsoObtenerUsuario consultar
-@inject CasoDeUsoSesionUsuario sesion
-@inject CasoDeUsoModificarUsuario modificar
+@inject CasoDeUsoModificarUsuario modificar 
+
+<!--Caso de uso Sesion-->
+@inject CasoDeUsoCerrarSesionActual cerrarSesion
+@inject CasoDeUsoObtenerSesionActual sesionActual
+
+<!--Caso de uso Permiso-->
+@inject CasoDeUsoAgregarPermiso agregarPermiso
+@inject CasoDeUsoEliminarPermiso eliminarPermiso
+@inject CasoDeUsoUsuarioActivo usuarioActivo
+
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager //Navegar entre paginas
@@ -34,15 +43,15 @@
             </ul>
         </div>
 
-        if(_usuario.Id == sesion.SesionActual().Id){
-            <button @onclick="_MensajeCerrarSesion" class="btn btn-primary" style="margin-right: 10px;" >Cerrar sesion</button>
+        <button @onclick="_PaginaModificar" class="btn btn-primary" style="margin-right: 5px;" >Modificar datos personales</button>
+
+        if(_usuario.Id == sesionActual.Ejecutar().Id){
+            <button @onclick="_MensajeCerrarSesion" class="btn btn-danger"  >Cerrar sesion</button>
         }
         
-        <button @onclick="_PaginaModificar" class="btn btn-secondary">Modificar datos personales</button>
-
     }
     else{ //Se modifica el usuario
-        if(_usuario.Id == sesion.SesionActual().Id){ //El usuario actual quiere modificar sus datos
+        if(_usuario.Id == sesionActual.Ejecutar().Id){ //El usuario actual quiere modificar sus datos
             <h3>Modificar datos de Usuario</h3>
 
             <div>
@@ -65,7 +74,7 @@
                 <input @bind="_contraseñaNueva" placeholder="Contraseña">
             </div>
             <br>
-            <button @onclick="_ConfirmarUsuario" class="btn btn-primary" >Confirmar cambios</button>
+            <button @onclick="_ConfirmarUsuario" class="btn btn-primary" style="margin-right: 5px;" >Confirmar cambios</button>
 
             <button @onclick="_MensajePerderDatos" class="btn btn-secondary" >Volver</button>
         }
@@ -213,7 +222,7 @@ else{
 #region Metodos de pagina
     protected override void OnParametersSet(){
         try{
-            sesion.UsuarioActivo(out _error);
+            usuarioActivo.Ejecutar(out _error);
             if(IdUsuario != null){
                 _usuario = consultar.Ejecutar(IdUsuario.Value);
             }
@@ -223,7 +232,6 @@ else{
             _error = true; //Muestra en la pagina el error
         }
     }
-
     private void _VolverListarUsuarios(string url){ //Solo administrador
         navigationManager.NavigateTo("/listarusuarios");
     }
@@ -232,7 +240,6 @@ else{
         _modificarUsuario = false;
 
     }
-
     private void _PaginaModificar(){
         _modificarUsuario = true;
     }
@@ -241,22 +248,22 @@ else{
 
 #region Metodos de usuario
     private void _CerrarSesion(){
-        sesion.CerrarSesion(sesion.SesionActual());
+        cerrarSesion.Ejecutar(sesionActual.Ejecutar());
         navigationManager.NavigateTo("/");
     }
 
     private void _AgregarPermiso(Permiso permiso){
-       modificar.AgregarPermiso(_usuario.Id, permiso);
+       agregarPermiso.Ejecutar(_usuario.Id, permiso);
        _usuario.Permisos = consultar.Ejecutar(_usuario.Id).Permisos;
     }
 
     private void _EliminarPermiso(Permiso permiso){
-       modificar.EliminarPermiso(_usuario.Id, permiso);
+       eliminarPermiso.Ejecutar(_usuario.Id, permiso);
        _usuario.Permisos = consultar.Ejecutar(_usuario.Id).Permisos;
     }
 
     private void _ModificarUsuario(){
-        modificar.Modificar(_usuario, _contraseñaNueva);
+        modificar.Ejecutar(_usuario, _contraseñaNueva);
         _VolverUsuario();
     }
 

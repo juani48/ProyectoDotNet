@@ -6,9 +6,12 @@
 @inject CasoDeUsoExpedienteBaja eliminar
 @inject CasoDeUsoTramiteBaja eliminarTramite
 
-<!--Caso de uso para Usuarios-->
-@inject CasoDeUsoVerificarUsuario verificacion
-@inject CasoDeUsoSesionUsuario sesion
+<!--Caso de uso Verficar-->
+@inject CasoDeUsoVerificarPermiso verificarPermiso
+
+<!--Caso de uso para Sesion-->
+@inject CasoDeUsoUsuarioActivo usuarioActivo
+@inject CasoDeUsoObtenerSesionActual sesionActual
 
 <!--Uso de la pagina-->
 @inject NavigationManager navigationManager //Navegar entre paginas
@@ -136,13 +139,13 @@ else{
 #region Metodos de pagina
     protected override void OnParametersSet(){ 
         try{
-            sesion.UsuarioActivo(out _error);
+            usuarioActivo.Ejecutar(out _error);
             if(Id != null){ //Se envio un ID "existente"
                 _nuevoExpediente = false;
                 _expediente = consulta.Ejecutar(this.Id.Value); //caso de uso throw exception en caso de null
             }
             else{
-                verificacion.Ejecutar(Permiso.ExpedienteAlta);
+                verificarPermiso.Ejecutar(Permiso.ExpedienteAlta);
                 _stMensaje = "¿Está seguro que desea salir? Los datos que haya ingresado se perderán.";
                 _nuevoExpediente = true; //El ID fue null
             }
@@ -162,7 +165,7 @@ else{
 #region Metodos de Expedientes
     private void _Alta(){
         try{
-            _expediente.IdUsuario = sesion.SesionActual().Id;
+            _expediente.IdUsuario = sesionActual.Ejecutar().Id;
             agregar.Ejecutar(_expediente);
             Id = _expediente.Id;
             _expediente = new Expediente();
@@ -188,7 +191,7 @@ else{
     //Envia al usuario a la pagina para modificar el Expediente
     private void _ModificarExpediente(){
         try{
-            verificacion.Ejecutar(Permiso.ExpedienteModificacion);
+            verificarPermiso.Ejecutar(Permiso.ExpedienteModificacion);
             navigationManager.NavigateTo($"/modificarexpediente/{_expediente.Id}");
         }
         catch(Exception e){
@@ -217,7 +220,7 @@ else{
     //Ventana emergente de ConfirmarUsuario
     private void _ModificarTramite(int id){
         try{
-            verificacion.Ejecutar(Permiso.TramiteModificacion);
+            verificarPermiso.Ejecutar(Permiso.TramiteModificacion);
             navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{id}");
         }
         catch(Exception e){
@@ -239,7 +242,7 @@ else{
 
     private void _NuevoTramite(){
         try{
-            verificacion.Ejecutar(Permiso.TramiteAlta);
+            verificarPermiso.Ejecutar(Permiso.TramiteAlta);
             navigationManager.NavigateTo($"/tramite/{_expediente.Id}/{null}");
         }
         catch(Exception e){

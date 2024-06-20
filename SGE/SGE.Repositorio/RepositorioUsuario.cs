@@ -1,6 +1,4 @@
 ﻿using SGE.Aplicacion;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace SGE.Repositorio;
 
@@ -64,7 +62,7 @@ public class RepositorioUsuario : IUsuarioRepositorio  {//Creo que tambien se po
       query.Nombre = usuario.Nombre;
       query.Correo = usuario.Correo;
       query.Apellido = usuario.Apellido;
-      query.Contraseña = EncriptarSHA256(usuario.Contraseña);
+      query.Contraseña = usuario.Contraseña;
       db.SaveChanges();
       return true;
     }
@@ -93,35 +91,20 @@ public class RepositorioUsuario : IUsuarioRepositorio  {//Creo que tambien se po
     return false;
   }
 
-
+ 
  //---------------Inicio de sesion, registro----------------------- 
-  public Usuario? IniciarSesion(string nombreUsuario, string contrasena) //Retorna verdadero si el usuario esta registrado
+  public Usuario? IniciarSesion(string nombreUsuario, string contraseña) //Retorna verdadero si el usuario esta registrado
   {
     using var db = new Context();
-    var contrasenaEncriptada = EncriptarSHA256(contrasena);
-    return db.Usuarios.Where(u => u.Nombre == nombreUsuario && u.Contraseña == contrasenaEncriptada).SingleOrDefault();
+    return db.Usuarios.Where(u => u.Nombre == nombreUsuario && u.Contraseña == contraseña).SingleOrDefault();
   }
 
-  public bool RegistrarUsuario(Usuario usuario, string contrasena) //agregar usuarios
+  public bool RegistrarUsuario(Usuario usuario) //agregar usuarios
   {
     using var db = new Context();
 
     if (!db.Usuarios.Any(u => u.Nombre == usuario.Nombre))
     {
-      if(db.Usuarios.ToList().Count() == 0){
-        usuario.Permisos = new List<Permiso>{
-                            Permiso.ExpedienteAlta, 
-                            Permiso.ExpedienteBaja, 
-                            Permiso.ExpedienteModificacion,
-                            Permiso.TramiteAlta,
-                            Permiso.TramiteBaja,
-                            Permiso.TramiteModificacion};
-        usuario.PermisosAdministrador = new List<PermisoAdministrador>(){
-          PermisoAdministrador.ListarUsuario, PermisoAdministrador.UsuarioBaja, PermisoAdministrador.UsuarioModificacion
-        };
-      }
-
-      usuario.Contraseña = EncriptarSHA256(contrasena);
       db.Usuarios.Add(usuario);
       db.SaveChanges();
       return true;
@@ -130,26 +113,16 @@ public class RepositorioUsuario : IUsuarioRepositorio  {//Creo que tambien se po
       return false;
     }
   }
-  private string EncriptarSHA256(string entrada)
-  {
-    using var sha256 = SHA256.Create();
-    byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(entrada));
-    var builder = new StringBuilder();
-    foreach (var b in bytes)
-    {
-      builder.Append(b.ToString("x2"));
-    }
-    return builder.ToString();
-  }
+  
 
-  public bool VerificarUsuario(Usuario usuario, string nombre, string contrasena)
+  public bool VerificarUsuario(Usuario usuario, string nombre, string contraseña)
   {
     using var db = new Context();
     var usuarioEncontrado = db.Usuarios.FirstOrDefault(u => u.Id == usuario.Id);
     if(usuarioEncontrado != null)
     {
       return usuarioEncontrado.Nombre == nombre &&
-             usuarioEncontrado.Contraseña == EncriptarSHA256(contrasena);
+             usuarioEncontrado.Contraseña == contraseña;
     }
     return false;
   }

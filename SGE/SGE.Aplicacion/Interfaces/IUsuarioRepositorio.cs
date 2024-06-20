@@ -15,7 +15,7 @@ public interface IUsuarioRepositorio
     bool EliminarUsuario(int id);
     
     Usuario? IniciarSesion(string nombre, string contrasena);
-    bool RegistrarUsuario(Usuario usuario, string contrasena);
+    bool RegistrarUsuario(Usuario usuario);
     bool VerificarUsuario(Usuario usuario, string nombre, string contrasena);
 
     

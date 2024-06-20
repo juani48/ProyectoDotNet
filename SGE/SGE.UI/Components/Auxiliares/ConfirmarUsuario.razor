@@ -1,5 +1,5 @@
 ﻿
-@inject CasoDeUsoVerificarUsuario verificar
+@inject CasoDeUsoVerificarIdentidad verificarIdentidad
 
 @if(_visible){
     <div class="contenedor">
@@ -45,7 +45,7 @@
 
     private void _ConfirmarUsuario(){
         try{
-            verificar.Ejecutar(_usuario.Nombre, _usuario.Contraseña);
+            verificarIdentidad.Ejecutar(_usuario.Nombre, _usuario.Contraseña);
             _visible = false;
             _usuario = new Usuario();
             eventCallback.InvokeAsync();
