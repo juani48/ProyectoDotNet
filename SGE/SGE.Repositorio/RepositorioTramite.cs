@@ -35,6 +35,11 @@ public class RepositorioTramite : ITramiteRepositorio
         }
     }
 
+    public List<Tramite> ListarTramites(){
+        using var db = new Context();
+        return db.Tramites.ToList();
+    }
+
     public Tramite? ObtenerTramite(int id) //Retorna null si el tramite no existe
     {
         using var db = new Context();
